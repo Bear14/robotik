@@ -66,7 +66,7 @@ int main(void)
 
 	
 	while (1) {
-		batteryMeter();
+		//batteryMeter();
 		if(B_SELECT)
 			uart_putc(20);
 		if(B_PAUSE)
@@ -82,8 +82,10 @@ int main(void)
 
 		if(B_A)
 			uart_putc(90);
+			page(25,25,0xFF);
 		if(B_B)
 			uart_putc(100);
+			page(25,25,0x00);
 
 	}	
 }
