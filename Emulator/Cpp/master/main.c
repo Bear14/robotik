@@ -2,33 +2,42 @@
  *	Basis
  *	2009 Benjamin Reh und Joachim Schleicher
  */
-#include <avr/io.h>
+//#include <avr/io.h>
 #include <inttypes.h>
-#include <util/delay.h>
-#include "uart.h"
-#include "adc.h"
-#include "timer.h"
+//#include <util/delay.h>
+#include "uart.c"
+#include "adc.c"
+//#include "timer.h"
 #include "buttons.h"
-#include "display.h"
+#include "display.c"
+#include <stdio.h>
 
+#include "socket.cpp"
 
-void init();
+void _delay_ms(int ms){
+	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+}
 
 
 void full(uint8_t x) {
+
 	page(x,5,0xFF);
 	page(x,5+1,0xFf);
 	page(x+1,5,0xFF);
 	page(x+1,5+1,0xFf);
+
 }
 void empty(uint8_t x) {
+
 	page(x,5,0xF0);
 	page(x,5+1,0xF0);
 	page(x+1,5,0xF0);
 	page(x+1,5+1,0xF0);
+
 }
 
 void batteryMeter() {
+
 	uint8_t x=0; 
 	uint16_t adc=getADCValue(0);
 	uint16_t low=696;//778; // (1024.*34./50.);
@@ -43,16 +52,18 @@ void batteryMeter() {
 			empty(x*3);
 		}
 	}
-	
+
 }
 
 
 
 int main(void)
 {
+	char hey[] = "Hello";
+	//Sender(hey,5005);
 	//Initialisierung ausfuehren
-	
-	init();
+
+	//init();
 
 	uart_putc(80);
 	_delay_ms(1000);
@@ -60,11 +71,10 @@ int main(void)
 	uart_putc(10);
 	_delay_ms(1000);
 
-	
+
 	while (1) {
-		//batteryMeter();
+		batteryMeter();
 		if(B_SELECT)
-			delay()
 			uart_putc(20);
 		if(B_PAUSE)
 			uart_putc(30);
@@ -81,16 +91,18 @@ int main(void)
 		if(B_B)
 			uart_putc(100);
 
-	}	
+	}
 }
 
 
 //INIT
 void init()
 {
+
 	uartInit();   // serielle Ausgabe an PC
 	ADCInit(0);   // Analoge Werte einlesen
-	timerInit();  // "Systemzeit" initialisieren
+	//timerInit();  // "Systemzeit" initialisieren
 	buttonsInit();
 	displayInit();
+
 }
