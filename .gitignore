@@ -11,3 +11,13 @@
 /.idea/vcs.xml
 /venv/
 /Emulator/Python/
+/Console/Master/dep/
+/Console/Master/obj/
+/Console/Master/basis.eep
+/Console/Master/basis.elf
+/Console/Master/basis.hex
+/Console/Slave/dep/
+/Console/Slave/obj/
+/Console/Slave/basis.eep
+/Console/Slave/basis.elf
+/Console/Slave/basis.hex
