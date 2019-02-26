@@ -5,7 +5,7 @@ import time
 UDP_IP = "127.0.0.1"
 UDP_PORT = 5005
 
-RUNTIME = 60 #In seconds
+RUNTIME = 10 #In seconds
 
 SCALE = 8
 BLACK = color_rgb(0,0,0)

@@ -90,7 +90,7 @@ int main(void)
 
 
 	while (1) {
-		batteryMeter();
+		//batteryMeter();
 		pageTest();
 		if(B_SELECT)
 			uart_putc(20);
