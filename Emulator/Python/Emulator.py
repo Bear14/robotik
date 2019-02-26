@@ -7,10 +7,10 @@ UDP_PORT = 5005
 
 RUNTIME = 60 #In seconds
 
-SCALE = 5
+SCALE = 8
 BLACK = color_rgb(0,0,0)
-DARKGREY = color_rgb(0,100,0)
-LIGHTGREY = color_rgb(200,0,0)
+DARKGREY = color_rgb(100,100,100)
+LIGHTGREY = color_rgb(200,200,200)
 WHITE = color_rgb(255,255,255)
 
 def getColor(h,px):
@@ -44,27 +44,27 @@ def getColor(h,px):
 def page(x,y,h,window):
     y = y*4 * SCALE
     x = x * SCALE
-    px_1 = Rectangle(Point(x,y),Point(x + SCALE,y + SCALE))
+    px_1 = Rectangle(Point(x,y),Point(x + SCALE-1,y + SCALE-1))
     px_1.setFill(getColor(h,3))
     px_1.setOutline(getColor(h,3))
     px_1.draw(window)
 
-    px_2 = Rectangle(Point(x,y+1*SCALE),Point(x + SCALE,y + 1*SCALE + SCALE))
+    px_2 = Rectangle(Point(x,y+1*SCALE),Point(x + SCALE-1,y+1*SCALE + SCALE-1))
     px_2.setFill(getColor(h,2))
     px_2.setOutline(getColor(h,2))
     px_2.draw(window)
 
-    px_3 = Rectangle(Point(x,y+2*SCALE),Point(x + SCALE,y + 4*SCALE+SCALE))
+    px_3 = Rectangle(Point(x,y+2*SCALE),Point(x + SCALE-1,y+2*SCALE +SCALE-1))
     px_3.setFill(getColor(h,1))
     px_3.setOutline(getColor(h,1))
     px_3.draw(window)
 
-    px_4 = Rectangle(Point(x,y+3*SCALE),Point(x +SCALE,y +4*SCALE+ SCALE))
+    px_4 = Rectangle(Point(x,y+3*SCALE),Point(x +SCALE-1,y+3*SCALE + SCALE-1))
     px_4.setFill(getColor(h,0))
     px_4.setOutline(getColor(h,0))
     px_4.draw(window)
-
     pass
+
 
 
 sock = socket.socket(socket.AF_INET, # Internet

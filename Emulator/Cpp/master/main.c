@@ -55,7 +55,21 @@ void batteryMeter() {
 
 }
 
+void pageTest(){
 
+    for(int i=0; i<256; ++i){
+        page(100,10,i);
+
+        page(102,10,i);
+
+        page(104,10,i);
+
+        page(106,10,i);
+        _delay_ms(200);
+
+    }
+
+}
 
 int main(void)
 {
@@ -72,8 +86,12 @@ int main(void)
 	_delay_ms(1000);
 
 
+
+
+
 	while (1) {
 		batteryMeter();
+		pageTest();
 		if(B_SELECT)
 			uart_putc(20);
 		if(B_PAUSE)
