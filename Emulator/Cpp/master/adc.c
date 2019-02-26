@@ -42,7 +42,7 @@ uint16_t getADCValue(uint8_t kanal)
 
     //Battery level
     if(kanal == 0){
-        int lala = rand() % 1024;
+        int lala = rand() % 962 + 696;
         printf("%c",lala);
         return lala;
     }
