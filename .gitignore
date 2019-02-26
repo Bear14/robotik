@@ -1,11 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 /.ipynb_checkpoints/
 /cmake-build-debug/
-/Emulator/Python/.ipynb_checkpoints/
-/Emulator/Python/Emu.ipynb
-/Emulator/Python/Keypress.ipynb
-/Emulator/Python/send.ipynb
-/Emulator/Python/recieve.ipynb
 /Emulator/.ipynb_checkpoints/
 /Emulator/recieve.ipynb
 /Emulator/test
@@ -15,3 +10,4 @@
 /.idea/robotik.iml
 /.idea/vcs.xml
 /venv/
+/Emulator/Python/
