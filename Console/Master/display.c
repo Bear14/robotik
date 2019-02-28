@@ -26,12 +26,12 @@ void displayInit(void)
 	sendbyte(95,0);
 	sendbyte(137,0);
 	uint16_t i;
-	for(i=0;i<4160;i++)//RAM-Ausspühlen, alles weiß
+	for(i=0;i<4160;i++)//RAM-Ausspï¿½hlen, alles weiï¿½
 	{
 		sendbyte(0,1);
 	}
 	//~ DDRC |= 1;//Debug-LED
-	sendbyte(0,0);//RAM-Zeigerpostition zurück auf 0/0
+	sendbyte(0,0);//RAM-Zeigerpostition zurï¿½ck auf 0/0
 	sendbyte(16,0);
 	sendbyte(96,0);
 	sendbyte(175,0);//Bildschirm an
@@ -41,14 +41,14 @@ void displayInit(void)
 void clear(void)
 {
 	uint16_t i;
-	sendbyte(0,0);//RAM-Zeigerpostition zurück auf 0/0
+	sendbyte(0,0);//RAM-Zeigerpostition zurï¿½ck auf 0/0
 	sendbyte(16,0);
 	sendbyte(96,0);
-	for(i=0;i<4160;i++)//RAM-Ausspühlen, alles weiß
+	for(i=0;i<4160;i++)//RAM-Ausspï¿½hlen, alles weiï¿½
 	{
 		sendbyte(0,1);
 	}
-	sendbyte(0,0);//RAM-Zeigerpostition zurück auf 0/0
+	sendbyte(0,0);//RAM-Zeigerpostition zurï¿½ck auf 0/0
 	sendbyte(16,0);
 	sendbyte(96,0);
 }
