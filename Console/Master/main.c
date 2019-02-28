@@ -11,9 +11,44 @@
 #include "buttons.h"
 #include "display.h"
 
+struct platform{
+    uint8_t posY;
+    uint8_t posX;
+    uint8_t length;
+};
 
 uint8_t playerPos = 23;
 uint8_t lastPlayerPos = 0;
+float gravity = 1;
+uint32_t speed = 1;
+
+uint8_t groundPos = 24;
+
+struct platform platforms[10];
+uint8_t platformCount = 0;
+
+
+
+void addPlatform(uint8_t x,uint8_t y,uint8_t l){
+    struct platform p;
+    p.posX = x;
+    p.posY = y;
+    p.length = l;
+    platforms[platformCount] = p;   //search free spot
+    platformCount++;
+}
+
+void drawPlatforms(){
+
+    for(int i = 0; i < 10; i++){
+        if(platforms[i].posX){
+            for(int x = platforms[i].posX; x < ( platforms[i].posX + platforms[i].length);x++){
+                page(x,platforms[i].posY,0xFF);
+            }
+        }
+    }
+
+};
 
 void updatePlayerPos(int8_t next){
 
@@ -27,6 +62,13 @@ void updatePlayerPos(int8_t next){
     }
 }
 
+void logic(){
+    if(playerPos != 23){
+        updatePlayerPos(playerPos + gravity);
+    }
+
+
+}
 
 void full(uint8_t x) {
     page(x, 5, 0xFF);
@@ -59,6 +101,7 @@ void batteryMeter() {
 
 }
 
+
 void pageTest() {
 
     for (int i = 0; i < 256; ++i) {
@@ -74,9 +117,6 @@ void pageTest() {
     }
 
 }
-
-
-
 
 void drawPlayer(uint8_t pos) {
 
@@ -99,6 +139,7 @@ void draw() {
         removePlayer(lastPlayerPos);
         drawPlayer(playerPos);
     }
+    drawPlatforms();
 }
 
 void run() {
@@ -124,7 +165,7 @@ void getInput() {
     if (B_UP) {
         _delay_ms(40);
         //uart_putc(50);
-        updatePlayerPos(playerPos -1 );
+        //updatePlayerPos(playerPos -1 );
     }
     if (B_DOWN) {
         _delay_ms(40);
@@ -167,11 +208,14 @@ int main(void) {
     uart_putc(10);
     _delay_ms(1000);
 
+    addPlatform(100,20,40);
+    addPlatform(20,10,100);
 
     while (1) {
         batteryMeter();
         //pageTest();
         draw();
+        logic();
         getInput();
 
     }
