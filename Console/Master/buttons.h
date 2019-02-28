@@ -18,6 +18,6 @@ inline void buttonsInit() {
 #define B_PAUSE (!(PINC & (1<<4)))
 #define B_SELECT (!(PINC & (1<<5)))
 
-
+#define BUTTON B_Up | B_DOWN |
 
 #endif

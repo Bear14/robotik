@@ -7,7 +7,7 @@ UDP_PORT = 5005
 
 RUNTIME = 10 #In seconds
 
-SCALE = 8
+SCALE = 5
 BLACK = color_rgb(0,0,0)
 DARKGREY = color_rgb(100,100,100)
 LIGHTGREY = color_rgb(200,200,200)
