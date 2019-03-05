@@ -81,52 +81,63 @@ void eraseRec(uint8_t x) {
 }
 
 volatile int count = 0;
+volatile int timePressed = 0;
 
 //enum pressedButton {select,pause,up,down,right,left,a,b};
-char buttonPressed = '0';
+volatile char buttonPressed = '0';
 
 void getInput() {
     if (buttonPressed == '0') {
         if (B_SELECT) {
             uart_putc(20);
             buttonPressed = '1';
+            timePressed = getMsTimer();
         }
         if (B_PAUSE) {
 
             uart_putc(30);
             buttonPressed = '1';
+            timePressed = getMsTimer();
         }
         if (B_UP) {
             uart_putc(50);
             buttonPressed = '1';
+            timePressed = getMsTimer();
         }
         if (B_DOWN) {
             uart_putc(60);
             buttonPressed = '1';
+            timePressed = getMsTimer();
         }
         if (B_RIGHT) {
             uart_putc(70);
             buttonPressed = '1';
+            timePressed = getMsTimer();
         }
         if (B_LEFT) {
             uart_putc(80);
             buttonPressed = '1';
+            timePressed = getMsTimer();
         }
 
         if (B_A) {
-            count--;
+
             buttonPressed = '1';
+            count--;
             uart_putc(90);
+            timePressed = getMsTimer();
         }
         if (B_B) {
-            count++;
             buttonPressed = '1';
+            count++;
             uart_putc(100);
+            timePressed = getMsTimer();
         }
     }
 }
 
 void draw() {
+    eraseRec(count -1);
     drawRec(count);
 }
 
@@ -158,7 +169,7 @@ int main(void) {
             draw();
 
         }
-        if (getMsTimer() % 100 == 0) {
+        if (timePressed + 150 == getMsTimer()) {
             buttonPressed = '0';
         }
 
