@@ -27,10 +27,10 @@ void Sender(char *in,int udpPort) {
     socket.open(udp::v4());
 
     boost::system::error_code err;
-    std::this_thread::sleep_for(std::chrono::milliseconds(15));
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
     auto sent = socket.send_to(boost::asio::buffer(send), remote_endpoint, 0, err);
     socket.close();
-    std::cout << "Sent Payload --- " << send << "--" << sent << "\n";
+    //std::cout << "Sent Payload --- " << send << "--" << sent << "\n";
 }
 
 void sendWithDelay(char *input,int udpPort){
