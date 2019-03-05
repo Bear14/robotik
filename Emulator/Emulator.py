@@ -5,7 +5,7 @@ import time
 UDP_IP = "127.0.0.1"
 UDP_PORT = 5005
 
-RUNTIME = 10 #In seconds
+RUNTIME = 20 #In seconds
 
 SCALE = 5
 BLACK = color_rgb(0,0,0)
@@ -88,6 +88,6 @@ while(time.time() < endTime):
     out = data.decode().split(",")
     page(int(out[0]),int(out[1]),int(out[2]),win)
 
-    print("received message:", data)#.decode("Utf-8"))
+    #print("received message:", data)#.decode("Utf-8"))
     pass
 win.close()
