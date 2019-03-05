@@ -15,23 +15,24 @@
 #define DASHLENGTH 6
 #define JUMPHEIGHT -8
 #define GRAVITY 1
+#define SPEED 3
 
 enum state{ falling,standing,dashing0,jumping,dashing1,doubleJumping,dashing2};
 
 
-int8_t cloudX = 150;
-int8_t cloudY = 52;
-int8_t cloudLen = 20;
-int8_t lastCloudX = 150;
-int8_t lastCloudY = 52;
+int16_t cloudX = 150;
+int16_t cloudY = 52;
+int16_t cloudLen = 20;
+int16_t lastCloudX = 150;
+int16_t lastCloudY = 52;
 
-int8_t playerPos = 52; //change to 0 - 103
-int8_t lastPlayerPos = 52;
+int16_t playerPos = 52; //change to 0 - 103
+int16_t lastPlayerPos = 52;
 //float gravity = 1;
-int32_t speed = 1;
+//int32_t speed = 1;
 
 
-uint8_t groundPos = 100;
+uint16_t groundPos = 100;
 
 enum state playerState;
 
@@ -84,6 +85,17 @@ void dash() {
 }
 
 void collision() {
+    /*
+    if(cloudY + playerMov >= groundPos){
+        cloudY = groundPos -4;
+        playerState = standing;
+    } else if(cloudX - playerMov <= 0){
+        cloudY = 0 + 4;
+        playerState = standing;
+    }
+*/
+
+
     if(playerPos + playerMov >= groundPos || playerPos <= 0){
         playerPos = groundPos -4;
         playerState = standing;
@@ -93,11 +105,15 @@ void collision() {
 
 void drawCloud() {
 
-    for (int i = cloudX; i < (cloudX + cloudLen); i++) {
-        page(i, cloudY / 4, 85);
+    for (int i = lastCloudX; i < (lastCloudX + cloudLen); i++) {
+        page(i, lastCloudY / 4, 0);
     }
-    page(cloudX + cloudLen + 1, cloudY / 4, 0);
+
+    for (int i = cloudX; i < (cloudX + cloudLen); i++) {
+        page(i, cloudY / 4, 0xFF);    //85
+    }
 }
+
 
 void updatePlayerPos() {
 
@@ -107,7 +123,18 @@ void updatePlayerPos() {
 
         lastPlayerPos = playerPos;
         playerMov += GRAVITY;
-        playerPos += playerMov;
+        //playerPos += playerMov;
+
+        // move everything in y direction
+        lastCloudY = cloudY;
+
+        if(cloudY - playerMov <= 0){
+            cloudY = 0;
+            playerState = standing;
+        } else if(cloudY - playerMov >= 255){
+            cloudY = 255;
+            playerState = standing;
+        }
 
 
     }
@@ -126,19 +153,23 @@ void updatePlayerPos() {
 
 
 void updateCloud() {
-    cloudX -= speed;
+    lastCloudX = cloudX;
+    //lastCloudY = cloudY;
+    //cloudY -= playerMov;
+    cloudX -= SPEED;
+    if(cloudX <= 0){
+        lastCloudX = cloudX;
+        cloudX = 255;
+        playerState = standing;
+    }/*
+    if(cloudY <= 0){
+        lastCloudY = cloudY;
+        cloudY = 255;
+        playerState = standing;
+    }*/
 }
 
-void update() {
 
-    if(getMsTimer() % 14 == 0) {
-        updateCloud();
-        updatePlayerPos();
-
-    }
-
-
-}
 
 
 
@@ -167,7 +198,7 @@ void drawRect(int8_t pos,int8_t lastPos) {
 
         //clear
 
-        uint8_t last = lastPos /4;
+        int8_t last = lastPos /4;
         page(5,last-1,0);
         page(6,last-1,0);
         page(7,last-1,0);
@@ -181,13 +212,10 @@ void drawRect(int8_t pos,int8_t lastPos) {
         page(7,last+1,0);
         page(8,last+1,0);
 
+        int8_t nex = playerPos / 4;
 
         if (pos % 4 == 0) {
-            uint8_t nex = playerPos / 4;
 
-   //         clearPlayerColumn();
-
-            //draw
             page(5, nex, 0xFF);
             page(6, nex, 0xFF);
             page(7, nex, 0xFF);
@@ -195,9 +223,7 @@ void drawRect(int8_t pos,int8_t lastPos) {
 
 
         } else if (pos % 4 == 1) {
-            uint8_t nex = playerPos / 4;
-   //         clearPlayerColumn();
-            //draw
+
             page(5, nex, 0xFC);
             page(6, nex, 0xFC);
             page(7, nex, 0xFC);
@@ -208,10 +234,7 @@ void drawRect(int8_t pos,int8_t lastPos) {
             page(8, nex + 1, 0x3);
 
         } else if (pos % 4 == 2) {
-            uint8_t nex = playerPos / 4;
 
-   //         clearPlayerColumn();
-            //draw
             page(5, nex, 0xF0);
             page(6, nex, 0xF0);
             page(7, nex, 0xF0);
@@ -223,10 +246,7 @@ void drawRect(int8_t pos,int8_t lastPos) {
 
 
         } else if (pos % 4 == 3) {
-            uint8_t nex = playerPos / 4;
 
-
-            //draw
             page(5, nex, 0xC0);
             page(6, nex, 0xC0);
             page(7, nex, 0xC0);
@@ -318,7 +338,16 @@ void getInput() {
 
 
 }
+void update() {
 
+    if(getMsTimer() % 34 == 0) {
+        updateCloud();
+        updatePlayerPos();
+        draw();
+    }
+
+
+}
 
 int main(void) {
 
@@ -330,7 +359,7 @@ int main(void) {
         getInput();
         collision();
         update();
-        draw();
+        //draw();
 
 
     }
