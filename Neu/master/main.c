@@ -10,6 +10,7 @@
 #include "timer.h"
 #include "buttons.h"
 #include "display.h"
+#include <avr/interrupt.h>
 
 
 void init();
@@ -60,29 +61,41 @@ void pageTest() {
     }
 }
 
-void drawRec(int8_t x) {
+void drawRec(uint8_t x) {
     page(x, 13, 0xFF);
-    page(x+1, 13, 0xFF);
-    page(x+2, 13, 0xFF);
-    page(x+3, 13, 0xFF);
-
+    /*
+    page(x + 1, 23, 0xFF);
+    page(x + 2, 23, 0xFF);
+    page(x + 3, 23, 0xFF);
+*/
 
 }
 
-void eraseRec() {
-    page(100, 13, 0);
-    page(101, 13, 0);
-    page(102, 13, 0);
-    page(103, 13, 0);
+void eraseRec(uint8_t x) {
+    page(x, 13, 0);
+    /*
+    page(x+1, 23, 0);
+    page(x+2, 23, 0);
+    page(x+3, 23, 0);
+     */
 }
 
-uint32_t count = 100;
+volatile uint8_t count = 0;
 
 void getUpdate() {
+    eraseRec(count+1);
     if (getMsTimer() % 34 == 0) {
-        count--;
-        drawRec(count);
+        eraseRec(count);
+        if(count == 0){
+            eraseRec(count);
+            count = 159;
+        } else {
+            eraseRec(count);
+            count--;
+        }
+
     }
+    drawRec(count);
 }
 
 
@@ -97,6 +110,10 @@ int main(void) {
     uart_putc(10);
     _delay_ms(1000);
 
+    count = 150;
+
+    page(50,13,0xFF);
+    page(51,13,0xFF);
 
     while (1) {
         //batteryMeter();
