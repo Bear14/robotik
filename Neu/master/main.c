@@ -63,39 +63,76 @@ void pageTest() {
 
 void drawRec(uint8_t x) {
     page(x, 13, 0xFF);
-    /*
-    page(x + 1, 23, 0xFF);
-    page(x + 2, 23, 0xFF);
-    page(x + 3, 23, 0xFF);
+/*
+    page(x + 1, 13, 0xFF);
+    page(x + 2, 13, 0xFF);
+    page(x + 3, 13, 0xFF);
 */
 
 }
 
 void eraseRec(uint8_t x) {
     page(x, 13, 0);
-    /*
-    page(x+1, 23, 0);
-    page(x+2, 23, 0);
-    page(x+3, 23, 0);
-     */
+
+    page(x + 1, 13, 0);
+    page(x + 2, 13, 0);
+    page(x + 3, 13, 0);
+
 }
 
-volatile uint8_t count = 0;
+volatile int count = 0;
 
-void getUpdate() {
-    eraseRec(count+1);
-    if (getMsTimer() % 34 == 0) {
-        eraseRec(count);
-        if(count == 0){
-            eraseRec(count);
-            count = 159;
-        } else {
-            eraseRec(count);
-            count--;
+//enum pressedButton {select,pause,up,down,right,left,a,b};
+char buttonPressed = '0';
+
+void getInput() {
+    if (buttonPressed == '0') {
+        if (B_SELECT) {
+            uart_putc(20);
+            buttonPressed = '1';
+        }
+        if (B_PAUSE) {
+
+            uart_putc(30);
+            buttonPressed = '1';
+        }
+        if (B_UP) {
+            uart_putc(50);
+            buttonPressed = '1';
+        }
+        if (B_DOWN) {
+            uart_putc(60);
+            buttonPressed = '1';
+        }
+        if (B_RIGHT) {
+            uart_putc(70);
+            buttonPressed = '1';
+        }
+        if (B_LEFT) {
+            uart_putc(80);
+            buttonPressed = '1';
         }
 
+        if (B_A) {
+            count--;
+            buttonPressed = '1';
+            uart_putc(90);
+        }
+        if (B_B) {
+            count++;
+            buttonPressed = '1';
+            uart_putc(100);
+        }
     }
+}
+
+void draw() {
     drawRec(count);
+}
+
+void getUpdate() {
+
+
 }
 
 
@@ -110,31 +147,21 @@ int main(void) {
     uart_putc(10);
     _delay_ms(1000);
 
-    count = 150;
-
-    page(50,13,0xFF);
-    page(51,13,0xFF);
+    count = 50;
 
     while (1) {
         //batteryMeter();
-        getUpdate();
-        if (B_SELECT)
-            uart_putc(20);
-        if (B_PAUSE)
-            uart_putc(30);
-        if (B_UP)
-            uart_putc(50);
-        if (B_DOWN)
-            uart_putc(60);
-        if (B_RIGHT)
-            uart_putc(70);
-        if (B_LEFT)
-            uart_putc(80);
 
-        if (B_A)
-            uart_putc(90);
-        if (B_B)
-            uart_putc(100);
+        if (getMsTimer() % 34 == 0) {
+            getInput();
+            getUpdate();
+            draw();
+
+        }
+        if (getMsTimer() % 100 == 0) {
+            buttonPressed = '0';
+        }
+
 
     }
 }
