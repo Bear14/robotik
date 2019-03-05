@@ -80,11 +80,45 @@ void eraseRec(uint8_t x) {
 
 }
 
-volatile int count = 0;
-volatile int timePressed = 0;
 
+
+void drawCorrect(uint8_t y){
+
+    uint8_t nex = y / 4;
+
+    page(100,nex -1 ,0);
+    page(100,nex ,0);
+    page(100,nex +1, 0);
+
+
+    if(y % 4 == 0){
+        page(100,nex,0xFF);
+    }
+    if(y % 4 == 1){
+        page(100,nex,0xFC);
+        page(100,nex + 1,0x3);
+    }
+    if(y % 4 == 2){
+        page(100, nex, 0xF0);
+        page(100, nex + 1, 0xF);
+    }
+    if(y % 4 == 3){
+        page(100, nex, 0xC0);
+        page(100, nex + 1, 0x3F);
+    }
+
+
+
+}
+
+
+
+
+
+volatile int count = 0;
 //enum pressedButton {select,pause,up,down,right,left,a,b};
 volatile char buttonPressed = '0';
+volatile int timePressed = 0;
 
 void getInput() {
     if (buttonPressed == '0') {
@@ -121,7 +155,6 @@ void getInput() {
         }
 
         if (B_A) {
-
             buttonPressed = '1';
             count--;
             uart_putc(90);
@@ -137,8 +170,7 @@ void getInput() {
 }
 
 void draw() {
-    eraseRec(count -1);
-    drawRec(count);
+    drawCorrect(count);
 }
 
 void getUpdate() {
@@ -158,7 +190,7 @@ int main(void) {
     uart_putc(10);
     _delay_ms(1000);
 
-    count = 50;
+    count = 52;
 
     while (1) {
         //batteryMeter();
