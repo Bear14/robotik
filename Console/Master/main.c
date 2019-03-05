@@ -11,11 +11,52 @@
 #include "buttons.h"
 #include "display.h"
 
+<<<<<<< HEAD
+struct platform{
+    uint8_t posY;
+    uint8_t posX;
+    uint8_t length;
+};
+
+uint8_t playerPos = 23;
+uint8_t lastPlayerPos = 0;
+float gravity = 1;
+uint32_t speed = 1;
+
+uint8_t groundPos = 24;
+
+struct platform platforms[10];
+uint8_t platformCount = 0;
+
+
+
+void addPlatform(uint8_t x,uint8_t y,uint8_t l){
+    struct platform p;
+    p.posX = x;
+    p.posY = y;
+    p.length = l;
+    platforms[platformCount] = p;   //search free spot
+    platformCount++;
+}
+
+void drawPlatforms(){
+
+    for(int i = 0; i < 10; i++){
+        if(platforms[i].posX){
+            for(int x = platforms[i].posX; x < ( platforms[i].posX + platforms[i].length);x++){
+                page(x,platforms[i].posY,0xFF);
+            }
+        }
+    }
+
+};
+=======
 #define DASHLENGTH 6
 #define JUMPHEIGHT -5
 #define GRAVITY 1
 
 enum state{ falling,standing,dashing0,jumping,dashing1,doubleJumping,dashing2};
+>>>>>>> d05c97e1d33b5cad72afc5013441e470fcdb7862
 
 
 uint8_t cloudX = 150;
@@ -61,6 +102,15 @@ void jump() {
 
 }
 
+<<<<<<< HEAD
+void logic(){
+    if(playerPos != 23){
+        updatePlayerPos(playerPos + gravity);
+    }
+
+
+}
+=======
 void dash() {
     if(playerState == standing){
         playerState = dashing0;
@@ -76,6 +126,7 @@ void dash() {
     } else{
 
     }
+>>>>>>> d05c97e1d33b5cad72afc5013441e470fcdb7862
 
 }
 
@@ -144,6 +195,8 @@ void updateCloud() {
     cloudX -= speed;
 }
 
+<<<<<<< HEAD
+=======
 void update() {
     if (dashing > 0) {
         speed *= 2;
@@ -156,6 +209,7 @@ void update() {
 }
 
 
+>>>>>>> d05c97e1d33b5cad72afc5013441e470fcdb7862
 
 void pageTest() {
 
@@ -173,6 +227,15 @@ void pageTest() {
 
 }
 
+<<<<<<< HEAD
+void drawPlayer(uint8_t pos) {
+
+    page(5, pos, 0xFF);
+    page(6, pos, 0xFF);
+    page(7, pos, 0xFF);
+    page(8, pos, 0xFF);
+}
+=======
 
 void drawRect(uint8_t pos,uint8_t lastPos) {
     if(pos == lastPos){
@@ -293,13 +356,22 @@ void drawRect(uint8_t pos,uint8_t lastPos) {
 
         }
     }
+>>>>>>> d05c97e1d33b5cad72afc5013441e470fcdb7862
 
 }
 
 
 void draw() {
+<<<<<<< HEAD
+    if (lastPlayerPos != playerPos) {
+        removePlayer(lastPlayerPos);
+        drawPlayer(playerPos);
+    }
+    drawPlatforms();
+=======
     drawRect(playerPos,lastPlayerPos);
     //drawCloud();
+>>>>>>> d05c97e1d33b5cad72afc5013441e470fcdb7862
 }
 
 
@@ -357,9 +429,27 @@ int main(void) {
 
     init();
 
+<<<<<<< HEAD
+
+    uart_putc(80);
+    _delay_ms(1000);
+
+    uart_putc(10);
+    _delay_ms(1000);
+
+    addPlatform(100,20,40);
+    addPlatform(20,10,100);
+
+    while (1) {
+        batteryMeter();
+        //pageTest();
+        draw();
+        logic();
+=======
     playerState = standing;
 
     while (1) {
+>>>>>>> d05c97e1d33b5cad72afc5013441e470fcdb7862
         getInput();
         collision();
         update();
