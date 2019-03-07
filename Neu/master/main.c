@@ -28,8 +28,10 @@ volatile uint8_t pageCount = 0;
 struct pageToDraw dummy = (struct pageToDraw) {255, 255, 255};
 
 struct pageToDraw drawingBuffer[DRAWING_BUFFER_SIZE];
+struct pageToDraw eraseBuffer[DRAWING_BUFFER_SIZE];
 
 struct pageToDraw *ptr; // = drawingBuffer;
+struct pageToDraw *erasePtr; // = eraseBuffer;
 
 /*
  *  @param x and y where to draw the page
@@ -41,17 +43,52 @@ struct pageToDraw *ptr; // = drawingBuffer;
  *
  */
 
-void bufferInit() {
+void flushDrawingBuffer(){
     // Set pointer to DrawingBuffer[0]
     ptr = drawingBuffer;
+
     // Fill array with dummy elements
     for (int i = 0; i < DRAWING_BUFFER_SIZE; i++) {
         *ptr = dummy;
         ptr++;
 
+
     }
     // Reset pointer to beginning of array
     ptr = drawingBuffer;
+}
+void flushEraseBuffer(){
+    // Set pointer to DrawingBuffer[0]
+
+    erasePtr = eraseBuffer;
+    // Fill array with dummy elements
+    for (int i = 0; i < DRAWING_BUFFER_SIZE; i++) {
+
+        *erasePtr = dummy;
+        ptr++;
+
+
+    }
+    // Reset pointer to beginning of array
+    erasePtr = eraseBuffer;
+}
+
+
+void bufferInit() {
+    // Set pointer to DrawingBuffer[0]
+    ptr = drawingBuffer;
+    erasePtr = eraseBuffer;
+    // Fill array with dummy elements
+    for (int i = 0; i < DRAWING_BUFFER_SIZE; i++) {
+        *ptr = dummy;
+        *erasePtr = dummy;
+        ptr++;
+        erasePtr++;
+
+    }
+    // Reset pointer to beginning of array
+    ptr = drawingBuffer;
+    erasePtr = eraseBuffer;
 }
 
 void toDrawingBuffer(uint8_t x, uint8_t y, uint8_t h) {
@@ -81,7 +118,7 @@ void drawFromBuffer(){
     }
     ptr = drawingBuffer;
 
-    bufferInit();
+    flushDrawingBuffer();
     pageCount = 0;
 
 }
