@@ -98,7 +98,7 @@ void drawCorrect(uint8_t x, uint8_t y) {
         uint8_t nex = y / 4;
 
         if (nex != 0) {
-            page(x, nex - 1, 0);  // Display goes funky you write at a page with y == -1
+            page(x, nex - 1, 0);
         }
         page(x, nex, 0);
         page(x, nex + 1, 0);
@@ -122,13 +122,6 @@ void drawCorrect(uint8_t x, uint8_t y) {
 
 
     }
-    else {
-
-    }
-
-
-
-
 }
 
 
@@ -174,9 +167,9 @@ void getInput() {
             uart_putc(70);
             buttonPressed = '1';
             timePressed = getMsTimer();
-           // if (posX < 159) {
-                posX++;
-         //   }
+            // if (posX < 159) {
+            posX++;
+            //   }
         }
         if (B_LEFT) {
             uart_putc(80);
