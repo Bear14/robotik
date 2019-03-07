@@ -59,7 +59,7 @@ void toDrawingBuffer(uint8_t x, uint8_t y, uint8_t h) {
         *ptr = (struct pageToDraw) {x, y, h};
         ptr++;
         pageCount++;
-        if(pageCount >= 100){
+        if(pageCount >= 101){
             page(0,0,0xFF);
         }
     }
@@ -82,6 +82,7 @@ void drawFromBuffer(){
     ptr = drawingBuffer;
 
     bufferInit();
+    pageCount = 0;
 
 }
 
@@ -193,7 +194,6 @@ void getInput() {
 }
 
 void draw() {
-
 
     drawCorrect(posX, posY);
     drawFromBuffer();
