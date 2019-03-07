@@ -132,39 +132,39 @@ volatile uint8_t posY = 0;
 volatile uint8_t posX = 0;
 
 volatile char buttonPressed = '0';
-volatile int timePressed = 0;
+volatile uint32_t timePressed = 0;
 
 void getInput() {
     if (buttonPressed == '0') {
         if (B_SELECT) {
-            uart_putc(20);
+            //uart_putc(20);
             buttonPressed = '1';
             timePressed = getMsTimer();
         }
         if (B_PAUSE) {
 
-            uart_putc(30);
+            //uart_putc(30);
             buttonPressed = '1';
             timePressed = getMsTimer();
         }
         if (B_UP) {
-            uart_putc(50);
+            //uart_putc(50);
             buttonPressed = '1';
             timePressed = getMsTimer();
-            if (posY > 0) {
-                posY--;
-            }
+            //if (posY > 0) {
+            posY--;
+            //}
         }
         if (B_DOWN) {
-            uart_putc(60);
+            //uart_putc(60);
             buttonPressed = '1';
             timePressed = getMsTimer();
-            if (posY < 100) {
-                posY++;
-            }
+            // if (posY < 100) {
+            posY++;
+            // }
         }
         if (B_RIGHT) {
-            uart_putc(70);
+            //uart_putc(70);
             buttonPressed = '1';
             timePressed = getMsTimer();
             // if (posX < 159) {
@@ -172,28 +172,36 @@ void getInput() {
             //   }
         }
         if (B_LEFT) {
-            uart_putc(80);
+            //uart_putc(80);
             buttonPressed = '1';
             timePressed = getMsTimer();
-            if (posX > 0) {
-                posX--;
-            }
+            //if (posX > 0) {
+            posX--;
+            //}
         }
 
         if (B_A) {
             buttonPressed = '1';
-            uart_putc(90);
+            //uart_putc(90);
             timePressed = getMsTimer();
         }
         if (B_B) {
             buttonPressed = '1';
-            uart_putc(100);
+            //uart_putc(100);
             timePressed = getMsTimer();
         }
     }
 }
 
 void draw() {
+
+    for (int i = 52; i < 72; i++) {
+        for (int j = 52; j < 72; j++) {
+            drawCorrect(j, i);
+        }
+    }
+
+
     drawCorrect(posX, posY);
 }
 
@@ -201,7 +209,8 @@ void guard() {
 }
 
 void getUpdate() {
-
+    posX = nextPosX;
+    posY = nextPosY;
 
 }
 
@@ -217,8 +226,11 @@ int main(void) {
     uart_putc(10);
     _delay_ms(1000);
 
-    posX = 52;
-    posY = 52;
+    nextPosY = 52;
+    nextPosX = 52;
+
+    posX = 40;
+    posY = 40;
 
     drawCorrect(52, 100);
     while (1) {
@@ -227,18 +239,13 @@ int main(void) {
         if (getMsTimer() % 34 == 0) {
             getInput();
             guard();
-            getUpdate();
+            // getUpdate();
             draw();
 
         }
-        if (timePressed + 150 == getMsTimer()) {
+        if (timePressed + 150 <= getMsTimer()) {
             buttonPressed = '0';
         }
-
-/*  Find reason for random stop
- *  && collision with border
- *
- */
     }
 }
 
