@@ -12,6 +12,15 @@
 #include "display.h"
 
 <<<<<<< HEAD
+#define DASHLENGTH 6
+#define JUMPHEIGHT -5
+#define GRAVITY 1
+
+enum state{ falling,standing,dashing0,jumping,dashing1,doubleJumping,dashing2};
+
+
+=======
+<<<<<<< HEAD
 struct platform{
     uint8_t posY;
     uint8_t posX;
@@ -59,6 +68,7 @@ enum state{ falling,standing,dashing0,jumping,dashing1,doubleJumping,dashing2};
 >>>>>>> d05c97e1d33b5cad72afc5013441e470fcdb7862
 
 
+>>>>>>> 12b3af66ba108449f5f23f186c6ae3115058bbfc
 uint8_t cloudX = 150;
 uint8_t cloudY = 52;
 uint8_t cloudLen = 20;
@@ -92,6 +102,33 @@ void jump() {
     else if(playerState == jumping || playerState == dashing1){
         playerState = doubleJumping;
         playerMov = JUMPHEIGHT;
+<<<<<<< HEAD
+    }
+    else if(playerState == doubleJumping || playerState == dashing2){
+        playerState = falling;
+    }
+    else if(playerState == falling){
+
+    }
+
+}
+
+void dash() {
+    if(playerState == standing){
+        playerState = dashing0;
+        dashing = DASHLENGTH;
+    }
+    else if(playerState == jumping){
+        playerState = dashing1;
+        dashing = DASHLENGTH;
+    }
+    else if(playerState == doubleJumping){
+        playerState = dashing2;
+        dashing = DASHLENGTH;
+    } else{
+
+    }
+=======
     }
     else if(playerState == doubleJumping || playerState == dashing2){
         playerState = falling;
@@ -108,6 +145,7 @@ void logic(){
         updatePlayerPos(playerPos + gravity);
     }
 
+>>>>>>> 12b3af66ba108449f5f23f186c6ae3115058bbfc
 
 }
 =======
@@ -128,6 +166,24 @@ void dash() {
     }
 >>>>>>> d05c97e1d33b5cad72afc5013441e470fcdb7862
 
+<<<<<<< HEAD
+void collision() {
+    if(playerPos + playerMov >= groundPos || playerPos <= 0){
+        playerPos = groundPos -4;
+        playerState = standing;
+       // playerPos = groundPos +4;
+    }
+}
+
+void drawCloud() {
+
+    for (int i = cloudX; i < (cloudX + cloudLen); i++) {
+        page(i, cloudY / 4, 85);
+    }
+    page(cloudX + cloudLen + 1, cloudY / 4, 0);
+}
+
+=======
 }
 
 void collision() {
@@ -146,6 +202,7 @@ void drawCloud() {
     page(cloudX + cloudLen + 1, cloudY / 4, 0);
 }
 
+>>>>>>> 12b3af66ba108449f5f23f186c6ae3115058bbfc
 void updatePlayerPos() {
 
     if(playerState == standing){
@@ -193,6 +250,22 @@ void updatePlayerPos() {
 
 void updateCloud() {
     cloudX -= speed;
+<<<<<<< HEAD
+}
+
+void update() {
+    if (dashing > 0) {
+        speed *= 2;
+    } else {
+        speed = 1;
+    }
+    updateCloud();
+    updatePlayerPos();
+
+}
+
+
+=======
 }
 
 <<<<<<< HEAD
@@ -210,6 +283,7 @@ void update() {
 
 
 >>>>>>> d05c97e1d33b5cad72afc5013441e470fcdb7862
+>>>>>>> 12b3af66ba108449f5f23f186c6ae3115058bbfc
 
 void pageTest() {
 
@@ -228,6 +302,8 @@ void pageTest() {
 }
 
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
 void drawPlayer(uint8_t pos) {
 
     page(5, pos, 0xFF);
@@ -236,6 +312,7 @@ void drawPlayer(uint8_t pos) {
     page(8, pos, 0xFF);
 }
 =======
+>>>>>>> 12b3af66ba108449f5f23f186c6ae3115058bbfc
 
 void drawRect(uint8_t pos,uint8_t lastPos) {
     if(pos == lastPos){
@@ -356,12 +433,19 @@ void drawRect(uint8_t pos,uint8_t lastPos) {
 
         }
     }
+<<<<<<< HEAD
+=======
 >>>>>>> d05c97e1d33b5cad72afc5013441e470fcdb7862
+>>>>>>> 12b3af66ba108449f5f23f186c6ae3115058bbfc
 
 }
 
 
 void draw() {
+<<<<<<< HEAD
+    drawRect(playerPos,lastPlayerPos);
+    //drawCloud();
+=======
 <<<<<<< HEAD
     if (lastPlayerPos != playerPos) {
         removePlayer(lastPlayerPos);
@@ -372,6 +456,7 @@ void draw() {
     drawRect(playerPos,lastPlayerPos);
     //drawCloud();
 >>>>>>> d05c97e1d33b5cad72afc5013441e470fcdb7862
+>>>>>>> 12b3af66ba108449f5f23f186c6ae3115058bbfc
 }
 
 
@@ -430,6 +515,11 @@ int main(void) {
     init();
 
 <<<<<<< HEAD
+    playerState = standing;
+
+    while (1) {
+=======
+<<<<<<< HEAD
 
     uart_putc(80);
     _delay_ms(1000);
@@ -450,6 +540,7 @@ int main(void) {
 
     while (1) {
 >>>>>>> d05c97e1d33b5cad72afc5013441e470fcdb7862
+>>>>>>> 12b3af66ba108449f5f23f186c6ae3115058bbfc
         getInput();
         collision();
         update();
