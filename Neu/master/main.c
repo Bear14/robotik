@@ -43,7 +43,7 @@ struct pageToDraw *erasePtr; // = eraseBuffer;
  *
  */
 
-void flushDrawingBuffer(){
+void flushDrawingBuffer() {
     // Set pointer to DrawingBuffer[0]
     ptr = drawingBuffer;
 
@@ -57,7 +57,8 @@ void flushDrawingBuffer(){
     // Reset pointer to beginning of array
     ptr = drawingBuffer;
 }
-void flushEraseBuffer(){
+
+void flushEraseBuffer() {
     // Set pointer to DrawingBuffer[0]
 
     erasePtr = eraseBuffer;
@@ -96,27 +97,46 @@ void toDrawingBuffer(uint8_t x, uint8_t y, uint8_t h) {
         *ptr = (struct pageToDraw) {x, y, h};
         ptr++;
         pageCount++;
-        if(pageCount >= 101){
-            page(0,0,0xFF);
+        if (pageCount >= 101) {
+            page(0, 0, 0xFF);
         }
     }
 }
 
 
-void drawFromBuffer(){
-    ptr = drawingBuffer;
+void drawFromBuffer() {
 
-    for(int i = 0; i < DRAWING_BUFFER_SIZE; i++){
+    erasePtr = eraseBuffer; //reset pointer
+    for (int j = 0; j < DRAWING_BUFFER_SIZE; j++) {
+        struct pageToDraw toErase = *erasePtr;
+        if (toErase.x != 255) {
+            page(toErase.x, toErase.y, 0);
+            erasePtr++;
+        } else {
+            j = DRAWING_BUFFER_SIZE;
+        }
+
+
+    }
+    erasePtr = eraseBuffer; //reset pointer
+    flushEraseBuffer();
+
+
+    ptr = drawingBuffer; //reset pointer
+    for (int i = 0; i < DRAWING_BUFFER_SIZE; i++) {
         struct pageToDraw toDraw = *ptr;
 
-        if(toDraw.x != 255){
-            page(toDraw.x,toDraw.y,toDraw.h);
+        if (toDraw.x != 255) {
+            page(toDraw.x, toDraw.y, toDraw.h);
+            *erasePtr = toDraw;
+            erasePtr++;
             ptr++;
-        } else{
-            i = DRAWING_BUFFER_SIZE;
+        } else {
+            i = DRAWING_BUFFER_SIZE; //
         }
     }
-    ptr = drawingBuffer;
+    ptr = drawingBuffer; //reset pointer
+    erasePtr = eraseBuffer;
 
     flushDrawingBuffer();
     pageCount = 0;
@@ -125,44 +145,24 @@ void drawFromBuffer(){
 
 void drawCorrect(uint8_t x, uint8_t y) {
 
+    uint8_t nex = y / 4;
 
-    if (x >= 0 && x <= 159 && y >= 0 && y <= 100) {
-
-        uint8_t nex = y / 4;
-
-        // Remove
-
-        if (nex != 0) {
-            toDrawingBuffer(x, nex - 1, 0);
-        }
-        toDrawingBuffer(x, nex, 0);
-        toDrawingBuffer(x, nex + 1, 0);
-
-
-        // Draw
-
-        if (y % 4 == 0) {
-            if (nex != 0) {
-                toDrawingBuffer(x, nex - 1, 0x0);
-            }
-            toDrawingBuffer(x, nex, 0xFF);
-            toDrawingBuffer(x, nex + 1, 0x0);
-        }
-        if (y % 4 == 1) {
-            toDrawingBuffer(x, nex, 0xFC);
-            toDrawingBuffer(x, nex + 1, 0x3);
-        }
-        if (y % 4 == 2) {
-            toDrawingBuffer(x, nex, 0xF0);
-            toDrawingBuffer(x, nex + 1, 0xF);
-        }
-        if (y % 4 == 3) {
-            toDrawingBuffer(x, nex, 0xC0);
-            toDrawingBuffer(x, nex + 1, 0x3F);
-        }
+    if (y % 4 == 0) {
+        toDrawingBuffer(x, nex, 0xFF);
+        toDrawingBuffer(x, nex + 1, 0x0);
     }
-
-
+    if (y % 4 == 1) {
+        toDrawingBuffer(x, nex, 0xFC);
+        toDrawingBuffer(x, nex + 1, 0x3);
+    }
+    if (y % 4 == 2) {
+        toDrawingBuffer(x, nex, 0xF0);
+        toDrawingBuffer(x, nex + 1, 0xF);
+    }
+    if (y % 4 == 3) {
+        toDrawingBuffer(x, nex, 0xC0);
+        toDrawingBuffer(x, nex + 1, 0x3F);
+    }
 }
 
 volatile uint8_t posY = 0;
@@ -231,17 +231,8 @@ void getInput() {
 }
 
 void draw() {
-
     drawCorrect(posX, posY);
-    drawFromBuffer();
-}
-
-void guard() {
-}
-
-void getUpdate() {
-
-
+    drawFromBuffer(); //HAS TO BE THE LAST CALL IN DRAW()!!!!!!!!
 }
 
 
@@ -260,14 +251,10 @@ int main(void) {
     posY = 40;
 
 
-
-
     while (1) {
 
         if (getMsTimer() % 34 == 0) {
             getInput();
-            guard();
-            getUpdate();
             draw();
 
         }
@@ -276,7 +263,6 @@ int main(void) {
         }
     }
 }
-
 
 
 //INIT
