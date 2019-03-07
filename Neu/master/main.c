@@ -23,8 +23,9 @@ struct pageToDraw {
     uint8_t h;
 };
 
+volatile uint8_t pageCount = 0;
 
-struct pageToDraw dummy = (struct pageToDraw) {255,255,255};
+struct pageToDraw dummy = (struct pageToDraw) {255, 255, 255};
 
 struct pageToDraw drawingBuffer[DRAWING_BUFFER_SIZE];
 
@@ -40,14 +41,52 @@ struct pageToDraw *ptr; // = drawingBuffer;
  *
  */
 
+void bufferInit() {
+    // Set pointer to DrawingBuffer[0]
+    ptr = drawingBuffer;
+    // Fill array with dummy elements
+    for (int i = 0; i < DRAWING_BUFFER_SIZE; i++) {
+        *ptr = dummy;
+        ptr++;
+
+    }
+    // Reset pointer to beginning of array
+    ptr = drawingBuffer;
+}
+
+void toDrawingBuffer(uint8_t x, uint8_t y, uint8_t h) {
+    if (x >= 0 && x <= 159 && y >= 0 && y <= 100) {
+        *ptr = (struct pageToDraw) {x, y, h};
+        ptr++;
+        pageCount++;
+        if(pageCount >= 100){
+            page(0,0,0xFF);
+        }
+    }
+}
+
+
+void drawFromBuffer(){
+    ptr = drawingBuffer;
+
+    for(int i = 0; i < DRAWING_BUFFER_SIZE; i++){
+        struct pageToDraw toDraw = *ptr;
+
+        if(toDraw.x != 255){
+            page(toDraw.x,toDraw.y,toDraw.h);
+            ptr++;
+        } else{
+            i = DRAWING_BUFFER_SIZE;
+        }
+    }
+    ptr = drawingBuffer;
+
+    bufferInit();
+
+}
 
 void drawCorrect(uint8_t x, uint8_t y) {
 
-    /*
-     * Implement Page buffer so pages dont override each other!!!
-     *
-     *
-     */
 
     if (x >= 0 && x <= 159 && y >= 0 && y <= 100) {
 
@@ -56,32 +95,32 @@ void drawCorrect(uint8_t x, uint8_t y) {
         // Remove
 
         if (nex != 0) {
-            page(x, nex - 1, 0);
+            toDrawingBuffer(x, nex - 1, 0);
         }
-        page(x, nex, 0);
-        page(x, nex + 1, 0);
+        toDrawingBuffer(x, nex, 0);
+        toDrawingBuffer(x, nex + 1, 0);
 
 
         // Draw
 
         if (y % 4 == 0) {
             if (nex != 0) {
-                page(x, nex - 1, 0x0);
+                toDrawingBuffer(x, nex - 1, 0x0);
             }
-            page(x, nex, 0xFF);
-            page(x, nex + 1, 0x0);
+            toDrawingBuffer(x, nex, 0xFF);
+            toDrawingBuffer(x, nex + 1, 0x0);
         }
         if (y % 4 == 1) {
-            page(x, nex, 0xFC);
-            page(x, nex + 1, 0x3);
+            toDrawingBuffer(x, nex, 0xFC);
+            toDrawingBuffer(x, nex + 1, 0x3);
         }
         if (y % 4 == 2) {
-            page(x, nex, 0xF0);
-            page(x, nex + 1, 0xF);
+            toDrawingBuffer(x, nex, 0xF0);
+            toDrawingBuffer(x, nex + 1, 0xF);
         }
         if (y % 4 == 3) {
-            page(x, nex, 0xC0);
-            page(x, nex + 1, 0x3F);
+            toDrawingBuffer(x, nex, 0xC0);
+            toDrawingBuffer(x, nex + 1, 0x3F);
         }
     }
 
@@ -154,7 +193,10 @@ void getInput() {
 }
 
 void draw() {
+
+
     drawCorrect(posX, posY);
+    drawFromBuffer();
 }
 
 void guard() {
@@ -184,7 +226,6 @@ int main(void) {
 
 
     while (1) {
-        //batteryMeter();
 
         if (getMsTimer() % 34 == 0) {
             getInput();
@@ -199,18 +240,7 @@ int main(void) {
     }
 }
 
-void bufferInit(){
-    // Set pointer to DrawingBuffer[0]
-    ptr = drawingBuffer;
-    // Fill array with dummy elements
-    for(int i = 0; i < DRAWING_BUFFER_SIZE; i++) {
-        *ptr = dummy;
-        ptr++;
 
-    }
-    // Reset pointer to beginning of array
-    ptr = drawingBuffer;
-}
 
 //INIT
 void init() {
