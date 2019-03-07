@@ -80,43 +80,64 @@ void eraseRec(uint8_t x) {
 
 }
 
+/*
+ *  @param x and y where to draw the page
+ *  @return void
+ *
+ *  This functions draws inside the lcd panel.
+ *  Because if you draw outside of the pixel range
+ *  the screen goes funky
+ *
+ */
 
 
-void drawCorrect(uint8_t y){
+void drawCorrect(uint8_t x, uint8_t y) {
 
-    uint8_t nex = y / 4;
+    if (x >= 0 && x <= 159 && y >= 0 && y <= 100) {
 
-    page(100,nex -1 ,0);
-    page(100,nex ,0);
-    page(100,nex +1, 0);
+        uint8_t nex = y / 4;
+
+        if (nex != 0) {
+            page(x, nex - 1, 0);  // Display goes funky you write at a page with y == -1
+        }
+        page(x, nex, 0);
+        page(x, nex + 1, 0);
 
 
-    if(y % 4 == 0){
-        page(100,nex,0xFF);
+        if (y % 4 == 0) {
+            page(x, nex, 0xFF);
+        }
+        if (y % 4 == 1) {
+            page(x, nex, 0xFC);
+            page(x, nex + 1, 0x3);
+        }
+        if (y % 4 == 2) {
+            page(x, nex, 0xF0);
+            page(x, nex + 1, 0xF);
+        }
+        if (y % 4 == 3) {
+            page(x, nex, 0xC0);
+            page(x, nex + 1, 0x3F);
+        }
+
+
     }
-    if(y % 4 == 1){
-        page(100,nex,0xFC);
-        page(100,nex + 1,0x3);
+    else {
+
     }
-    if(y % 4 == 2){
-        page(100, nex, 0xF0);
-        page(100, nex + 1, 0xF);
-    }
-    if(y % 4 == 3){
-        page(100, nex, 0xC0);
-        page(100, nex + 1, 0x3F);
-    }
+
 
 
 
 }
 
 
+volatile uint8_t nextPosY = 0;
+volatile uint8_t nextPosX = 0;
 
+volatile uint8_t posY = 0;
+volatile uint8_t posX = 0;
 
-
-volatile int count = 0;
-//enum pressedButton {select,pause,up,down,right,left,a,b};
 volatile char buttonPressed = '0';
 volatile int timePressed = 0;
 
@@ -137,32 +158,42 @@ void getInput() {
             uart_putc(50);
             buttonPressed = '1';
             timePressed = getMsTimer();
+            if (posY > 0) {
+                posY--;
+            }
         }
         if (B_DOWN) {
             uart_putc(60);
             buttonPressed = '1';
             timePressed = getMsTimer();
+            if (posY < 100) {
+                posY++;
+            }
         }
         if (B_RIGHT) {
             uart_putc(70);
             buttonPressed = '1';
             timePressed = getMsTimer();
+           // if (posX < 159) {
+                posX++;
+         //   }
         }
         if (B_LEFT) {
             uart_putc(80);
             buttonPressed = '1';
             timePressed = getMsTimer();
+            if (posX > 0) {
+                posX--;
+            }
         }
 
         if (B_A) {
             buttonPressed = '1';
-            count--;
             uart_putc(90);
             timePressed = getMsTimer();
         }
         if (B_B) {
             buttonPressed = '1';
-            count++;
             uart_putc(100);
             timePressed = getMsTimer();
         }
@@ -170,7 +201,10 @@ void getInput() {
 }
 
 void draw() {
-    drawCorrect(count);
+    drawCorrect(posX, posY);
+}
+
+void guard() {
 }
 
 void getUpdate() {
@@ -190,13 +224,16 @@ int main(void) {
     uart_putc(10);
     _delay_ms(1000);
 
-    count = 52;
+    posX = 52;
+    posY = 52;
 
+    drawCorrect(52, 100);
     while (1) {
         //batteryMeter();
 
         if (getMsTimer() % 34 == 0) {
             getInput();
+            guard();
             getUpdate();
             draw();
 
@@ -205,7 +242,10 @@ int main(void) {
             buttonPressed = '0';
         }
 
-
+/*  Find reason for random stop
+ *  && collision with border
+ *
+ */
     }
 }
 
