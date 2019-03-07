@@ -8,7 +8,7 @@ obj/main.o: main.c /usr/lib/avr/include/avr/io.h \
  /usr/lib/avr/include/util/delay_basic.h /usr/lib/avr/include/math.h \
  uart.h /usr/lib/avr/include/avr/pgmspace.h \
  /usr/lib/gcc/avr/5.4.0/include/stddef.h adc.h timer.h buttons.h \
- display.h /usr/lib/avr/include/avr/interrupt.h
+ display.h /usr/lib/avr/include/avr/interrupt.h draw.h
 
 /usr/lib/avr/include/avr/io.h:
 
@@ -53,3 +53,5 @@ buttons.h:
 display.h:
 
 /usr/lib/avr/include/avr/interrupt.h:
+
+draw.h:
