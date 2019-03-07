@@ -13,72 +13,22 @@
 #include <avr/interrupt.h>
 
 
+#define DRAWING_BUFFER_SIZE 100
+
 void init();
 
-/*
-void full(uint8_t x) {
-	page(x,5,0xFF);
-	page(x,5+1,0xFf);
-	page(x+1,5,0xFF);
-	page(x+1,5+1,0xFf);
-}
-void empty(uint8_t x) {
-	page(x,5,0xF0);
-	page(x,5+1,0xF0);
-	page(x+1,5,0xF0);
-	page(x+1,5+1,0xF0);
-}
+struct pageToDraw {
+    uint8_t x;
+    uint8_t y;
+    uint8_t h;
+};
 
-void batteryMeter() {
-	uint8_t x=0; 
-	uint16_t adc=getADCValue(0);
-	uint16_t low=696;//778; // (1024.*34./50.);
-	uint16_t high=962; //(1024.*47./50.);
-	uint8_t bars = 50 *(adc-low)/(high-low);
-	//~ bars=adc/20;
-	for(x=0; x< 50; x++)
-	{
-		if (x < bars) {
-			full (x*3);
-		} else {
-			empty(x*3);
-		}
-	}
-	
-}
-*/
-void pageTest() {
 
-    for (int i = 0; i < 256; i++) {
-        page(100, 10, i);
+struct pageToDraw dummy = (struct pageToDraw) {255,255,255};
 
-        page(102, 10, i);
+struct pageToDraw drawingBuffer[DRAWING_BUFFER_SIZE];
 
-        page(104, 10, i);
-
-        page(106, 10, i);
-
-    }
-}
-
-void drawRec(uint8_t x) {
-    page(x, 13, 0xFF);
-/*
-    page(x + 1, 13, 0xFF);
-    page(x + 2, 13, 0xFF);
-    page(x + 3, 13, 0xFF);
-*/
-
-}
-
-void eraseRec(uint8_t x) {
-    page(x, 13, 0);
-
-    page(x + 1, 13, 0);
-    page(x + 2, 13, 0);
-    page(x + 3, 13, 0);
-
-}
+struct pageToDraw *ptr; // = drawingBuffer;
 
 /*
  *  @param x and y where to draw the page
@@ -93,9 +43,17 @@ void eraseRec(uint8_t x) {
 
 void drawCorrect(uint8_t x, uint8_t y) {
 
+    /*
+     * Implement Page buffer so pages dont override each other!!!
+     *
+     *
+     */
+
     if (x >= 0 && x <= 159 && y >= 0 && y <= 100) {
 
         uint8_t nex = y / 4;
+
+        // Remove
 
         if (nex != 0) {
             page(x, nex - 1, 0);
@@ -104,8 +62,14 @@ void drawCorrect(uint8_t x, uint8_t y) {
         page(x, nex + 1, 0);
 
 
+        // Draw
+
         if (y % 4 == 0) {
+            if (nex != 0) {
+                page(x, nex - 1, 0x0);
+            }
             page(x, nex, 0xFF);
+            page(x, nex + 1, 0x0);
         }
         if (y % 4 == 1) {
             page(x, nex, 0xFC);
@@ -119,14 +83,10 @@ void drawCorrect(uint8_t x, uint8_t y) {
             page(x, nex, 0xC0);
             page(x, nex + 1, 0x3F);
         }
-
-
     }
+
+
 }
-
-
-volatile uint8_t nextPosY = 0;
-volatile uint8_t nextPosX = 0;
 
 volatile uint8_t posY = 0;
 volatile uint8_t posX = 0;
@@ -194,14 +154,6 @@ void getInput() {
 }
 
 void draw() {
-
-    for (int i = 52; i < 72; i++) {
-        for (int j = 52; j < 72; j++) {
-            drawCorrect(j, i);
-        }
-    }
-
-
     drawCorrect(posX, posY);
 }
 
@@ -209,8 +161,7 @@ void guard() {
 }
 
 void getUpdate() {
-    posX = nextPosX;
-    posY = nextPosY;
+
 
 }
 
@@ -226,20 +177,19 @@ int main(void) {
     uart_putc(10);
     _delay_ms(1000);
 
-    nextPosY = 52;
-    nextPosX = 52;
-
     posX = 40;
     posY = 40;
 
-    drawCorrect(52, 100);
+
+
+
     while (1) {
         //batteryMeter();
 
         if (getMsTimer() % 34 == 0) {
             getInput();
             guard();
-            // getUpdate();
+            getUpdate();
             draw();
 
         }
@@ -249,6 +199,18 @@ int main(void) {
     }
 }
 
+void bufferInit(){
+    // Set pointer to DrawingBuffer[0]
+    ptr = drawingBuffer;
+    // Fill array with dummy elements
+    for(int i = 0; i < DRAWING_BUFFER_SIZE; i++) {
+        *ptr = dummy;
+        ptr++;
+
+    }
+    // Reset pointer to beginning of array
+    ptr = drawingBuffer;
+}
 
 //INIT
 void init() {
@@ -257,4 +219,5 @@ void init() {
     timerInit();  // "Systemzeit" initialisieren
     buttonsInit();
     displayInit();
+    bufferInit();
 }
