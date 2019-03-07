@@ -200,6 +200,59 @@ void drawCorrect(int16_t x, int16_t y, uint8_t h) {
     }
 }
 
+void combineCollidingPages() {
+    struct pageToDraw *pivotPtr;
+    struct pageToDraw *searchPtr;
+
+    pivotPtr = drawingBuffer;
+    searchPtr = pivotPtr +1;
+
+    for (int i = 0; i < DRAWING_BUFFER_SIZE; i++) {
+
+        struct pageToDraw pivot = *pivotPtr;
+        if (pivot.x != 255) {
+
+            for (int j = i; j < DRAWING_BUFFER_SIZE; j++) {
+
+                struct pageToDraw compare = *searchPtr;
+
+
+                if (compare.x != 255) {
+
+                    if (pivot.x == compare.x && pivot.y == compare.y) {
+
+
+
+                        uint8_t newPage = pivot.h;
+                        newPage |= compare.h;
+
+                        struct pageToDraw dummy = (struct pageToDraw) {
+                                pivot.x, pivot.y, newPage
+                        };
+                        *pivotPtr = dummy;
+                        *searchPtr = dummy;
+                        pivot = *pivotPtr;
+
+                    }
+
+
+                    searchPtr++;
+                } else {
+                    j = DRAWING_BUFFER_SIZE;
+                }
+
+            }
+
+            pivotPtr++;
+            searchPtr = pivotPtr + 1;
+        } else {
+            i = DRAWING_BUFFER_SIZE;
+        }
+
+    }
+    pivotPtr = drawingBuffer;
+
+}
 volatile int16_t posY = 0;
 volatile int16_t posX = 0;
 
@@ -266,8 +319,9 @@ void getInput() {
 }
 
 void draw() {
+    drawCorrect(40,30,0xC3);
     drawCorrect(posX, posY,0xC3);
-
+    combineCollidingPages();
     drawFromBuffer(); //HAS TO BE THE LAST CALL IN DRAW()!!!!!!!!
 }
 
