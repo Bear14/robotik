@@ -142,31 +142,66 @@ void drawFromBuffer() {
     pageCount = 0;
 
 }
+/*
+ * Known bug: It is not possible to draw half pages at y = 0.
+ *
+ *
+ */
+void drawCorrect(int16_t x, int16_t y, uint8_t h) {
 
-void drawCorrect(uint8_t x, uint8_t y) {
+    if (x >= 0 && x <= 159 && y >= 0 && y <= 104) {
+        int16_t nex = y / 4;
 
-    uint8_t nex = y / 4;
+        if (y % 4 == 0) {
+            toDrawingBuffer(x, nex, h);
+        }
+        if (y % 4 == 1) {
+            uint16_t hex = h << 2;
+            uint16_t del = 65280;
 
-    if (y % 4 == 0) {
-        toDrawingBuffer(x, nex, 0xFF);
-        toDrawingBuffer(x, nex + 1, 0x0);
-    }
-    if (y % 4 == 1) {
-        toDrawingBuffer(x, nex, 0xFC);
-        toDrawingBuffer(x, nex + 1, 0x3);
-    }
-    if (y % 4 == 2) {
-        toDrawingBuffer(x, nex, 0xF0);
-        toDrawingBuffer(x, nex + 1, 0xF);
-    }
-    if (y % 4 == 3) {
-        toDrawingBuffer(x, nex, 0xC0);
-        toDrawingBuffer(x, nex + 1, 0x3F);
+            uint8_t page_2 = hex >> 8;
+
+
+
+            uint8_t page_1 = hex;
+            page_1 &= ~(del);
+
+            toDrawingBuffer(x, nex, page_1);
+            toDrawingBuffer(x, nex + 1, page_2);
+        }
+        if (y % 4 == 2) {
+            uint16_t hex = h << 4;
+            uint16_t del = 65280;
+
+            uint8_t page_2 = hex >> 8;
+
+
+
+            uint8_t page_1 = hex;
+            page_1 &= ~(del);
+
+            toDrawingBuffer(x, nex, page_1);
+            toDrawingBuffer(x, nex + 1, page_2);
+        }
+        if (y % 4 == 3) {
+            uint16_t hex = h << 6;
+            uint16_t del = 65280;
+
+            uint8_t page_2 = hex >> 8;
+
+
+
+            uint8_t page_1 = hex;
+            page_1 &= ~(del);
+
+            toDrawingBuffer(x, nex, page_1);
+            toDrawingBuffer(x, nex + 1, page_2);
+        }
     }
 }
 
-volatile uint8_t posY = 0;
-volatile uint8_t posX = 0;
+volatile int16_t posY = 0;
+volatile int16_t posX = 0;
 
 volatile char buttonPressed = '0';
 volatile uint32_t timePressed = 0;
@@ -231,7 +266,8 @@ void getInput() {
 }
 
 void draw() {
-    drawCorrect(posX, posY);
+    drawCorrect(posX, posY,0xC3);
+
     drawFromBuffer(); //HAS TO BE THE LAST CALL IN DRAW()!!!!!!!!
 }
 
@@ -252,12 +288,17 @@ int main(void) {
 
 
     while (1) {
-
+/*
+ * Set to approx 30 frames per second
+ */
         if (getMsTimer() % 34 == 0) {
             getInput();
             draw();
 
         }
+/*
+ * Allow repress of buttons every 150 ms
+ */
         if (timePressed + 150 <= getMsTimer()) {
             buttonPressed = '0';
         }
