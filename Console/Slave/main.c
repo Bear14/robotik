@@ -20,14 +20,17 @@ int main(void)
 
 	init();
 
-	//DDRB|=(1<<1); in PWMinit () verlegt
-	PORTB|=(1<<1);
+	///DDRB|=(1<<1); in PWMinit () verlegt
+	///PORTB|=(1<<1);
 
 	uint8_t d=0;
 
 	uint16_t counter=0;
-
-	while (1)
+	setPWM(120);
+	_delay_us(40);
+	setPWM(255);
+	_delay_us(40);
+/*	while (1)
 	{
 		if (d==0) {
 			PORTB|=(1<<1);
@@ -43,13 +46,10 @@ int main(void)
 				counter=0;
 			}
 
-
 		}
 		if (uart_data_waiting())
 			d = uart_getc();
-
-
-	}
+	}*/
 }
 
 
