@@ -39,7 +39,7 @@ void drawPlayer() {
 
 void drawGround(int16_t x,int16_t y,uint8_t length) {
 
-    for (int8_t i = x; i < x + length; i++) {
+    for (int16_t i = x; i < x + length; i++) {
         drawCorrect(i, y, 0xFF);
 
 
