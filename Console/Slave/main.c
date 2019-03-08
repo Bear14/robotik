@@ -1,4 +1,4 @@
-/* 
+/*
  *	Basis
  *	2009 Benjamin Reh und Joachim Schleicher
  */
@@ -17,7 +17,7 @@ void init();
 int main(void)
 {
 	//Initialisierung ausfuehren
-	
+
 	init();
 
 	DDRB|=(1<<1);
@@ -43,13 +43,13 @@ int main(void)
 				counter=0;
 			}
 
-				
+
 		}
 		if (uart_data_waiting())
 			d = uart_getc();
-		
 
-	}	
+
+	}
 }
 
 
@@ -58,7 +58,7 @@ void init()
 {
 	uartInit();   // serielle Ausgabe an PC
 	ADCInit(0);   // Analoge Werte einlesen
-	//~ PWMInit();    // Pulsweite auf D6 ausgeben 
+	//~ PWMInit();    // Pulsweite auf D6 ausgeben
 	timerInit();  // "Systemzeit" initialisieren
 	//servoInit();  // Servoansteuerung initialisieren
 }
