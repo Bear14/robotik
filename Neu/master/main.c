@@ -17,6 +17,7 @@
 #define GRAVITY 1
 #define JUMP_HEIGHT -8
 #define SPEED 1
+#define DASH_LENGTH 6
 
 void init();
 
@@ -28,7 +29,12 @@ volatile uint32_t timePressed = 0;
 
 int16_t platformX = 0;
 int16_t platformY = 12;
-uint8_t platformLength = 60;
+uint8_t platformLength = 80;
+
+volatile int8_t dashLen;
+volatile int8_t dashCounter = 3;
+volatile int8_t jumpCounter = 2;
+
 
 volatile int16_t playerPosY = 0;
 volatile int16_t playerPosX = 0;
@@ -65,24 +71,32 @@ void drawGround(int16_t x, int16_t y, uint8_t length) {
 
 
 enum state {
-    falling, standing, dashing0, jumping, dashing1, doubleJumping, dashing2
+    standing, dashing, jumping, falling
 };
 enum state playerState = falling;
 
-void jump() {
+void dash() {
+
+
     page(159, 25, 0xFF);
-
-    if (playerState == standing) {
-        playerState = jumping;
-        playerMovY = JUMP_HEIGHT;
-    } else if (playerState == jumping) {
-        playerState = doubleJumping;
-        playerMovY = JUMP_HEIGHT;
-
-    } else if (playerState == doubleJumping) {
-        playerState = falling;
+    if (dashCounter > 0) {
+        playerState = dashing;
+        playerMovY = 0;
+        dashLen = DASH_LENGTH;
+        dashCounter--;
     }
 
+
+}
+
+void jump() {
+    //page(159, 25, 0xFF);
+    if (jumpCounter > 0) {
+        playerState = jumping;
+        playerMovY = JUMP_HEIGHT;
+        dashLen = 0;
+        jumpCounter--;
+    }
 
 }
 
@@ -92,42 +106,62 @@ void jump() {
 int16_t offsetY = 52;
 int16_t offsetX = 5;
 
+
+void collisionWithGround() {
+
+    if (playerPosY + playerMovY >= platformY) {
+
+        //playerPosY = platformY - 8;
+        offsetY -= ((platformY - playerPosY) - 8);
+        playerPosY += ((platformY - playerPosY) - 8);
+        //
+        // offsetY = ;
+        playerState = standing;
+        dashCounter = 4;
+        jumpCounter = 2;
+
+    } else {
+
+        // If  not colliding apply gravity and jump;
+
+        playerPosY += playerMovY;
+        offsetY -= playerMovY;
+
+        playerMovY += GRAVITY;
+    }
+}
+
 void update() {
 
-
+/*
     if(playerPosY >= platformY){
         page(159,13,0xFF);
     }
+*/
 
-    if (playerState == jumping || playerState == doubleJumping || playerState == falling) {
-
-        /*
- * Collision with ground
- *
- */
-        if (playerPosY + playerMovY >= platformY) {
-
-            //playerPosY = platformY - 8;
-            offsetY -= ((platformY - playerPosY) - 8);
-            playerPosY += ((platformY - playerPosY) - 8);
-            //
-           // offsetY = ;
-            playerState = standing;
-
-        } else {
-
-            // If  not colliding apply gravity and jump;
-
-            playerPosY += playerMovY;
-            offsetY -= playerMovY;
-
-            playerMovY += GRAVITY;
-        }
+    //
+    // playerPosX+=SPEED;
+    //offsetX-=SPEED;
 
 
-
-
+    if (playerState == jumping || playerState == falling) {
+        playerState = falling;
+        collisionWithGround();
     }
+    if (dashLen > 0 && playerState == dashing) {
+        dashLen--;
+               playerPosX += SPEED;
+             offsetX -= SPEED;
+    } else if (dashLen == 0 && playerState == dashing) {
+        playerState = falling;
+        collisionWithGround();
+    }
+
+
+    //       playerPosX += SPEED;
+    //      offsetX -= SPEED;
+
+
 
 
 }
@@ -150,48 +184,37 @@ void getInput() {
             //uart_putc(50);
             buttonPressed = '1';
             timePressed = getMsTimer();
-            //if (posY > 0) {
-            posY--;
-            playerPosY--;
-            //}
+
         }
         if (B_DOWN) {
             //uart_putc(60);
             buttonPressed = '1';
             timePressed = getMsTimer();
-            // if (posY < 100) {
-            posY++;
-            playerPosY++;
-            // }
+
         }
         if (B_RIGHT) {
             //uart_putc(70);
             buttonPressed = '1';
             timePressed = getMsTimer();
-            // if (posX < 159) {
-            posX++;
-            playerPosX++;
-            //   }
+
         }
         if (B_LEFT) {
             //uart_putc(80);
             buttonPressed = '1';
             timePressed = getMsTimer();
-            //if (posX > 0) {
-            posX--;
-            playerPosX--;
-            //}
+
         }
 
         if (B_A) {
-            buttonPressed = '1';
             //uart_putc(90);
+            buttonPressed = '1';
             jump();
             timePressed = getMsTimer();
         }
         if (B_B) {
-            buttonPressed = '1';
             //uart_putc(100);
+            buttonPressed = '1';
+            dash();
             timePressed = getMsTimer();
         }
     }
@@ -200,13 +223,13 @@ void getInput() {
 void draw() {
 
 
-    drawCorrect(40, 30, 0xC3);
-    drawCorrect(posX, posY, 0xC3);
+    //drawCorrect(40, 30, 0xC3);
+    //drawCorrect(posX, posY, 0xC3);
 
     //drawGround(playerPosX,playerPosY,8);
     //drawGround(playerPosX,playerPosY+4,8);
     drawPlayerZero();
-    drawGround(platformX, platformY, platformLength);
+    //drawGround(platformX, platformY, platformLength);
     drawPlayer();
     //PlayerPosX start value;
     drawGround(platformX + offsetX, platformY + offsetY, platformLength);
@@ -242,9 +265,9 @@ int main(void) {
 
         }
 /*
- * Allow repress of buttons every 150 ms
+ * Allow repress of buttons every 100 ms
  */
-        if (timePressed + 150 <= getMsTimer()) {
+        if (timePressed + 40 <= getMsTimer()) {
             buttonPressed = '0';
         }
     }
