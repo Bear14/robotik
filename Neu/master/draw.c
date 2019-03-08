@@ -71,7 +71,7 @@ void toDrawingBuffer(uint8_t x, uint8_t y, uint8_t h) {
         *ptr = (struct pageToDraw) {x, y, h};
         ptr++;
         pageCount++;
-        if (pageCount >= 101) {
+        if (pageCount >= DRAWING_BUFFER_SIZE +1) {
             page(0, 0, 0xFF);
         }
     }

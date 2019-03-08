@@ -5,7 +5,7 @@
 #ifndef ROBOTIK_DRAW_H
 #define ROBOTIK_DRAW_H
 
-#define DRAWING_BUFFER_SIZE 100
+#define DRAWING_BUFFER_SIZE 250
 
 struct pageToDraw {
     uint8_t x;

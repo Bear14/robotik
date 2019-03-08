@@ -14,7 +14,7 @@
 #include "draw.h"
 
 
-
+#define GRAVITY 1;
 
 void init();
 
@@ -23,6 +23,39 @@ volatile int16_t posX = 0;
 
 volatile char buttonPressed = '0';
 volatile uint32_t timePressed = 0;
+
+
+int16_t groundY = 100;
+
+
+void drawPlayer() {
+    for (int i = 5; i < 5 + 8; i++) {
+        drawCorrect(i, 52, 0xFF);
+        drawCorrect(i, 56, 0xFF);
+    }
+
+};
+
+void drawGround(int16_t y) {
+
+    for (int i = 0; i < 60; i++) {
+        drawCorrect(i, y, 0xFF);
+
+
+    }
+
+}
+
+volatile int16_t playerPosY = 40;
+volatile int16_t playerPosX = 40;
+
+void update() {
+    if (playerPosY >= groundY) {
+        playerPosY += GRAVITY;
+    }
+
+}
+
 
 void getInput() {
     if (buttonPressed == '0') {
@@ -84,8 +117,12 @@ void getInput() {
 }
 
 void draw() {
-    drawCorrect(40,30,0xC3);
-    drawCorrect(posX, posY,0xC3);
+    drawCorrect(40, 30, 0xC3);
+    drawCorrect(posX, posY, 0xC3);
+
+    drawPlayer();
+    drawGround(groundY - playerPosY);
+
     combineCollidingPages();
     drawFromBuffer(); //HAS TO BE THE LAST CALL IN DRAW()!!!!!!!!
 }
@@ -111,6 +148,7 @@ int main(void) {
  * Set to approx 30 frames per second
  */
         if (getMsTimer() % 34 == 0) {
+            update();
             getInput();
             draw();
 
