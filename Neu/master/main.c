@@ -24,7 +24,7 @@ volatile int16_t posX = 0;
 volatile char buttonPressed = '0';
 volatile uint32_t timePressed = 0;
 
-int16_t platformX = 1;
+int16_t platformX = 0;
 int16_t platformY = 100;
 uint8_t platformLength = 60;
 
@@ -48,11 +48,12 @@ void drawGround(int16_t x,int16_t y,uint8_t length) {
 }
 
 volatile int16_t playerPosY = 40;
-volatile int16_t playerPosX = 40;
+volatile int16_t playerPosX = 5;
 
 void update() {
 
-    playerPosX--;
+    playerPosX++;
+    //platformX;
 
 
     if (playerPosY >= platformY) {
@@ -97,6 +98,7 @@ void getInput() {
             timePressed = getMsTimer();
             // if (posX < 159) {
             posX++;
+            playerPosX++;
             //   }
         }
         if (B_LEFT) {
@@ -105,6 +107,7 @@ void getInput() {
             timePressed = getMsTimer();
             //if (posX > 0) {
             posX--;
+            playerPosX--;
             //}
         }
 
@@ -126,7 +129,8 @@ void draw() {
     drawCorrect(posX, posY, 0xC3);
 
     drawPlayer();
-    drawGround(platformX + playerPosX,platformY - playerPosY,platformLength);
+    //PlayerPosX start value;
+    drawGround(platformX - (playerPosX-5),platformY - playerPosY,platformLength);
 
     combineCollidingPages();
     drawFromBuffer(); //HAS TO BE THE LAST CALL IN DRAW()!!!!!!!!
