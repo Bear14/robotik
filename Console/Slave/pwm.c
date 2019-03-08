@@ -9,8 +9,8 @@
 void PWMInit()
 {
 	DDRB |=  (1 << 1); //Pin 1 an PORTB auf Ausgang stellen
-	TCCR0A = (1<<WGM00)|(1<<COM0A1); //  Timer/Counter als nicht invertierenden 8-Bit PWM
-	TCCR0B = (1<<CS01) | (1<<CS00); //  Takt von CK / 64 generieren
+	TCCR0A = (1<<WGM00)|(WGM01)|(1<<COM0A1); //FastPWM 8-bit nicht invertiert
+	TCCR0B = (1<<CS02) | (1<<CS00); //  Takt von CK / 256 generieren
 }
 
 //Pulsweite setzen
