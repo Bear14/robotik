@@ -14,6 +14,12 @@
  *  the screen goes funky
  *
  */
+
+/*
+ * TODO: make function hat checks if page would be redrawn and if so dont delete it and dont draw again
+ */
+
+
 struct pageToDraw dummy = (struct pageToDraw) {255, 255, 255};
 volatile uint8_t pageCount = 0;
 

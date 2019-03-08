@@ -14,8 +14,8 @@
 #include "draw.h"
 
 
-#define GRAVITY 1;
-#define JUMP_HEIGHT 8
+#define GRAVITY 1
+#define JUMP_HEIGHT -8
 #define SPEED 1
 
 void init();
@@ -33,24 +33,27 @@ uint8_t platformLength = 60;
 volatile int16_t playerPosY = 0;
 volatile int16_t playerPosX = 0;
 volatile int8_t playerMovY = 0;
-volatile  int8_t playerMovX = 0;
+volatile int8_t playerMovX = 0;
 // Player height is 8!
 
 void drawPlayer() {
+
     for (int i = 5; i < 5 + 8; i++) {
         drawCorrect(i, 52, 0xFF);
         drawCorrect(i, 56, 0xFF);
     }
 
-};void drawPlayerZero() {
+};
+
+void drawPlayerZero() {
     for (int i = playerPosX; i < playerPosX + 8; i++) {
         drawCorrect(i, playerPosY, 0xFF);
-        drawCorrect(i, playerPosY+4, 0xFF);
+        drawCorrect(i, playerPosY + 4, 0xFF);
     }
 
 };
 
-void drawGround(int16_t x,int16_t y,uint8_t length) {
+void drawGround(int16_t x, int16_t y, uint8_t length) {
 
     for (int16_t i = x; i < x + length; i++) {
         drawCorrect(i, y, 0xFF);
@@ -61,38 +64,70 @@ void drawGround(int16_t x,int16_t y,uint8_t length) {
 }
 
 
-
-enum state{ falling,standing,dashing0,jumping,dashing1,doubleJumping,dashing2};
-enum state playerState;
+enum state {
+    falling, standing, dashing0, jumping, dashing1, doubleJumping, dashing2
+};
+enum state playerState = falling;
 
 void jump() {
-    if(playerState == standing){
+    page(159, 25, 0xFF);
+
+    if (playerState == standing) {
         playerState = jumping;
         playerMovY = JUMP_HEIGHT;
-    } else if(playerState == jumping){
+    } else if (playerState == jumping) {
         playerState = doubleJumping;
         playerMovY = JUMP_HEIGHT;
+
+    } else if (playerState == doubleJumping) {
+        playerState = falling;
     }
 
 
 }
+
+/*
+ * Apply every change to playerPosX and playerPosY to offsetX and offsetY but in reverse;
+ */
 int16_t offsetY = 52;
 int16_t offsetX = 5;
+
 void update() {
 
-    playerPosX += SPEED;
-    offsetX -= SPEED;
-    //playerPosY += playerMovY;
 
-
-    // Collision with ground
-
-    if (playerPosY + 8  <= platformY) {
-        playerPosY += GRAVITY;
-        offsetY -= GRAVITY;
-        //playerPosY += playerMovY;
+    if(playerPosY >= platformY){
+        page(159,13,0xFF);
     }
 
+    if (playerState == jumping || playerState == doubleJumping || playerState == falling) {
+
+        /*
+ * Collision with ground
+ *
+ */
+        if (playerPosY + playerMovY >= platformY) {
+
+            //playerPosY = platformY - 8;
+            offsetY -= ((platformY - playerPosY) - 8);
+            playerPosY += ((platformY - playerPosY) - 8);
+            //
+           // offsetY = ;
+            playerState = standing;
+
+        } else {
+
+            // If  not colliding apply gravity and jump;
+
+            playerPosY += playerMovY;
+            offsetY -= playerMovY;
+
+            playerMovY += GRAVITY;
+        }
+
+
+
+
+    }
 
 
 }
@@ -165,17 +200,16 @@ void getInput() {
 void draw() {
 
 
-
     drawCorrect(40, 30, 0xC3);
     drawCorrect(posX, posY, 0xC3);
 
     //drawGround(playerPosX,playerPosY,8);
     //drawGround(playerPosX,playerPosY+4,8);
     drawPlayerZero();
-    drawGround(platformX,platformY,platformLength);
+    drawGround(platformX, platformY, platformLength);
     drawPlayer();
     //PlayerPosX start value;
-    drawGround(platformX + offsetX ,platformY + offsetY,platformLength);
+    drawGround(platformX + offsetX, platformY + offsetY, platformLength);
 
     combineCollidingPages();
     drawFromBuffer(); //HAS TO BE THE LAST CALL IN DRAW()!!!!!!!!
@@ -202,8 +236,8 @@ int main(void) {
  * Set to approx 30 frames per second
  */
         if (getMsTimer() % 34 == 0) {
-            update();
             getInput();
+            update();
             draw();
 
         }
