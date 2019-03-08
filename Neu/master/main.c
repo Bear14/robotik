@@ -150,18 +150,16 @@ void update() {
     }
     if (dashLen > 0 && playerState == dashing) {
         dashLen--;
-               playerPosX += SPEED;
-             offsetX -= SPEED;
-    } else if (dashLen == 0 && playerState == dashing) {
+        playerPosX += SPEED *2;
+        offsetX -= SPEED *2;
+    } else if (dashLen == 0 &&  playerState == dashing) {
         playerState = falling;
         collisionWithGround();
     }
 
 
-    //       playerPosX += SPEED;
-    //      offsetX -= SPEED;
-
-
+    playerPosX += SPEED;
+    offsetX -= SPEED;
 
 
 }
