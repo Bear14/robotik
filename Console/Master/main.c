@@ -17,7 +17,7 @@
 #define GRAVITY 1
 #define SPEED 3
 
-enum state{ falling,standing,dashing0,jumping,dashing1,doubleJumping,dashing2};
+
 
 
 int16_t cloudX = 150;
@@ -34,7 +34,7 @@ int16_t lastPlayerPos = 52;
 
 uint16_t groundPos = 100;
 
-enum state playerState;
+
 
 char inJump = '0';
 char inDoubleJump = '0';

@@ -15,6 +15,8 @@
 
 
 #define GRAVITY 1;
+#define JUMP_HEIGHT 8
+#define SPEED 1
 
 void init();
 
@@ -25,14 +27,25 @@ volatile char buttonPressed = '0';
 volatile uint32_t timePressed = 0;
 
 int16_t platformX = 0;
-int16_t platformY = 100;
+int16_t platformY = 12;
 uint8_t platformLength = 60;
 
+volatile int16_t playerPosY = 0;
+volatile int16_t playerPosX = 0;
+volatile int8_t playerMovY = 0;
+volatile  int8_t playerMovX = 0;
+// Player height is 8!
 
 void drawPlayer() {
     for (int i = 5; i < 5 + 8; i++) {
         drawCorrect(i, 52, 0xFF);
         drawCorrect(i, 56, 0xFF);
+    }
+
+};void drawPlayerZero() {
+    for (int i = playerPosX; i < playerPosX + 8; i++) {
+        drawCorrect(i, playerPosY, 0xFF);
+        drawCorrect(i, playerPosY+4, 0xFF);
     }
 
 };
@@ -47,18 +60,40 @@ void drawGround(int16_t x,int16_t y,uint8_t length) {
 
 }
 
-volatile int16_t playerPosY = 40;
-volatile int16_t playerPosX = 5;
 
+
+enum state{ falling,standing,dashing0,jumping,dashing1,doubleJumping,dashing2};
+enum state playerState;
+
+void jump() {
+    if(playerState == standing){
+        playerState = jumping;
+        playerMovY = JUMP_HEIGHT;
+    } else if(playerState == jumping){
+        playerState = doubleJumping;
+        playerMovY = JUMP_HEIGHT;
+    }
+
+
+}
+int16_t offsetY = 52;
+int16_t offsetX = 5;
 void update() {
 
-    playerPosX++;
-    //platformX;
+    playerPosX += SPEED;
+    offsetX -= SPEED;
+    //playerPosY += playerMovY;
 
 
-    if (playerPosY >= platformY) {
+    // Collision with ground
+
+    if (playerPosY + 8  <= platformY) {
         playerPosY += GRAVITY;
+        offsetY -= GRAVITY;
+        //playerPosY += playerMovY;
     }
+
+
 
 }
 
@@ -82,6 +117,7 @@ void getInput() {
             timePressed = getMsTimer();
             //if (posY > 0) {
             posY--;
+            playerPosY--;
             //}
         }
         if (B_DOWN) {
@@ -90,6 +126,7 @@ void getInput() {
             timePressed = getMsTimer();
             // if (posY < 100) {
             posY++;
+            playerPosY++;
             // }
         }
         if (B_RIGHT) {
@@ -114,6 +151,7 @@ void getInput() {
         if (B_A) {
             buttonPressed = '1';
             //uart_putc(90);
+            jump();
             timePressed = getMsTimer();
         }
         if (B_B) {
@@ -125,12 +163,19 @@ void getInput() {
 }
 
 void draw() {
+
+
+
     drawCorrect(40, 30, 0xC3);
     drawCorrect(posX, posY, 0xC3);
 
+    //drawGround(playerPosX,playerPosY,8);
+    //drawGround(playerPosX,playerPosY+4,8);
+    drawPlayerZero();
+    drawGround(platformX,platformY,platformLength);
     drawPlayer();
     //PlayerPosX start value;
-    drawGround(platformX - (playerPosX-5),platformY - playerPosY,platformLength);
+    drawGround(platformX + offsetX ,platformY + offsetY,platformLength);
 
     combineCollidingPages();
     drawFromBuffer(); //HAS TO BE THE LAST CALL IN DRAW()!!!!!!!!
