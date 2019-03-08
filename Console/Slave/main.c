@@ -10,7 +10,7 @@
 #include "pwm.h"
 #include "timer.h"
 #include "servo.h"
-
+#include "note.h"
 
 void init();
 
@@ -20,7 +20,7 @@ int main(void)
 
 	init();
 
-	DDRB|=(1<<1);
+	//DDRB|=(1<<1); in PWMinit () verlegt
 	PORTB|=(1<<1);
 
 	uint8_t d=0;
@@ -58,7 +58,7 @@ void init()
 {
 	uartInit();   // serielle Ausgabe an PC
 	ADCInit(0);   // Analoge Werte einlesen
-	//~ PWMInit();    // Pulsweite auf D6 ausgeben
+	PWMInit();    // Pulsweite auf B1 ausgeben
 	timerInit();  // "Systemzeit" initialisieren
 	//servoInit();  // Servoansteuerung initialisieren
 }
