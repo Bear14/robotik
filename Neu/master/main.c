@@ -2,6 +2,11 @@
  *	Basis
  *	2009 Benjamin Reh und Joachim Schleicher
  */
+typedef int bool;
+#define true 1
+#define false 0
+
+#include <stdlib.h>
 #include <avr/io.h>
 #include <inttypes.h>
 #include <util/delay.h>
@@ -22,9 +27,7 @@
 
 #define PLATFORM_HEIGHT 4
 
-typedef int bool;
-#define true 1
-#define false 0
+
 
 void init();
 
@@ -34,11 +37,6 @@ volatile int16_t offsetY = 52;
 volatile int16_t offsetX = 5;
 volatile char buttonPressed = '0';
 volatile uint32_t timePressed = 0;
-/*
-int16_t platformX = 0;
-int16_t platformY = 12;
-uint8_t platformLength = 80;
-*/
 
 
 
@@ -55,14 +53,14 @@ struct platform *platPtr;
 uint8_t platformIndex = 0;
 
 
-volatile struct platform platform_1 = (struct platform) {0, 12, 80};
+//volatile struct platform platform_1 = (struct platform) {0, 12, 80};
 
 
 void addPlatform(int16_t x, int16_t y, uint8_t length) {
     platPtr = platforms;
     platPtr += platformIndex;
 
-    *platPtr = (struct platform) {0, 0, 0};
+    *platPtr = (struct platform) {x, y, length};
 
 
     platformIndex++;
@@ -109,7 +107,7 @@ void drawPlatforms() {
 }
 
 volatile int8_t dashLen;
-volatile int8_t dashCounter = 3;
+volatile int8_t dashCounter = 2;
 volatile int8_t jumpCounter = 2;
 
 
@@ -187,7 +185,7 @@ bool collisionRectangles(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t
 }
 
 
-// If platform is more than 10 behind the player it gets reset;
+
 
 bool collisionFromTopOrBottom(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t x2, int16_t y2, uint8_t w2,
                               uint8_t h2) {
@@ -235,7 +233,7 @@ bool collisionWithPlatform() {
     return false;
 
 }
-
+// If platform is more than 10 behind the player it gets reset;
 
 void checkPlatform() {
     platPtr = platforms;
@@ -243,7 +241,28 @@ void checkPlatform() {
     struct platform check = *platPtr;
     if ((check.x + check.length) < (playerPosX - 10)) {
         // *platPtr = (struct platform) {0,0,0};
-        addPlatform(1, 1, 1);
+
+        //get last platform
+        //platPtr is on the first platform so reducing it will be the last except if hast index 0 then the last platform is the last of the platforms array
+        if(platformIndex == 0){
+            platPtr += (PLATFORM_COUNT -1);
+        }
+        else
+        {
+            platPtr--;
+        }
+
+
+        int ran = rand();
+/*    int x = ;
+        int y = ;
+
+        int length = rand % 100 + 30;
+
+*/
+        addPlatform(platPtr->x +platPtr->length + (ran % 25 + 1), platPtr->y + (ran % 100 -50), ran % 100 + 30);
+        //{400, 40, 50}
+        //addPlatform(500,40,ran % 100 + 30);
     }
     platPtr = platforms;
 
@@ -255,7 +274,7 @@ void update() {
 
     if (playerState == standing) {
         jumpCounter = 2;
-        dashCounter = 3;
+        dashCounter = 2;
         collisionWithPlatform();
     }
     if (playerState == jumping) {
@@ -398,7 +417,8 @@ int main(void) {
 //INIT
 void init() {
     uartInit();   // serielle Ausgabe an PC
-    ADCInit(0);   // Analoge Werte einlesen
+    ADCInit(4);   // Analoge Werte einlesen
+    srand(getADCValue(4));
     timerInit();  // "Systemzeit" initialisieren
     buttonsInit();
     displayInit();

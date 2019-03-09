@@ -18,6 +18,11 @@
 /*
  * TODO: make function hat checks if page would be redrawn and if so dont delete it and dont draw again
  */
+/*
+typedef int bool;
+#define true 1
+#define false 0
+*/
 
 
 struct pageToDraw dummy = (struct pageToDraw) {255, 255, 255};
@@ -83,14 +88,35 @@ void toDrawingBuffer(uint8_t x, uint8_t y, uint8_t h) {
     }
 }
 
+/*
+bool inDrawBuffer(struct pageToDraw check){
+    ptr = drawingBuffer;
 
+    for(int i = 0; i < DRAWING_BUFFER_SIZE; i++){
+
+        if(check.x == ptr->x && check.y == ptr->y && check.h == ptr->h){
+            return true;
+        }
+        ptr++;
+
+    }
+    ptr = drawingBuffer;
+
+    return false;
+}
+*/
 void drawFromBuffer() {
 
     erasePtr = eraseBuffer; //reset pointer
     for (int j = 0; j < DRAWING_BUFFER_SIZE; j++) {
         struct pageToDraw toErase = *erasePtr;
         if (toErase.x != 255) {
-            page(toErase.x, toErase.y, 0);
+
+            //if(!(inDrawBuffer(toErase))){
+
+                page(toErase.x, toErase.y, 0);
+          //  }
+
             erasePtr++;
         } else {
             j = DRAWING_BUFFER_SIZE;
