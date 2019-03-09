@@ -56,11 +56,11 @@ void addPlatform(int16_t x, int16_t y, uint8_t length) {
     platPtr = platforms;
     platPtr += platformIndex;
 
-    *platPtr = (struct platform) {0,0,0};
+    *platPtr = (struct platform) {0, 0, 0};
 
 
     platformIndex++;
-    if(platformIndex > 4){
+    if (platformIndex > 4) {
         platformIndex = 0;
     }
     platPtr = platforms;
@@ -81,7 +81,7 @@ void platformInit() {
 
 };
 
-void drawGround(int16_t x, int16_t y, uint8_t length) {
+void drawPlatform(int16_t x, int16_t y, uint8_t length) {
 
     for (int16_t i = x; i < x + length; i++) {
         drawCorrect(i, y, 0xFF);
@@ -95,7 +95,7 @@ void drawPlatforms() {
     platPtr = platforms;
     for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
         struct platform toDraw = *platPtr;
-        drawGround(toDraw.x +offsetX, toDraw.y +offsetY , toDraw.length);
+        drawPlatform(toDraw.x + offsetX, toDraw.y + offsetY, toDraw.length);
         platPtr++;
     }
     platPtr = platforms;
@@ -171,6 +171,40 @@ void jump() {
 
 void collisionWithGround() {
 
+    platPtr = platforms;
+    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
+
+        if (playerPosX + 8 >= platPtr->x) {
+
+            if (((playerPosY + 8) + playerMovY) >= platPtr->y) {
+
+                int8_t calc = (platPtr->y - (playerPosY+8));
+                playerPosY += calc; //calc
+                offsetY -= calc;
+
+                playerState = standing;
+                dashCounter = 4;
+                jumpCounter = 2;
+
+
+
+                playerMovY = 0;
+
+            } else {
+                playerPosY += playerMovY;
+                offsetY -= playerMovY;
+
+                playerMovY += GRAVITY;
+            }
+
+        }
+
+
+        platPtr++;
+
+    }
+    platPtr = platforms;
+/*
     if (playerPosY + playerMovY >= platform_1.y) {
 
         //playerPosY = platformY - 8;
@@ -190,19 +224,19 @@ void collisionWithGround() {
         offsetY -= playerMovY;
 
         playerMovY += GRAVITY;
-    }
+    }*/
 }
 
 
 // If platform is more than 10 behind the player it gets reset;
 
-void checkPlatform(){
+void checkPlatform() {
     platPtr = platforms;
     platPtr += platformIndex;
     struct platform check = *platPtr;
-    if((check.x +check.length) < (playerPosX - 10)){
-       // *platPtr = (struct platform) {0,0,0};
-        addPlatform(1,1,1);
+    if ((check.x + check.length) < (playerPosX - 10)) {
+        // *platPtr = (struct platform) {0,0,0};
+        addPlatform(1, 1, 1);
     }
     platPtr = platforms;
 
@@ -239,7 +273,7 @@ void update() {
 
 
     // playerPosX += SPEED;
-   // offsetX -= SPEED;
+    // offsetX -= SPEED;
 
 
 }
@@ -348,9 +382,9 @@ int main(void) {
 
         }
 /*
- * Allow repress of buttons every 100 ms
+ * Allow repress of buttons every 100 ms TODO: find nice value
  */
-        if (timePressed + 40 <= getMsTimer()) {
+        if (timePressed + 150 <= getMsTimer()) {
             buttonPressed = '0';
         }
     }
