@@ -173,8 +173,8 @@ void jump() {
  * Apply every change to playerPosX and playerPosY to offsetX and offsetY but in reverse;
  */
 
-bool
-collisionRectangles(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t x2, int16_t y2, uint8_t w2, uint8_t h2) {
+bool collisionRectangles(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t x2, int16_t y2, uint8_t w2,
+                         uint8_t h2) {
 
     if (x1 < x2 + w2 &&
         x1 + w1 > x2 &&
@@ -186,68 +186,6 @@ collisionRectangles(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t x2, 
 
 }
 
-
-/*
-
-void collisionWithGround() {
-    playerState = falling;
-
-    platPtr = platforms;
-    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
-
-        if (playerPosX + 8 >= platPtr->x) {
-
-            if (((playerPosY + 8) + playerMovY) >= platPtr->y) {
-
-                int8_t calc = (platPtr->y - (playerPosY + 8));
-                playerPosY += calc; //calc
-                offsetY -= calc;
-
-                playerState = standing;
-                dashCounter = 4;
-                jumpCounter = 2;
-
-
-
-                //playerMovY = 0;
-
-            } else {
-                playerState = falling;
-            }
-
-        } else if((platPtr->x + platPtr->length) < playerPosX){
-            playerState = falling;
-           // playerState = falling;
-        }
-
-
-        platPtr++;
-
-    }
-    platPtr = platforms;
-
-    if (playerPosY + playerMovY >= platform_1.y) {
-
-        //playerPosY = platformY - 8;
-        offsetY -= ((platform_1.y - playerPosY) - 8);
-        playerPosY += ((platform_1.y - playerPosY) - 8);
-        //
-        // offsetY = ;
-        playerState = standing;
-        dashCounter = 4;
-        jumpCounter = 2;
-
-    } else {
-
-        // If  not colliding apply gravity and jump;
-
-        playerPosY += playerMovY;
-        offsetY -= playerMovY;
-
-        playerMovY += GRAVITY;
-    }
-}
-*/
 
 // If platform is more than 10 behind the player it gets reset;
 
@@ -285,12 +223,6 @@ bool collisionWithPlatform() {
                 playerPosY += calc; //calc
                 offsetY -= calc;
             }
-
-            /*
-            int8_t calc = (platPtr->y - (playerPosY + 8));
-            playerPosY += calc; //calc
-            offsetY -= calc;
-             */
             return true;
         }
 
@@ -347,45 +279,10 @@ void update() {
 
     }
 
-    //playerPosX += SPEED;
-    //offsetX -= SPEED;
-
-/*
-    if(playerPosY >= platformY){
-        page(159,13,0xFF);
-    }
-*/
-
-    //
-    // playerPosX+=SPEED;
-    //offsetX-=SPEED;
-/*
-    if (playerState == jumping || playerState == standing) {
-        collisionWithGround();
-    }
-    if (dashLen > 0 && playerState == dashing) {
-        dashLen--;
-        playerPosX += SPEED * 2;
-        offsetX -= SPEED * 2;
-    } else if (dashLen == 0 && playerState == dashing) {
-        collisionWithGround();
-    }
+    playerPosX += SPEED;
+    offsetX -= SPEED;
 
 
-    if(playerState == falling){
-
-        collisionWithGround();
-        if(playerState == falling) {
-            playerPosY += playerMovY;
-            offsetY -= playerMovY;
-            playerMovY += GRAVITY;
-        }
-    }
-
-    // playerPosX += SPEED;
-    // offsetX -= SPEED;
-
-*/
 }
 
 
@@ -453,18 +350,10 @@ void getInput() {
 
 void draw() {
 
-
-    //drawCorrect(40, 30, 0xC3);
-    //drawCorrect(posX, posY, 0xC3);
-
-    //drawGround(playerPosX,playerPosY,8);
-    //drawGround(playerPosX,playerPosY+4,8);
     drawPlayerZero();
-    //drawGround(platformX, platformY, platformLength);
     drawPlayer();
-    //PlayerPosX start value;
     drawPlatforms();
-    //drawGround(platform_1.x + offsetX, platform_1.y + offsetY, platform_1.length);
+
 
     combineCollidingPages();
     drawFromBuffer(); //HAS TO BE THE LAST CALL IN DRAW()!!!!!!!!
