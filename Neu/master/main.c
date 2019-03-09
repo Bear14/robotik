@@ -15,8 +15,8 @@
 
 
 #define GRAVITY 1
-#define JUMP_HEIGHT -3
-#define SPEED 1
+#define JUMP_HEIGHT -8
+#define SPEED 2
 #define DASH_LENGTH 6
 #define PLATFORM_COUNT 5
 
@@ -30,7 +30,8 @@ void init();
 
 volatile int16_t posY = 0;
 volatile int16_t posX = 0;
-
+volatile int16_t offsetY = 52;
+volatile int16_t offsetX = 5;
 volatile char buttonPressed = '0';
 volatile uint32_t timePressed = 0;
 /*
@@ -39,8 +40,7 @@ int16_t platformY = 12;
 uint8_t platformLength = 80;
 */
 
-int16_t offsetY = 52;
-int16_t offsetX = 5;
+
 
 
 struct platform {
@@ -173,7 +173,8 @@ void jump() {
  * Apply every change to playerPosX and playerPosY to offsetX and offsetY but in reverse;
  */
 
-bool collisionRectangles(int16_t x1,int16_t y1, uint8_t w1,uint8_t h1,int16_t x2,int16_t y2, uint8_t w2,uint8_t h2){
+bool
+collisionRectangles(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t x2, int16_t y2, uint8_t w2, uint8_t h2) {
 
     if (x1 < x2 + w2 &&
         x1 + w1 > x2 &&
@@ -184,6 +185,7 @@ bool collisionRectangles(int16_t x1,int16_t y1, uint8_t w1,uint8_t h1,int16_t x2
     return false;
 
 }
+
 
 /*
 
@@ -249,22 +251,51 @@ void collisionWithGround() {
 
 // If platform is more than 10 behind the player it gets reset;
 
-bool collisionWithPlatform(){
+bool collisionFromTopOrBottom(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t x2, int16_t y2, uint8_t w2,
+                              uint8_t h2) {
 
-    for(uint8_t i = 0; i < PLATFORM_COUNT;i++){
+    if (
+            y1 < y2 + h2 &&
+            y1 + h1 > y2) {
+        return true;
+    }
+    return false;
+
+
+}
+
+
+bool collisionWithPlatform() {
+
+    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
 
 
         // Set pointer to first platform
 
         platPtr = platforms + platformIndex;
 
-        if(collisionRectangles(playerPosX,playerPosY,8,8,platPtr->x,platPtr->y,platPtr->length,PLATFORM_HEIGHT)){
+        if (collisionRectangles(playerPosX, playerPosY, 8, 8, platPtr->x, platPtr->y, platPtr->length,
+                                PLATFORM_HEIGHT)) {
             playerState = standing;
+            playerMovY = 0;
+
+            if (collisionFromTopOrBottom(playerPosX, playerPosY, 8, 8, platPtr->x, platPtr->y, platPtr->length,
+                                         PLATFORM_HEIGHT)) {
+                int8_t calc = (platPtr->y - (playerPosY + 8));
+                playerPosY += calc; //calc
+                offsetY -= calc;
+            }
+
+            /*
+            int8_t calc = (platPtr->y - (playerPosY + 8));
+            playerPosY += calc; //calc
+            offsetY -= calc;
+             */
             return true;
         }
 
         platformIndex++;
-        if(platformIndex > 4){
+        if (platformIndex > 4) {
             platformIndex = 0;
         }
     }
@@ -290,23 +321,23 @@ void update() {
 
     checkPlatform();
 
-    if(playerState == standing){
+    if (playerState == standing) {
         jumpCounter = 2;
         dashCounter = 3;
         collisionWithPlatform();
     }
-    if(playerState == jumping){
+    if (playerState == jumping) {
         collisionWithPlatform();
     }
-    if(dashLen > 0 && playerState == dashing){
+    if (dashLen > 0 && playerState == dashing) {
         dashLen--;
         playerPosX += SPEED * 2;
         offsetX -= SPEED * 2;
     }
-    if(dashLen == 0 && playerState == dashing){
+    if (dashLen == 0 && playerState == dashing) {
         collisionWithPlatform();
     }
-    if(playerState == falling){
+    if (playerState == falling) {
 
         playerPosY += playerMovY;
         offsetY -= playerMovY;
@@ -315,6 +346,9 @@ void update() {
         collisionWithPlatform();
 
     }
+
+    //playerPosX += SPEED;
+    //offsetX -= SPEED;
 
 /*
     if(playerPosY >= platformY){
@@ -372,12 +406,17 @@ void getInput() {
             //uart_putc(50);
             buttonPressed = '1';
             timePressed = getMsTimer();
+            playerPosY -= SPEED;
+            offsetY += SPEED;
 
         }
         if (B_DOWN) {
             //uart_putc(60);
             buttonPressed = '1';
             timePressed = getMsTimer();
+            playerPosY += SPEED;
+            offsetY -= SPEED;
+
 
         }
         if (B_RIGHT) {
