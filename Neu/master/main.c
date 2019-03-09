@@ -15,10 +15,16 @@
 
 
 #define GRAVITY 1
-#define JUMP_HEIGHT -8
+#define JUMP_HEIGHT -3
 #define SPEED 1
 #define DASH_LENGTH 6
 #define PLATFORM_COUNT 5
+
+#define PLATFORM_HEIGHT 4
+
+typedef int bool;
+#define true 1
+#define false 0
 
 void init();
 
@@ -167,9 +173,22 @@ void jump() {
  * Apply every change to playerPosX and playerPosY to offsetX and offsetY but in reverse;
  */
 
+bool collisionRectangles(int16_t x1,int16_t y1, uint8_t w1,uint8_t h1,int16_t x2,int16_t y2, uint8_t w2,uint8_t h2){
 
+    if (x1 < x2 + w2 &&
+        x1 + w1 > x2 &&
+        y1 < y2 + h2 &&
+        y1 + h1 > y2) {
+        return true;
+    }
+    return false;
+
+}
+
+/*
 
 void collisionWithGround() {
+    playerState = falling;
 
     platPtr = platforms;
     for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
@@ -178,7 +197,7 @@ void collisionWithGround() {
 
             if (((playerPosY + 8) + playerMovY) >= platPtr->y) {
 
-                int8_t calc = (platPtr->y - (playerPosY+8));
+                int8_t calc = (platPtr->y - (playerPosY + 8));
                 playerPosY += calc; //calc
                 offsetY -= calc;
 
@@ -188,15 +207,15 @@ void collisionWithGround() {
 
 
 
-                playerMovY = 0;
+                //playerMovY = 0;
 
             } else {
-                playerPosY += playerMovY;
-                offsetY -= playerMovY;
-
-                playerMovY += GRAVITY;
+                playerState = falling;
             }
 
+        } else if((platPtr->x + platPtr->length) < playerPosX){
+            playerState = falling;
+           // playerState = falling;
         }
 
 
@@ -204,7 +223,7 @@ void collisionWithGround() {
 
     }
     platPtr = platforms;
-/*
+
     if (playerPosY + playerMovY >= platform_1.y) {
 
         //playerPosY = platformY - 8;
@@ -224,11 +243,36 @@ void collisionWithGround() {
         offsetY -= playerMovY;
 
         playerMovY += GRAVITY;
-    }*/
+    }
 }
-
+*/
 
 // If platform is more than 10 behind the player it gets reset;
+
+bool collisionWithPlatform(){
+
+    for(uint8_t i = 0; i < PLATFORM_COUNT;i++){
+
+
+        // Set pointer to first platform
+
+        platPtr = platforms + platformIndex;
+
+        if(collisionRectangles(playerPosX,playerPosY,8,8,platPtr->x,platPtr->y,platPtr->length,PLATFORM_HEIGHT)){
+            playerState = standing;
+            return true;
+        }
+
+        platformIndex++;
+        if(platformIndex > 4){
+            platformIndex = 0;
+        }
+    }
+    playerState = falling;
+    return false;
+
+}
+
 
 void checkPlatform() {
     platPtr = platforms;
@@ -246,6 +290,31 @@ void update() {
 
     checkPlatform();
 
+    if(playerState == standing){
+        jumpCounter = 2;
+        dashCounter = 3;
+        collisionWithPlatform();
+    }
+    if(playerState == jumping){
+        collisionWithPlatform();
+    }
+    if(dashLen > 0 && playerState == dashing){
+        dashLen--;
+        playerPosX += SPEED * 2;
+        offsetX -= SPEED * 2;
+    }
+    if(dashLen == 0 && playerState == dashing){
+        collisionWithPlatform();
+    }
+    if(playerState == falling){
+
+        playerPosY += playerMovY;
+        offsetY -= playerMovY;
+        playerMovY += GRAVITY;
+
+        collisionWithPlatform();
+
+    }
 
 /*
     if(playerPosY >= platformY){
@@ -256,10 +325,8 @@ void update() {
     //
     // playerPosX+=SPEED;
     //offsetX-=SPEED;
-
-
-    if (playerState == jumping || playerState == falling) {
-        playerState = falling;
+/*
+    if (playerState == jumping || playerState == standing) {
         collisionWithGround();
     }
     if (dashLen > 0 && playerState == dashing) {
@@ -267,15 +334,24 @@ void update() {
         playerPosX += SPEED * 2;
         offsetX -= SPEED * 2;
     } else if (dashLen == 0 && playerState == dashing) {
-        playerState = falling;
         collisionWithGround();
     }
 
 
+    if(playerState == falling){
+
+        collisionWithGround();
+        if(playerState == falling) {
+            playerPosY += playerMovY;
+            offsetY -= playerMovY;
+            playerMovY += GRAVITY;
+        }
+    }
+
     // playerPosX += SPEED;
     // offsetX -= SPEED;
 
-
+*/
 }
 
 
