@@ -15,9 +15,6 @@ if __name__ == '__main__':
     picwidth = int(quelllines[2].split(" ")[0])
     picheight = int(quelllines[2].split(" ")[1])
 
-    print(picheight)
-    print(picwidth)
-
     x=0
     y=0
     pages = []
@@ -46,13 +43,14 @@ if __name__ == '__main__':
             pages.append(int(pic[i][j+3] + pic[i][j+2] + pic[i][j+1] + pic[i][j] ,2))
 
     for elem in pages:
-        zielfile.write("page(x+"+str(x)+",y+"+str(y)+",0x%02X" %(elem))
+        if elem != 0:
+            zielfile.write("page(x+"+str(x)+",y+"+str(y)+",0x%02X" %(elem))
 
-        y=y+1
-        #Am ende der ersten Pixelzeile in die naechste Pixelzeile springen
-        if y == int(picheight/4):
-            y=0
-            x=x+1
-        zielfile.write(");\n")
+            y=y+1
+            #Am ende der ersten Pixelzeile in die naechste Pixelzeile springen
+            if y == int(picheight/4):
+                y=0
+                x=x+1
+                zielfile.write(");\n")
 
     zielfile.close()
