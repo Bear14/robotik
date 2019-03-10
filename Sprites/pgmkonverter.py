@@ -51,6 +51,6 @@ if __name__ == '__main__':
             if y == int(picheight/4):
                 y=0
                 x=x+1
-                zielfile.write(");\n")
+            zielfile.write(");\n")
 
     zielfile.close()
