@@ -198,6 +198,8 @@ void checkIfPlatformOutOfFrame() {
 
 void reset() {
 
+    // TODO: Fix reset and speed up
+
     if (playerPosX >= 15000) {
         struct platform *pointer = platforms;
 
@@ -209,6 +211,8 @@ void reset() {
         }
 
         playerPosX -= playerPosX;
+        offsetX += playerPosX;
+        page(0, 0, 255);
     }
 
 }
@@ -437,15 +441,72 @@ void getInput() {
 }
 
 void draw() {
-
+/*
     drawPlayerZero();
     drawPlayer();
     drawPlatforms();
 
-
+*/
+    printPlayer(playerPosX,playerPosY);
+    printPlayer(5,52);
+    drawPlatforms();
     combineCollidingPages();
-    drawFromBuffer(); //HAS TO BE THE LAST CALL IN DRAW()!!!!!!!!
+    drawFromBuffer();
+
+ //HAS TO BE THE LAST CALL IN DRAW()!!!!!!!!
 }
+
+
+
+void printPlayer(uint8_t x, uint8_t y){
+
+
+    drawCorrect(x+4,y+8,0x10);
+    drawCorrect(x+4,y+12,0xFC);
+
+    drawCorrect(x+5,y+8,0x0C);
+    drawCorrect(x+5,y+12,0x28);
+    drawCorrect(x+6,y+0,0xF0);
+    drawCorrect(x+6,y+4,0x5F);
+    drawCorrect(x+6,y+8,0x03);
+    drawCorrect(x+6,y+12,0x0A);
+    drawCorrect(x+7,y+0,0x7C);
+    drawCorrect(x+7,y+4,0x55);
+    drawCorrect(x+7,y+8,0x03);
+    drawCorrect(x+7,y+12,0x0A);
+    drawCorrect(x+8,y+0,0x7C);
+    drawCorrect(x+8,y+4,0x55);
+    drawCorrect(x+8,y+8,0xBF);
+    drawCorrect(x+8,y+12,0x02);
+    drawCorrect(x+9,y+0,0x7F);
+    drawCorrect(x+9,y+4,0x55);
+    drawCorrect(x+9,y+8,0xBF);
+    drawCorrect(x+9,y+12,0x02);
+    drawCorrect(x+10,y+0,0x7F);
+    drawCorrect(x+10,y+4,0x55);
+    drawCorrect(x+10,y+8,0xBF);
+    drawCorrect(x+10,y+12,0x02);
+    drawCorrect(x+11,y+0,0x7F);
+    drawCorrect(x+11,y+4,0x77);
+    drawCorrect(x+11,y+8,0xBF);
+    drawCorrect(x+11,y+12,0x02);
+    drawCorrect(x+12,y+0,0x7F);
+    drawCorrect(x+12,y+4,0x75);
+    drawCorrect(x+12,y+8,0x83);
+    drawCorrect(x+12,y+12,0xEA);
+    drawCorrect(x+13,y+0,0x3F);
+    drawCorrect(x+13,y+8,0x03);
+    drawCorrect(x+13,y+12,0xEA);
+    drawCorrect(x+14,y+0,0x0F);
+    drawCorrect(x+14,y+4,0xC0);
+
+    drawCorrect(x+14,y+12,0xC0);
+    drawCorrect(x+15,y+0,0x0F);
+    drawCorrect(x+15,y+4,0x10);
+
+
+}
+
 
 
 int main(void) {
@@ -467,17 +528,18 @@ int main(void) {
 /*
  * Set to approx 30 frames per second
  */
-        if (getMsTimer() % 34 == 0) {
-            getInput();
-            update();
-            draw();
 
-        }
+        if (getMsTimer() % 34 == 0) {
+        getInput();
+        update();
+        draw();
+
+          }
 /*
  * Allow repress of buttons every 100 ms TODO: find nice value
  */
         if (timePressed + 150 <= getMsTimer()) {
-            buttonPressed = '0';
+           buttonPressed = '0';
         }
     }
 }
