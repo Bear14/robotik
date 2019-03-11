@@ -278,7 +278,7 @@ void drawCorrect_old(int16_t x, int16_t y, uint8_t h) {
     }
 }
 
-
+struct pageToDraw old = (struct pageToDraw) {0,0,0};
 // the only shit we need
 void drawCorrect(int16_t x, int16_t y, uint8_t h) {
 
@@ -293,26 +293,46 @@ void drawCorrect(int16_t x, int16_t y, uint8_t h) {
             uint16_t del = 65280;
 
             uint8_t page_2 = hex >> 8;
-
-
             uint8_t page_1 = hex;
             page_1 &= ~(del);
 
+            if (x == old.x && nex == old.y){
+              page_1 = old.h | page_1;
+            }
             page(x, nex, page_1);
+
+            old =(struct pageToDraw) {x, nex, page_1};
+
+            if (x == old.x && nex+1 == old.y){
+              page_2 = old.h | page_2;
+            }
             page(x, nex + 1, page_2);
+
+            old =(struct pageToDraw) {x, nex+1, page_2};
+
         }
         if (y % 4 == 2) {
             uint16_t hex = h << 4;
             uint16_t del = 65280;
 
             uint8_t page_2 = hex >> 8;
-
-
             uint8_t page_1 = hex;
             page_1 &= ~(del);
 
+            if (x == old.x && nex == old.y){
+              page_1 = old.h | page_1;
+            }
             page(x, nex, page_1);
+
+            old =(struct pageToDraw) {x, nex, page_1};
+
+            if (x == old.x && nex+1 == old.y){
+              page_2 = old.h | page_2;
+            }
             page(x, nex + 1, page_2);
+
+            old =(struct pageToDraw) {x, nex+1, page_2};
+
         }
         if (y % 4 == 3) {
             uint16_t hex = h << 6;
@@ -324,8 +344,19 @@ void drawCorrect(int16_t x, int16_t y, uint8_t h) {
             uint8_t page_1 = hex;
             page_1 &= ~(del);
 
+            if (x == old.x && nex == old.y){
+              page_1 = old.h | page_1;
+            }
             page(x, nex, page_1);
+
+            old =(struct pageToDraw) {x, nex, page_1};
+
+            if (x == old.x && nex+1 == old.y){
+              page_2 = old.h | page_2;
+            }
             page(x, nex + 1, page_2);
+
+            old =(struct pageToDraw) {x, nex+1, page_2};
         }
     }
 }
