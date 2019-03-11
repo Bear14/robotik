@@ -26,7 +26,7 @@ if __name__ == '__main__':
     for i in range(len(quelllines)): #Werte werden 2bit weise angeordnet
         #Die ersten 4 Zeilen dienern der Beschreibung der Datei
         #Sind fuer uns irrelevant
-        if quelllines[i]== "255": buffer="00"
+        if quelllines[i]== "216": buffer="00"
         elif quelllines[i] == "162": buffer="01"
         elif quelllines[i]== "114": buffer="10"
         elif quelllines[i] == "62": buffer="11"
@@ -52,7 +52,7 @@ if __name__ == '__main__':
                 y=0
                 x=x+1
             elif y > int(picheight):
-                print("Error: Höhe überlaufen")                
+                print("Error: Höhe überlaufen")
             zielfile.write(");\n")
 
     zielfile.close()
