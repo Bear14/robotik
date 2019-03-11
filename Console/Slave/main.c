@@ -11,6 +11,7 @@
 #include "timer.h"
 #include "servo.h"
 #include "note.h"
+#include "tone.h"
 
 void init();
 
@@ -20,19 +21,21 @@ int main(void)
 
 	init();
 
-	///DDRB|=(1<<1); in PWMinit () verlegt
-	///PORTB|=(1<<1);
+	DDRB|=(1<<1);
+	PORTB|=(1<<1);
 
-	uint8_t d=0;
+	//uint8_t d=0;
 
-	uint16_t counter=0;
-	setPWM(120);
-	_delay_us(40);
-	setPWM(255);
-	_delay_us(40);
-/*	while (1)
-	{
-		if (d==0) {
+	//uint16_t counter=0;
+	uint8_t tone_nr =10; // Note A
+	uint16_t offset = toneOffset [ tone_nr ];
+	uint16_t t ;
+
+	for ( t =0; t < toneLength [ tone_nr ]; t ++) {
+		uint8_t pwm = pgm_read_byte (&tones[t+offset]) ;
+		setPWM(pwm);// PWM Ausgeben
+	}
+	/*	if (d==0) {
 			PORTB|=(1<<1);
 		} else {
 			uint8_t i;

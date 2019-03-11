@@ -8,9 +8,10 @@
 //Pulsweite initialisieren
 void PWMInit()
 {
-	DDRB |=  (1 << 1); //Pin 1 an PORTB auf Ausgang stellen
-	TCCR0A = (1<<WGM00)|(WGM01)|(1<<COM0A1)|(WGM02); //FastPWM 8-bit nicht invertiert, troggle Toggle OC0A on Compare Match
-	TCCR0B = (1<<CS00); //  Takt von CK / 0 generieren
+	DDRB |=  (1 << 1); //Pin B1  auf Ausgang stellen
+	//FastPWM 8-bit nicht invertiert, troggle Toggle OC0A on Compare Match
+	TCCR0A = (1<<WGM00)|(1<<WGM01)|(1<<COM0A0)|(1<<WGM02);
+	TCCR0B = (1<<CS02); //  Takt von CK / 256 generieren
 
 
 }
