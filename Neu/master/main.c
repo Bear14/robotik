@@ -21,15 +21,17 @@ typedef int bool;
 
 #define GRAVITY 1
 #define JUMP_HEIGHT -8
-#define SPEED 2
-#define DASH_LENGTH 6
-#define PLATFORM_COUNT 5
+#define INITIAL_SPEED 2
+#define DASH_LENGTH 12
+#define PLATFORM_COUNT 3
 
 #define PLATFORM_HEIGHT 8
 
 #define PANEL_SIZE 16
 
 void init();
+
+int16_t gameSpeed = INITIAL_SPEED;
 
 volatile int16_t lastOffsetY = 52;
 volatile int16_t lastOffsetX = 5;
@@ -44,7 +46,7 @@ volatile int8_t dashCounter = 2;
 volatile int8_t jumpCounter = 2;
 
 
-volatile int16_t lastPlayerPosY = 0;
+volatile int16_t lastPlayerPosY = 1;
 volatile int16_t playerPosY = 0;
 volatile int16_t playerPosX = 0;
 volatile int8_t playerMovY = 0;
@@ -53,6 +55,7 @@ volatile int8_t playerMovX = 0;
 
 #define PLAYER_HEIGHT 8
 
+uint64_t score = 0;
 
 struct platform {
     int16_t x;
@@ -132,7 +135,7 @@ void clearPlayerColumn(uint8_t y,char direction){
 
 
 
-void printPlayer(uint8_t x, uint8_t y) {
+void printPlayer(int16_t x, int16_t y) {
 
     if(y  != lastPlayerPosY){
 
@@ -151,25 +154,27 @@ void printPlayer(uint8_t x, uint8_t y) {
         drawCorrect(x+6,lastPlayerPosY+4,0);
         drawCorrect(x+6,lastPlayerPosY+0,0);
         drawCorrect(x+7,lastPlayerPosY+4,0);
+        drawCorrect(x+7,lastPlayerPosY+4,0);
 
 
 
 
         drawCorrect(x+0,y+4,0xF8);
-        drawCorrect(x+0,y+0,0x02);
+        drawCorrect(x+1,y+0,0x02);
         drawCorrect(x+1,y+4,0x02);
-        drawCorrect(x+1,y+0,0xAA);
+        drawCorrect(x+2,y+0,0xAA);
         drawCorrect(x+2,y+4,0xAE);
-        drawCorrect(x+2,y+0,0x7A);
+        drawCorrect(x+3,y+0,0x7A);
         drawCorrect(x+3,y+4,0x2E);
-        drawCorrect(x+3,y+0,0x5A);
+        drawCorrect(x+4,y+0,0x5A);
         drawCorrect(x+4,y+4,0x2E);
-        drawCorrect(x+4,y+0,0x78);
+        drawCorrect(x+5,y+0,0x78);
         drawCorrect(x+5,y+4,0xAE);
-        drawCorrect(x+5,y+0,0x03);
+        drawCorrect(x+6,y+0,0x03);
         drawCorrect(x+6,y+4,0xC2);
-        drawCorrect(x+6,y+0,0xFC);
+        drawCorrect(x+7,y+0,0xFC);
         drawCorrect(x+7,y+4,0x3D);
+
 
 
 
@@ -238,10 +243,6 @@ void platformInit() {
     pointer++;
     *pointer = (struct platform) {200, 80, 90};
     pointer++;
-    *pointer = (struct platform) {300, 90, 120};
-    pointer++;
-    *pointer = (struct platform) {400, 50, 30};
-
 };
 
 void drawPlatform(int16_t x, int16_t y, uint8_t length) {
@@ -264,9 +265,6 @@ void drawPlatform(int16_t x, int16_t y, uint8_t length) {
 
 
 void reDrawPlatform(int16_t x, int16_t y, uint8_t length) {
-
-
-    printPlatform(x, y);
 
     drawCorrect(x + length+1, y, 0);
     drawCorrect(x + length+1, y + 4, 0);
@@ -292,6 +290,10 @@ void reDrawPlatform(int16_t x, int16_t y, uint8_t length) {
     drawCorrect(x + length+11, y + 4, 0);
     drawCorrect(x + length+12, y, 0);
     drawCorrect(x + length+12, y + 4, 0);
+
+
+    printPlatform(x, y);
+
 }
 
 void reDrawPlatforms() {
@@ -367,17 +369,15 @@ void reset() {
 
         for (int i = 0; i < PLATFORM_COUNT; i++) {
             pointer->x -= playerPosX;
-            pointer->y -= playerPosY;
-
             pointer++;
         }
 
-        playerPosY -= playerPosY;
-        offsetY += playerPosY;
+        offsetX = 5;
 
-        playerPosX -= playerPosX;
-        offsetX += playerPosX;
-        page(0, 0, 255);
+        playerPosX = 0;
+        gameSpeed += 1;
+
+
     }
 
 }
@@ -397,7 +397,7 @@ enum gState {
     run, stop, set
 };
 
-enum gState gameState = run;
+enum gState gameState = set;
 
 
 void dash() {
@@ -538,7 +538,7 @@ bool collisionWithPlatform() {
         }
 
         platformIndex++;
-        if (platformIndex > 4) {
+        if (platformIndex > PLATFORM_COUNT) {
             platformIndex = 0;
         }
     }
@@ -552,12 +552,16 @@ bool collisionWithPlatform() {
 
 void update() {
 
+    if(playerPosY >= 110){
+        gameState = set;
+    }
+
     lastPlayerPosY = playerPosY;
     lastOffsetX = offsetX;
     lastOffsetY = offsetY;
 
     checkIfPlatformOutOfFrame();
-    //reset();
+    reset();
 
     if (playerState == standing) {
         jumpCounter = 2;
@@ -568,9 +572,9 @@ void update() {
         collisionWithPlatform();
     }
     if (dashLen > 0 && playerState == dashing) {
-        dashLen--;
-        playerPosX += SPEED * 2;
-        offsetX -= SPEED * 2;
+        dashLen -= gameSpeed;
+        playerPosX += gameSpeed * 2;
+        offsetX -= gameSpeed * 2;
     }
     if (dashLen == 0 && playerState == dashing) {
         collisionWithPlatform();
@@ -585,8 +589,8 @@ void update() {
 
     }
 
-    playerPosX += SPEED;
-    offsetX -= SPEED;
+    playerPosX += gameSpeed;
+    offsetX -= gameSpeed;
 
 
 }
@@ -616,16 +620,16 @@ void getInput() {
                 //uart_putc(50);
                 buttonPressed = '1';
                 timePressed = getMsTimer();
-                playerPosY -= SPEED;
-                offsetY += SPEED;
+                playerPosY -= gameSpeed;
+                offsetY += gameSpeed;
 
             }
             if (B_DOWN) {
                 //uart_putc(60);
                 buttonPressed = '1';
                 timePressed = getMsTimer();
-                playerPosY += SPEED;
-                offsetY -= SPEED;
+                playerPosY += gameSpeed;
+                offsetY -= gameSpeed;
 
 
             }
@@ -633,16 +637,16 @@ void getInput() {
                 //uart_putc(70);
                 buttonPressed = '1';
                 timePressed = getMsTimer();
-                playerPosX += SPEED;
-                offsetX -= SPEED;
+                playerPosX += gameSpeed;
+                offsetX -= gameSpeed;
 
             }
             if (B_LEFT) {
                 //uart_putc(80);
                 buttonPressed = '1';
                 timePressed = getMsTimer();
-                playerPosX -= SPEED;
-                offsetX += SPEED;
+                playerPosX -= gameSpeed;
+                offsetX += gameSpeed;
 
             }
 
@@ -674,6 +678,7 @@ void draw() {
     //clearXX();
 
 
+
     printPlayer(5, playerPosY);
     reDrawPlatforms();
     /*
@@ -700,13 +705,30 @@ int main(void) {
     //posX = 40;
     //posY = 40;
 
-    drawPlatforms();
+    //drawPlatforms();
     while (1) {
 /*
  * Set to approx 30 frames per second
  */
-/*
         if (getMsTimer() % 34 == 0) {
+            if(gameState == set){
+                gameSpeed = INITIAL_SPEED;
+
+                clear();
+
+                platformInit();
+                _delay_ms(500);
+                offsetX = 5;
+                drawPlatforms();
+                lastPlayerPosY = 1;
+                printPlayer(5,0);
+                playerPosX = 0;
+                playerPosY = 0;
+                playerMovY = 0;
+
+                gameState = stop;
+
+            }
             getInput();
             if (gameState == run) {
 
@@ -719,13 +741,8 @@ int main(void) {
             }
         }
 
-*/
-        printPlayer(0,0);
-        printPlayer(0,8);
-        printPlayer(0,16);
-        printPlayer(0,24);
-        printPlayer(0,32);
-        printPlayer(0,40);
+
+
 /*
  * Allow repress of buttons every 100 ms TODO: find nice value
  */
