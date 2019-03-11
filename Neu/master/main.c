@@ -31,7 +31,7 @@ typedef int bool;
 
 void init();
 
-int16_t gameSpeed = INITIAL_SPEED;
+volatile int16_t gameSpeed = INITIAL_SPEED;
 
 volatile int16_t lastOffsetY = 52;
 volatile int16_t lastOffsetX = 5;
@@ -55,7 +55,8 @@ volatile int8_t playerMovX = 0;
 
 #define PLAYER_HEIGHT 8
 
-uint64_t score = 0;
+volatile uint64_t score = 0;
+volatile uint8_t lifes = 3;
 
 struct platform {
     int16_t x;
@@ -588,7 +589,7 @@ void update() {
         collisionWithPlatform();
 
     }
-
+    score += gameSpeed;
     playerPosX += gameSpeed;
     offsetX -= gameSpeed;
 
@@ -712,6 +713,12 @@ int main(void) {
  */
         if (getMsTimer() % 34 == 0) {
             if(gameState == set){
+                /*
+                 * If Lifes = 0 --> scores = 0;
+                 *
+                 */
+
+
                 gameSpeed = INITIAL_SPEED;
 
                 clear();
@@ -725,7 +732,6 @@ int main(void) {
                 playerPosX = 0;
                 playerPosY = 0;
                 playerMovY = 0;
-
                 gameState = stop;
 
             }
