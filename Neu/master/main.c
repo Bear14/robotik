@@ -250,7 +250,11 @@ enum state {
 };
 enum state playerState = falling;
 
-enum gState {run,stop,reset};
+enum gState {
+    run, stop, set
+};
+
+enum gState gameState = run;
 
 
 void dash() {
@@ -457,12 +461,14 @@ void getInput() {
             //uart_putc(20);
             buttonPressed = '1';
             timePressed = getMsTimer();
+            gameState = run;
         }
         if (B_PAUSE) {
 
             //uart_putc(30);
             buttonPressed = '1';
             timePressed = getMsTimer();
+            gameState = stop;
         }
         if (B_UP) {
             //uart_putc(50);
@@ -576,15 +582,18 @@ int main(void) {
 /*
  * Set to approx 30 frames per second
  */
+        if (gameState == run) {
 
-        if (getMsTimer() % 34 == 0) {
+            if (getMsTimer() % 34 == 0) {
+                getInput();
+                clearColliding();
+                update();
+                draw();
+
+            }
+        } else {
             getInput();
-            clearColliding();
-            update();
-            draw();
-
         }
-
 /*
  * Allow repress of buttons every 100 ms TODO: find nice value
  */
