@@ -1,32 +1,35 @@
 //
-// Created by torben on 07/03/19.
+// Created by torben on 10/03/19.
 //
+
 #include <inttypes.h>
-#include "display.h"
-#include "draw.h"
+#include <iostream>
 
-/*
- *  @param x and y where to draw the page
- *  @return void
- *
- *  This functions draws inside the lcd panel.
- *  Because if you draw outside of the pixel range
- *  the screen goes funky
- *
- */
+#define DRAWING_BUFFER_SIZE 10
 
-/*
- * TODO: make function hat checks if page would be redrawn and if so dont delete it and dont draw again
- */
+void page(uint8_t x, uint8_t y, uint8_t h) {
+    std::cout << "page :" << " (x:" << (int) x << "|y:" << (int) y << "|h:"
+              << (int) h << ")" << std::endl;
+}
+
+struct pageToDraw {
+    uint8_t x;
+    uint8_t y;
+    uint8_t h;
+};
 /*
 typedef int bool;
 #define true 1
 #define false 0
 */
 
-typedef int bool;
-#define true 1
-#define false 0
+struct pageToDraw drawingBuffer[DRAWING_BUFFER_SIZE];
+struct pageToDraw eraseBuffer[DRAWING_BUFFER_SIZE];
+struct pageToDraw *ptr; // = drawingBuffer;
+struct pageToDraw *erasePtr; // = eraseBuffer;
+
+struct pageToDraw dummy = (struct pageToDraw) {255, 255, 255};
+volatile uint8_t pageCount = 0;
 
 
 void bufferInit() {
@@ -48,7 +51,7 @@ void bufferInit() {
 
 void flushBuffer(char which) {
 
-    struct pageToDraw *pointer = 0;
+    struct pageToDraw *pointer;
     if (which == 'd') {
         pointer = drawingBuffer;
     } else if (which == 'e') {
@@ -90,7 +93,7 @@ bool pageInBuffer(struct pageToDraw page, char which) {
 }
 
 void deletePageFromBuffer(struct pageToDraw page, char which) {
-    struct pageToDraw *pointer = 0;
+    struct pageToDraw *pointer;
     if (which == 'd') {
         pointer = drawingBuffer;
     } else if (which == 'e') {
@@ -111,6 +114,7 @@ void deletePageFromBuffer(struct pageToDraw page, char which) {
 
 }
 
+
 void addPageToBuffer(struct pageToDraw page, char which) {
 
     // page fitting on screen
@@ -121,7 +125,7 @@ void addPageToBuffer(struct pageToDraw page, char which) {
         //page not already in buffer
         if (!(pageInBuffer(page, which))) {
 
-            struct pageToDraw *pointer = 0;
+            struct pageToDraw *pointer;
             if (which == 'd') {
                 pointer = drawingBuffer;
             } else if (which == 'e') {
@@ -134,6 +138,7 @@ void addPageToBuffer(struct pageToDraw page, char which) {
             if (pageInBuffer(page, 'e')) {
 
                 deletePageFromBuffer(page, 'e');
+                std::cout << "page in erase" << std::endl;
 
 
             } else {
@@ -154,23 +159,7 @@ void addPageToBuffer(struct pageToDraw page, char which) {
     }
 }
 
-/*
-bool inDrawBuffer(struct pageToDraw check){
-    ptr = drawingBuffer;
 
-    for(int i = 0; i < DRAWING_BUFFER_SIZE; i++){
-
-        if(check.x == ptr->x && check.y == ptr->y && check.h == ptr->h){
-            return true;
-        }
-        ptr++;
-
-    }
-    ptr = drawingBuffer;
-
-    return false;
-}
-*/
 void drawFromBuffer() {
 
 
@@ -228,7 +217,7 @@ void drawFromBuffer() {
  *
  *
  */
-void drawCorrect_old(int16_t x, int16_t y, uint8_t h) {
+void drawCorrect(int16_t x, int16_t y, uint8_t h) {
 
     if (x >= 0 && x <= 159 && y >= 0 && y <= 104) {
         int16_t nex = y / 4;
@@ -274,58 +263,6 @@ void drawCorrect_old(int16_t x, int16_t y, uint8_t h) {
 
             addPageToBuffer((struct pageToDraw) {x, nex, page_1}, 'd');
             addPageToBuffer((struct pageToDraw) {x, nex + 1, page_2}, 'd');
-        }
-    }
-}
-
-
-// the only shit we need
-void drawCorrect(int16_t x, int16_t y, uint8_t h) {
-
-    if (x >= 0 && x <= 159 && y >= 0 && y <= 104) {
-        int16_t nex = y / 4;
-
-        if (y % 4 == 0) {
-            page(x, nex, h);
-        }
-        if (y % 4 == 1) {
-            uint16_t hex = h << 2;
-            uint16_t del = 65280;
-
-            uint8_t page_2 = hex >> 8;
-
-
-            uint8_t page_1 = hex;
-            page_1 &= ~(del);
-
-            page(x, nex, page_1);
-            page(x, nex + 1, page_2);
-        }
-        if (y % 4 == 2) {
-            uint16_t hex = h << 4;
-            uint16_t del = 65280;
-
-            uint8_t page_2 = hex >> 8;
-
-
-            uint8_t page_1 = hex;
-            page_1 &= ~(del);
-
-            page(x, nex, page_1);
-            page(x, nex + 1, page_2);
-        }
-        if (y % 4 == 3) {
-            uint16_t hex = h << 6;
-            uint16_t del = 65280;
-
-            uint8_t page_2 = hex >> 8;
-
-
-            uint8_t page_1 = hex;
-            page_1 &= ~(del);
-
-            page(x, nex, page_1);
-            page(x, nex + 1, page_2);
         }
     }
 }
@@ -381,4 +318,52 @@ void combineCollidingPages() {
     }
     pivotPtr = drawingBuffer;
 
+}
+
+void drawBuffer(char which) {
+    struct pageToDraw *pointer;
+    if (which == 'e') {
+        pointer = eraseBuffer;
+        std::cout << "Erase:\n";
+    } else if (which == 'd') {
+        pointer = drawingBuffer;
+        std::cout << "Draw:\n";
+    }
+
+    for (int i = 0; i < DRAWING_BUFFER_SIZE; i++) {
+        std::cout << "index: " << i << " (x:" << (int) pointer->x << "|y:" << (int) pointer->y << "|h:"
+                  << (int) pointer->h << ")" << std::endl;
+
+        pointer++;
+    }
+
+
+}
+
+int main() {
+    bufferInit();
+
+    struct pageToDraw test1 = (struct pageToDraw) {2, 2, 191};
+    struct pageToDraw test2 = (struct pageToDraw) {2, 3, 64};
+
+
+
+    addPageToBuffer(test1, 'd');
+    addPageToBuffer(test2, 'd');
+    drawBuffer('d');
+    drawBuffer('e');
+
+    combineCollidingPages();
+    drawFromBuffer();
+
+    addPageToBuffer(test1,'d');
+    drawBuffer('d');
+    drawBuffer('e');
+
+
+    combineCollidingPages();
+    drawFromBuffer();
+
+
+    return 0;
 }
