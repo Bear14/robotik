@@ -25,7 +25,7 @@ typedef int bool;
 #define DASH_LENGTH 6
 #define PLATFORM_COUNT 5
 
-#define PLATFORM_HEIGHT 4
+#define PLATFORM_HEIGHT 8
 
 #define PANEL_SIZE 16
 
@@ -378,6 +378,22 @@ bool collisionFromTopOrBottom(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, in
 
 }
 
+bool collisionFromTop(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t x2, int16_t y2, uint8_t w2,
+                      uint8_t h2) {
+    if (y1 + h1 > y2) {
+        return true;
+    }
+    return false;
+}
+
+bool collisionFromBottom(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t x2, int16_t y2, uint8_t w2,
+                         uint8_t h2) {
+    if (y1 < y2 + h2) {
+        return true;
+    }
+    return false;
+}
+
 
 bool collisionWithPlatform() {
 
@@ -391,16 +407,48 @@ bool collisionWithPlatform() {
         if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, platPtr->x, platPtr->y,
                                 platPtr->length,
                                 PLATFORM_HEIGHT)) {
-            playerState = standing;
             playerMovY = 0;
 
-            if (collisionFromTopOrBottom(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, platPtr->x, platPtr->y,
-                                         platPtr->length,
-                                         PLATFORM_HEIGHT)) {
+
+            if (abs(playerPosY + PLAYER_HEIGHT - platPtr->y) >= abs(playerPosY - platPtr->y + PLATFORM_HEIGHT)) {
+                page(100, 0, 0xFF);
+                playerState = standing;
+
                 int8_t calc = (platPtr->y - (playerPosY + PLAYER_HEIGHT));
                 playerPosY += calc; //calc
                 offsetY -= calc;
+
+            } else if (abs(playerPosY + PLAYER_HEIGHT - platPtr->y) <= abs(playerPosY - platPtr->y + PLATFORM_HEIGHT)) {
+                page(100, 0, 0xFF);
+
+                int8_t calc = (platPtr->y + PLATFORM_HEIGHT - playerPosY);
+                playerPosY += calc;
+                offsetY -= calc;
+
+                playerState = falling;
             }
+            // }
+
+/*
+            if (collisionFromTop(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, platPtr->x, platPtr->y,
+                                 platPtr->length,
+                                 PLATFORM_HEIGHT)) {
+                int8_t calc = (platPtr->y - (playerPosY + PLAYER_HEIGHT));
+                playerPosY += calc; //calc
+                offsetY -= calc;
+                page(0, 0, 0xFF);
+
+            } else if (collisionFromBottom(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, platPtr->x, platPtr->y,
+                                           platPtr->length,
+                                           PLATFORM_HEIGHT)) {
+                int8_t calc = (platPtr->y + PLATFORM_HEIGHT + (playerPosY));
+                playerPosY += calc; //calc
+                offsetY -= calc;
+                playerMovY = 0;
+
+            }
+*/
+
             return true;
         }
 
@@ -461,60 +509,66 @@ void getInput() {
             //uart_putc(20);
             buttonPressed = '1';
             timePressed = getMsTimer();
-            gameState = run;
+            //gameState = run;
         }
         if (B_PAUSE) {
 
             //uart_putc(30);
             buttonPressed = '1';
             timePressed = getMsTimer();
-            gameState = stop;
+            if (gameState == run) {
+                gameState = stop;
+            } else {
+                gameState = run;
+            }
         }
-        if (B_UP) {
-            //uart_putc(50);
-            buttonPressed = '1';
-            timePressed = getMsTimer();
-            playerPosY -= SPEED;
-            offsetY += SPEED;
+        if (gameState == run) {
+            if (B_UP) {
+                //uart_putc(50);
+                buttonPressed = '1';
+                timePressed = getMsTimer();
+                playerPosY -= SPEED;
+                offsetY += SPEED;
 
-        }
-        if (B_DOWN) {
-            //uart_putc(60);
-            buttonPressed = '1';
-            timePressed = getMsTimer();
-            playerPosY += SPEED;
-            offsetY -= SPEED;
+            }
+            if (B_DOWN) {
+                //uart_putc(60);
+                buttonPressed = '1';
+                timePressed = getMsTimer();
+                playerPosY += SPEED;
+                offsetY -= SPEED;
 
 
-        }
-        if (B_RIGHT) {
-            //uart_putc(70);
-            buttonPressed = '1';
-            timePressed = getMsTimer();
-            playerPosX += SPEED;
-            offsetX -= SPEED;
+            }
+            if (B_RIGHT) {
+                //uart_putc(70);
+                buttonPressed = '1';
+                timePressed = getMsTimer();
+                playerPosX += SPEED;
+                offsetX -= SPEED;
 
-        }
-        if (B_LEFT) {
-            //uart_putc(80);
-            buttonPressed = '1';
-            timePressed = getMsTimer();
-            playerPosX -= SPEED;
-            offsetX += SPEED;
+            }
+            if (B_LEFT) {
+                //uart_putc(80);
+                buttonPressed = '1';
+                timePressed = getMsTimer();
+                playerPosX -= SPEED;
+                offsetX += SPEED;
 
-        }
+            }
 
-        if (B_A) {
-            //uart_putc(90);
-            buttonPressed = '1';
-            jump();
-            timePressed = getMsTimer();
-        }
-        if (B_B) {
-            //uart_putc(100);
-            buttonPressed = '1';
-            dash();
-            timePressed = getMsTimer();
+            if (B_A) {
+                //uart_putc(90);
+                buttonPressed = '1';
+                jump();
+                timePressed = getMsTimer();
+            }
+            if (B_B) {
+                //uart_putc(100);
+                buttonPressed = '1';
+                dash();
+                timePressed = getMsTimer();
+            }
         }
     }
 }
@@ -582,17 +636,17 @@ int main(void) {
 /*
  * Set to approx 30 frames per second
  */
+
+//if (getMsTimer() % 34 == 0) {
+        getInput();
         if (gameState == run) {
 
-            if (getMsTimer() % 34 == 0) {
-                getInput();
-                clearColliding();
-                update();
-                draw();
 
-            }
-        } else {
-            getInput();
+            clearColliding();
+            update();
+            draw();
+
+            // }
         }
 /*
  * Allow repress of buttons every 100 ms TODO: find nice value
