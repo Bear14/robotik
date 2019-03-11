@@ -52,7 +52,7 @@ if __name__ == '__main__':
                 y=0
                 x=x+1
             elif y > int(picheight):
-                return print("Error: Höhe überlaufen")                
+                print("Error: Höhe überlaufen")                
             zielfile.write(");\n")
 
     zielfile.close()
