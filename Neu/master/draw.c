@@ -228,6 +228,7 @@ void drawFromBuffer() {
  *
  *
  */
+/*
 void drawCorrect_old(int16_t x, int16_t y, uint8_t h) {
 
     if (x >= 0 && x <= 159 && y >= 0 && y <= 104) {
@@ -277,7 +278,7 @@ void drawCorrect_old(int16_t x, int16_t y, uint8_t h) {
         }
     }
 }
-
+*/
 
 // the only shit we need
 void drawCorrect(int16_t x, int16_t y, uint8_t h) {

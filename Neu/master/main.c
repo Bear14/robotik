@@ -31,8 +31,8 @@ typedef int bool;
 
 void init();
 
-volatile int16_t posY = 0;
-volatile int16_t posX = 0;
+volatile int16_t lastOffsetY = 52;
+volatile int16_t lastOffsetX = 5;
 volatile int16_t offsetY = 52;
 volatile int16_t offsetX = 5;
 volatile char buttonPressed = '0';
@@ -68,6 +68,39 @@ struct platform getPlatformFromIndex(uint8_t ind) {
     struct platform *pointer = platforms;
     pointer += ind;
     return *pointer;
+}
+
+void printPlatform(int16_t x,int16_t y){
+    drawCorrect(x+0,y+0,0xFF);
+    drawCorrect(x+0,y+4,0x56);
+    drawCorrect(x+1,y+0,0xBF);
+    drawCorrect(x+1,y+4,0x56);
+    drawCorrect(x+2,y+0,0xAF);
+    drawCorrect(x+2,y+4,0x55);
+    drawCorrect(x+3,y+0,0x6F);
+    drawCorrect(x+3,y+4,0x55);
+    drawCorrect(x+4,y+0,0xAF);
+    drawCorrect(x+4,y+4,0x55);
+    drawCorrect(x+5,y+0,0xBF);
+    drawCorrect(x+5,y+4,0x56);
+    drawCorrect(x+6,y+0,0xFF);
+    drawCorrect(x+6,y+4,0x6A);
+    drawCorrect(x+7,y+0,0xFF);
+    drawCorrect(x+7,y+4,0x6F);
+    drawCorrect(x+8,y+0,0xFF);
+    drawCorrect(x+8,y+4,0x6B);
+    drawCorrect(x+9,y+0,0xFF);
+    drawCorrect(x+9,y+4,0x5A);
+    drawCorrect(x+10,y+0,0xBF);
+    drawCorrect(x+10,y+4,0x56);
+    drawCorrect(x+11,y+0,0xAF);
+    drawCorrect(x+11,y+4,0x55);
+    drawCorrect(x+12,y+0,0x6F);
+    drawCorrect(x+12,y+4,0x55);
+    drawCorrect(x+13,y+0,0xAF);
+    drawCorrect(x+13,y+4,0x55);
+    drawCorrect(x+14,y+0,0xBF);
+    drawCorrect(x+14,y+4,0x56);
 }
 
 uint8_t getIndexMaxX() {
@@ -124,29 +157,41 @@ uint8_t getIndexMinX() {
 
 void platformInit() {
     struct platform *pointer = platforms;
-    *pointer = (struct platform) {0, 12, 80};
+    *pointer = (struct platform) {0, 12, 90};
     pointer++;
-    *pointer = (struct platform) {90, 30, 40};
+    *pointer = (struct platform) {91, 30, 60};
     pointer++;
-    *pointer = (struct platform) {200, 20, 50};
+    *pointer = (struct platform) {200, 20, 90};
     pointer++;
-    *pointer = (struct platform) {300, 30, 50};
+    *pointer = (struct platform) {300, 30, 120};
     pointer++;
-    *pointer = (struct platform) {400, 40, 50};
+    *pointer = (struct platform) {400, 40, 30};
 
 };
 
 void drawPlatform(int16_t x, int16_t y, uint8_t length) {
 
     //drawCorrect(x+length+1,y,0);
+    page(0,0,0xff);/*
+    int anzahl = length % 30;
+
+    for(int i = x; i < anzahl; i++){
+
+        printPlatform(i*30,y);
 
 
-    for (int16_t i = x; i < x + length; i++) {
+    }*/
 
 
-        drawCorrect(i, y, 0xFF);
+    for (int16_t i = x; i < x + length; i+=15) {
 
 
+        //printPlatform(i,y);
+
+        printPlatform(i,y);
+        //printPlayer(i,y);
+        //drawCorrect(i,y,0x1F);
+        //drawCorrect(i,y,0xFF);
     }
 
 }
@@ -154,19 +199,42 @@ void drawPlatform(int16_t x, int16_t y, uint8_t length) {
 void clearPlatform(int16_t x, int16_t y, uint8_t length) {
 
 
+    int16_t deltaXOffset = lastOffsetX - offsetX;
+    int16_t deltaYOffset = offsetY -lastOffsetY;
 
+    for(int16_t i = x + length; i < x +length +deltaXOffset; i++){
 
-
-
-    for (int16_t i = x; i < x + length; i++) {
-
-
-        drawCorrect(i, y, 0);
+        drawCorrect(i,y,0);
+        drawCorrect(i,y+4,0);
 
 
     }
 
+    if(offsetY != lastOffsetY){
 
+
+        for(int16_t j = x; j < x +length; j++){
+
+            drawCorrect(j,y,0);
+            drawCorrect(j,y+4,0);
+
+        }
+
+
+
+
+
+    }
+    /*
+    for (int16_t i = x; i < x + length; i++) {
+
+
+        drawCorrect(i, y, 0);
+        drawCorrect(i,y+4,0);
+
+    }
+
+*/
 }
 
 void clearPlatforms() {
@@ -199,7 +267,7 @@ void drawPlatforms() {
 struct platform createNewPlatform(struct platform last) {
     int random = rand() % 1024;
 
-    uint8_t len = random % 70 + 30;
+    uint8_t len = 15*(random % 8 + 1);
 
     int16_t newX = (last.x + last.length) + (int16_t)(random % 25 + 1);
     int16_t newY = last.y + (int16_t)(random % 100 - 50);
@@ -323,6 +391,28 @@ void jump() {
 /*
  * Apply every change to playerPosX and playerPosY to offsetX and offsetY but in reverse;
  */
+
+void clearXX(){
+
+    struct platform *pointer = platforms;
+
+    for(int i = 0; i < PLATFORM_COUNT; i++){
+
+
+
+        clearPlatform(pointer->x+lastOffsetX,pointer->y+lastOffsetY,pointer->length);
+
+        pointer++;
+    }
+
+
+
+
+
+}
+
+
+
 
 bool collisionRectangles(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t x2, int16_t y2, uint8_t w2,
                          uint8_t h2) {
@@ -519,6 +609,10 @@ bool collisionWithPlatform() {
 
 void update() {
 
+
+    lastOffsetX = offsetX;
+    lastOffsetY = offsetY;
+
     checkIfPlatformOutOfFrame();
     reset();
 
@@ -634,7 +728,7 @@ void draw() {
 */
     //printPlayer(playerPosX, playerPosY);
 
-
+    clearXX();
 
     drawPlatforms();
     printPlayer(5, 52);
@@ -680,8 +774,8 @@ int main(void) {
     uart_putc(10);
     _delay_ms(1000);
 
-    posX = 40;
-    posY = 40;
+    //posX = 40;
+    //posY = 40;
 
 
     while (1) {
@@ -693,9 +787,10 @@ int main(void) {
             getInput();
             if (gameState == run) {
 
-                clearPlatforms();
+                //clearPlatforms();
                 //clearColliding();
                 update();
+                //printPlatform(10,12);
                 draw();
 
             }
