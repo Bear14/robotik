@@ -71,66 +71,36 @@ struct platform getPlatformFromIndex(uint8_t ind) {
 }
 
 void printPlatform(int16_t x,int16_t y){
-    drawCorrect(x,y,0x1F);
-    drawCorrect(x+1,y+0,0x5B);
-    drawCorrect(x+2,y+0,0x6B);
-    drawCorrect(x+3,y+0,0xAB);
-    drawCorrect(x+4,y+0,0x5B);
-    drawCorrect(x+5,y+0,0x5B);
-    drawCorrect(x+6,y+0,0x5B);
-    drawCorrect(x+7,y+0,0x5B);
-    drawCorrect(x+8,y+0,0x5B);
-    drawCorrect(x+9,y+0,0x5B);
-    drawCorrect(x+10,y+0,0x6B);
-    drawCorrect(x+11,y+0,0x6B);
-    drawCorrect(x+12,y+0,0xAB);
-    drawCorrect(x+13,y+0,0xAB);
-    drawCorrect(x+14,y+0,0x6B);
-    drawCorrect(x+15,y+0,0x5B);
-    drawCorrect(x+16,y+0,0x5B);
-    drawCorrect(x+17,y+0,0x5B);
-    drawCorrect(x+18,y+0,0x6B);
-    drawCorrect(x+19,y+0,0xAB);
-    drawCorrect(x+20,y+0,0xAB);
-    drawCorrect(x+21,y+0,0x6B);
-    drawCorrect(x+22,y+0,0x5B);
-    drawCorrect(x+23,y+0,0x5B);
-    drawCorrect(x+24,y+0,0x5B);
-    drawCorrect(x+25,y+0,0x5B);
-    drawCorrect(x+26,y+0,0x6B);
-    drawCorrect(x+27,y+0,0x6B);
-    drawCorrect(x+28,y+0,0x5B);
-    drawCorrect(x+29,y+0,0x1F);
-    drawCorrect(x+0,y+4,0x1F);
-    drawCorrect(x+1,y+4,0x5B);
-    drawCorrect(x+2,y+4,0x6B);
-    drawCorrect(x+3,y+4,0xAB);
-    drawCorrect(x+4,y+4,0x5B);
-    drawCorrect(x+5,y+4,0x5B);
-    drawCorrect(x+6,y+4,0x5B);
-    drawCorrect(x+7,y+4,0x5B);
-    drawCorrect(x+8,y+4,0x5B);
-    drawCorrect(x+9,y+4,0x5B);
-    drawCorrect(x+10,y+4,0x6B);
-    drawCorrect(x+11,y+4,0x6B);
-    drawCorrect(x+12,y+4,0xAB);
-    drawCorrect(x+13,y+4,0xAB);
-    drawCorrect(x+14,y+4,0x6B);
-    drawCorrect(x+15,y+4,0x5B);
-    drawCorrect(x+16,y+4,0x5B);
-    drawCorrect(x+17,y+4,0x5B);
-    drawCorrect(x+18,y+4,0x6B);
-    drawCorrect(x+19,y+4,0xAB);
-    drawCorrect(x+20,y+4,0xAB);
-    drawCorrect(x+21,y+4,0x6B);
-    drawCorrect(x+22,y+4,0x5B);
-    drawCorrect(x+23,y+4,0x5B);
-    drawCorrect(x+24,y+4,0x5B);
-    drawCorrect(x+25,y+4,0x5B);
-    drawCorrect(x+26,y+4,0x6B);
-    drawCorrect(x+27,y+4,0x6B);
-    drawCorrect(x+28,y+4,0x5B);
-    drawCorrect(x+29,y+4,0x1F);
+    drawCorrect(x+0,y+0,0xFF);
+    drawCorrect(x+0,y+4,0x56);
+    drawCorrect(x+1,y+0,0xBF);
+    drawCorrect(x+1,y+4,0x56);
+    drawCorrect(x+2,y+0,0xAF);
+    drawCorrect(x+2,y+4,0x55);
+    drawCorrect(x+3,y+0,0x6F);
+    drawCorrect(x+3,y+4,0x55);
+    drawCorrect(x+4,y+0,0xAF);
+    drawCorrect(x+4,y+4,0x55);
+    drawCorrect(x+5,y+0,0xBF);
+    drawCorrect(x+5,y+4,0x56);
+    drawCorrect(x+6,y+0,0xFF);
+    drawCorrect(x+6,y+4,0x6A);
+    drawCorrect(x+7,y+0,0xFF);
+    drawCorrect(x+7,y+4,0x6F);
+    drawCorrect(x+8,y+0,0xFF);
+    drawCorrect(x+8,y+4,0x6B);
+    drawCorrect(x+9,y+0,0xFF);
+    drawCorrect(x+9,y+4,0x5A);
+    drawCorrect(x+10,y+0,0xBF);
+    drawCorrect(x+10,y+4,0x56);
+    drawCorrect(x+11,y+0,0xAF);
+    drawCorrect(x+11,y+4,0x55);
+    drawCorrect(x+12,y+0,0x6F);
+    drawCorrect(x+12,y+4,0x55);
+    drawCorrect(x+13,y+0,0xAF);
+    drawCorrect(x+13,y+4,0x55);
+    drawCorrect(x+14,y+0,0xBF);
+    drawCorrect(x+14,y+4,0x56);
 }
 
 uint8_t getIndexMaxX() {
@@ -213,7 +183,7 @@ void drawPlatform(int16_t x, int16_t y, uint8_t length) {
     }*/
 
 
-    for (int16_t i = x; i < x + length; i+=30) {
+    for (int16_t i = x; i < x + length; i+=15) {
 
 
         //printPlatform(i,y);
@@ -297,7 +267,7 @@ void drawPlatforms() {
 struct platform createNewPlatform(struct platform last) {
     int random = rand() % 1024;
 
-    uint8_t len = 30*(random % 4 + 1);
+    uint8_t len = 15*(random % 8 + 1);
 
     int16_t newX = (last.x + last.length) + (int16_t)(random % 25 + 1);
     int16_t newY = last.y + (int16_t)(random % 100 - 50);
@@ -820,6 +790,7 @@ int main(void) {
                 //clearPlatforms();
                 //clearColliding();
                 update();
+                //printPlatform(10,12);
                 draw();
 
             }
