@@ -47,13 +47,14 @@ if __name__ == '__main__':
         if elem != 0:
             zielfile.write("drawCorrect(x+"+str(x)+",y+"+str(y)+",0x%02X" %(elem))
 
-            y=y+4
+        y=y+4
             #Am ende der ersten Pixelzeile in die naechste Pixelzeile springen
-            if y == int(picheight):
-                y=0
-                x=x+1
-            elif y > int(picheight):
-                print("Error: Höhe überlaufen")
-            zielfile.write(");")
+        if y == int(picheight):
+            y=0
+            x=x+1
+        elif y > int(picheight):
+            print("Error: Höhe überlaufen")
+        zielfile.write(");")
+
     zielfile.write(";  break;\n")
     zielfile.close()
