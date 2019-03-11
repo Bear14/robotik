@@ -41,18 +41,19 @@ if __name__ == '__main__':
         for j in range(0,len(pic[i]), 4):
             #Das das Display von unten nach oben die Pages Schreibt
             pages.append(int(pic[i][j+3] + pic[i][j+2] + pic[i][j+1] + pic[i][j] ,2))
-
+    #print(pic)
+    #print(pages)
     for elem in pages:
         if elem != 0:
             zielfile.write("drawCorrect(x+"+str(x)+",y+"+str(y)+",0x%02X" %(elem))
 
-            y=y+4
+        y=y+4
             #Am ende der ersten Pixelzeile in die naechste Pixelzeile springen
-            if y == int(picheight):
-                y=0
-                x=x+1
-            elif y > int(picheight):
-                print("Error: Höhe überlaufen")
-            zielfile.write(");\n")
+        if y == int(picheight):
+            y=0
+            x=x+1
+        elif y > int(picheight):
+             print("Error: Höhe überlaufen")
+        zielfile.write(");\n")
 
     zielfile.close()
