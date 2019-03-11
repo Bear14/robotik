@@ -44,13 +44,15 @@ if __name__ == '__main__':
 
     for elem in pages:
         if elem != 0:
-            zielfile.write("page(x+"+str(x)+",y+"+str(y)+",0x%02X" %(elem))
+            zielfile.write("drawCorrect(x+"+str(x)+",y+"+str(y)+",0x%02X" %(elem))
 
-            y=y+1
+            y=y+4
             #Am ende der ersten Pixelzeile in die naechste Pixelzeile springen
-            if y == int(picheight/4):
+            if y == int(picheight):
                 y=0
                 x=x+1
+            elif y > int(picheight):
+                return print("Error: Höhe überlaufen")                
             zielfile.write(");\n")
 
     zielfile.close()
