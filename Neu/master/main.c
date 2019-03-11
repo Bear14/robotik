@@ -138,6 +138,9 @@ void platformInit() {
 
 void drawPlatform(int16_t x, int16_t y, uint8_t length) {
 
+    //drawCorrect(x+length+1,y,0);
+
+
     for (int16_t i = x; i < x + length; i++) {
 
 
@@ -148,6 +151,37 @@ void drawPlatform(int16_t x, int16_t y, uint8_t length) {
 
 }
 
+void clearPlatform(int16_t x, int16_t y, uint8_t length) {
+
+
+
+
+
+
+    for (int16_t i = x; i < x + length; i++) {
+
+
+        drawCorrect(i, y, 0);
+
+
+    }
+
+
+}
+
+void clearPlatforms() {
+
+    struct platform *pointer = platforms;
+
+    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
+        struct platform toDraw = *pointer;
+        clearPlatform(toDraw.x + offsetX, toDraw.y + offsetY, toDraw.length);
+
+        pointer++;
+
+    }
+
+}
 void drawPlatforms() {
 
     struct platform *pointer = platforms;
@@ -203,15 +237,19 @@ void reset() {
 
     // TODO: Fix reset and speed up
 
-    if (playerPosX >= 15000) {
+    if (playerPosX >= 1000) {
         struct platform *pointer = platforms;
 
 
         for (int i = 0; i < PLATFORM_COUNT; i++) {
             pointer->x -= playerPosX;
+            pointer->y -= playerPosY;
 
             pointer++;
         }
+
+        playerPosY -= playerPosY;
+        offsetY += playerPosY;
 
         playerPosX -= playerPosX;
         offsetX += playerPosX;
@@ -351,9 +389,23 @@ void clearColliding() {
 
             struct platform may = panelCollisionWithPlatform(i, j);
             if (may.x != -1) {
+                page(0, 0, 0xFF);
+/*
+                drawCorrect(0+1,may.y+offsetY,85);
+                drawCorrect(0+2,may.y,85);
+                drawCorrect(0+3,may.y,85);
+*/
+/*
+                drawCorrect(may.x+may.length+offsetX+1,may.y+offsetY,0);
+                drawCorrect(may.x+may.length+offsetY+2,may.y+offsetY,0);
+                drawCorrect(may.x+may.length+offsetX+3,may.y+offsetY,0);
+                drawCorrect(may.x+may.length+4,may.y,0);
+                drawCorrect(may.x+may.length+5,may.y,0);
 
+*/
+                clearPlatform(may.x + offsetX, may.y + offsetY, may.length);
                 clearPanel(i, j);
-
+                //clearPlatform(may.x, may.y, may.length);
             }
 
         }
@@ -411,7 +463,7 @@ bool collisionWithPlatform() {
 
 
             if (abs(playerPosY + PLAYER_HEIGHT - platPtr->y) >= abs(playerPosY - platPtr->y + PLATFORM_HEIGHT)) {
-                page(100, 0, 0xFF);
+                //page(100, 0, 0xFF);
                 playerState = standing;
 
                 int8_t calc = (platPtr->y - (playerPosY + PLAYER_HEIGHT));
@@ -419,7 +471,7 @@ bool collisionWithPlatform() {
                 offsetY -= calc;
 
             } else if (abs(playerPosY + PLAYER_HEIGHT - platPtr->y) <= abs(playerPosY - platPtr->y + PLATFORM_HEIGHT)) {
-                page(100, 0, 0xFF);
+                //page(100, 0, 0xFF);
 
                 int8_t calc = (platPtr->y + PLATFORM_HEIGHT - playerPosY);
                 playerPosY += calc;
@@ -581,11 +633,11 @@ void draw() {
 
 */
     //printPlayer(playerPosX, playerPosY);
-    printPlayer(5, 52);
+
 
 
     drawPlatforms();
-
+    printPlayer(5, 52);
     /*
     combineCollidingPages();
     drawFromBuffer();
@@ -637,16 +689,16 @@ int main(void) {
  * Set to approx 30 frames per second
  */
 
-//if (getMsTimer() % 34 == 0) {
-        getInput();
-        if (gameState == run) {
+        if (getMsTimer() % 34 == 0) {
+            getInput();
+            if (gameState == run) {
 
+                clearPlatforms();
+                //clearColliding();
+                update();
+                draw();
 
-            clearColliding();
-            update();
-            draw();
-
-            // }
+            }
         }
 /*
  * Allow repress of buttons every 100 ms TODO: find nice value
