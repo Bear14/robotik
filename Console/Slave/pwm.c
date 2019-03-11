@@ -1,4 +1,4 @@
-/* 
+/*
  *	Basis
  *	2009 Benjamin Reh
  */
@@ -8,9 +8,12 @@
 //Pulsweite initialisieren
 void PWMInit()
 {
-	DDRD |=  (1 << 6); //Pin 6 an PORTD auf Ausgang stellen
-	TCCR0A = (1<<WGM00)|(1<<COM0A1); //  Timer/Counter als nicht invertierenden 8-Bit PWM
-	TCCR0B = (1<<CS01) | (1<<CS00); //  Takt von CK / 64 generieren
+	DDRB |=  (1 << 1); //Pin B1  auf Ausgang stellen
+	//FastPWM 8-bit nicht invertiert, troggle Toggle OC0A on Compare Match
+	TCCR0A = (1<<WGM00)|(1<<WGM01)|(1<<COM0A0)|(1<<WGM02);
+	TCCR0B = (1<<CS02); //  Takt von CK / 256 generieren
+
+
 }
 
 //Pulsweite setzen

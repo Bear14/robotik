@@ -15,9 +15,6 @@ if __name__ == '__main__':
     picwidth = int(quelllines[2].split(" ")[0])
     picheight = int(quelllines[2].split(" ")[1])
 
-    print(picheight)
-    print(picwidth)
-
     x=0
     y=0
     pages = []
@@ -29,7 +26,7 @@ if __name__ == '__main__':
     for i in range(len(quelllines)): #Werte werden 2bit weise angeordnet
         #Die ersten 4 Zeilen dienern der Beschreibung der Datei
         #Sind fuer uns irrelevant
-        if quelllines[i]== "255": buffer="00"
+        if quelllines[i]== "216": buffer="00"
         elif quelllines[i] == "162": buffer="01"
         elif quelllines[i]== "114": buffer="10"
         elif quelllines[i] == "62": buffer="11"
@@ -46,13 +43,16 @@ if __name__ == '__main__':
             pages.append(int(pic[i][j+3] + pic[i][j+2] + pic[i][j+1] + pic[i][j] ,2))
 
     for elem in pages:
-        zielfile.write("page(x+"+str(x)+",y+"+str(y)+",0x%02X" %(elem))
+        if elem != 0:
+            zielfile.write("drawCorrect(x+"+str(x)+",y+"+str(y)+",0x%02X" %(elem))
 
-        y=y+1
-        #Am ende der ersten Pixelzeile in die naechste Pixelzeile springen
-        if y == int(picheight/4):
-            y=0
-            x=x+1
-        zielfile.write(");\n")
+            y=y+4
+            #Am ende der ersten Pixelzeile in die naechste Pixelzeile springen
+            if y == int(picheight):
+                y=0
+                x=x+1
+            elif y > int(picheight):
+                print("Error: Höhe überlaufen")
+            zielfile.write(");\n")
 
     zielfile.close()

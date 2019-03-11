@@ -1,0 +1,15 @@
+drawCorrect(x+0,y+0,0xC0);
+drawCorrect(x+0,y+4,0x80);
+drawCorrect(x+1,y+0,0x02);
+drawCorrect(x+1,y+4,0xA2);
+drawCorrect(x+2,y+0,0xAA);
+drawCorrect(x+2,y+4,0xAA);
+drawCorrect(x+3,y+0,0xDA);
+drawCorrect(x+3,y+4,0xAA);
+drawCorrect(x+4,y+0,0xFA);
+drawCorrect(x+4,y+4,0xAA);
+drawCorrect(x+5,y+0,0xD8);
+drawCorrect(x+5,y+4,0xAA);
+drawCorrect(x+6,y+0,0x02);
+drawCorrect(x+6,y+4,0xD7);
+drawCorrect(x+7,y+0,0x55);

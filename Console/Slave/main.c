@@ -1,4 +1,4 @@
-/* 
+/*
  *	Basis
  *	2009 Benjamin Reh und Joachim Schleicher
  */
@@ -10,26 +10,32 @@
 #include "pwm.h"
 #include "timer.h"
 #include "servo.h"
-
+#include "note.h"
+#include "tone.h"
 
 void init();
 
 int main(void)
 {
 	//Initialisierung ausfuehren
-	
+
 	init();
 
 	DDRB|=(1<<1);
 	PORTB|=(1<<1);
 
-	uint8_t d=0;
+	//uint8_t d=0;
 
-	uint16_t counter=0;
+	//uint16_t counter=0;
+	uint8_t tone_nr =10; // Note A
+	uint16_t offset = toneOffset [ tone_nr ];
+	uint16_t t ;
 
-	while (1)
-	{
-		if (d==0) {
+	for ( t =0; t < toneLength [ tone_nr ]; t ++) {
+		uint8_t pwm = pgm_read_byte (&tones[t+offset]) ;
+		setPWM(pwm);// PWM Ausgeben
+	}
+	/*	if (d==0) {
 			PORTB|=(1<<1);
 		} else {
 			uint8_t i;
@@ -43,13 +49,10 @@ int main(void)
 				counter=0;
 			}
 
-				
 		}
 		if (uart_data_waiting())
 			d = uart_getc();
-		
-
-	}	
+	}*/
 }
 
 
@@ -58,7 +61,7 @@ void init()
 {
 	uartInit();   // serielle Ausgabe an PC
 	ADCInit(0);   // Analoge Werte einlesen
-	//~ PWMInit();    // Pulsweite auf D6 ausgeben 
+	PWMInit();    // Pulsweite auf B1 ausgeben
 	timerInit();  // "Systemzeit" initialisieren
 	//servoInit();  // Servoansteuerung initialisieren
 }
