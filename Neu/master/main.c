@@ -27,6 +27,7 @@ typedef int bool;
 
 #define PLATFORM_HEIGHT 4
 
+#define PANEL_SIZE 16
 
 void init();
 
@@ -48,6 +49,8 @@ volatile int16_t playerPosX = 0;
 volatile int8_t playerMovY = 0;
 volatile int8_t playerMovX = 0;
 // Player height is 8!
+
+#define PLAYER_HEIGHT 8
 
 
 struct platform {
@@ -224,7 +227,7 @@ void reset() {
 
 void drawPlayer() {
 
-    for (int i = 5; i < 5 + 8; i++) {
+    for (int i = 5; i < 5 + PLAYER_HEIGHT; i++) {
         drawCorrect(i, 52, 0xFF);
         drawCorrect(i, 56, 0xFF);
     }
@@ -232,7 +235,7 @@ void drawPlayer() {
 };
 
 void drawPlayerZero() {
-    for (int i = playerPosX; i < playerPosX + 8; i++) {
+    for (int i = playerPosX; i < playerPosX + PLAYER_HEIGHT; i++) {
         drawCorrect(i, playerPosY, 0xFF);
         drawCorrect(i, playerPosY + 4, 0xFF);
     }
@@ -246,6 +249,9 @@ enum state {
     standing, dashing, jumping, falling
 };
 enum state playerState = falling;
+
+enum gState {run,stop,reset};
+
 
 void dash() {
 
@@ -289,6 +295,71 @@ bool collisionRectangles(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t
 
 }
 
+struct platform panelCollisionWithPlatform(uint8_t pX, uint8_t pY) {
+
+    struct platform *pointer = platforms;
+
+    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
+
+        if (collisionRectangles(pX, pY, PANEL_SIZE, PANEL_SIZE, pointer->x + offsetX, pointer->y + offsetY,
+                                pointer->length,
+                                PLATFORM_HEIGHT)) {
+
+            return *pointer;
+
+        }
+        pointer++;
+
+    }
+    return (struct platform) {-1, -1, 0};
+
+
+}
+
+void clearPanel(uint8_t x, uint8_t y) {
+
+
+/*
+ *  Iterate panel 0 - panelsize -1 with stepsize 1 and from 0 - panelsize -4 with stepsize 4
+ *
+ */
+
+    for (int i = x; i < x + PANEL_SIZE; i++) {
+
+        for (int j = y; j < y + PANEL_SIZE; j += 4) {
+            drawCorrect(i, j, 0);
+
+
+        }
+    }
+
+
+}
+
+void clearColliding() {
+
+
+    for (int i = 0; i < 160; i += PANEL_SIZE) {
+
+
+        for (int j = 0; j < 104; j += PANEL_SIZE) {
+
+
+            struct platform may = panelCollisionWithPlatform(i, j);
+            if (may.x != -1) {
+
+                clearPanel(i, j);
+
+            }
+
+        }
+
+
+    }
+
+
+}
+
 
 bool collisionFromTopOrBottom(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t x2, int16_t y2, uint8_t w2,
                               uint8_t h2) {
@@ -313,14 +384,16 @@ bool collisionWithPlatform() {
 
         platPtr = platforms + platformIndex;
 
-        if (collisionRectangles(playerPosX, playerPosY, 8, 8, platPtr->x, platPtr->y, platPtr->length,
+        if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, platPtr->x, platPtr->y,
+                                platPtr->length,
                                 PLATFORM_HEIGHT)) {
             playerState = standing;
             playerMovY = 0;
 
-            if (collisionFromTopOrBottom(playerPosX, playerPosY, 8, 8, platPtr->x, platPtr->y, platPtr->length,
+            if (collisionFromTopOrBottom(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, platPtr->x, platPtr->y,
+                                         platPtr->length,
                                          PLATFORM_HEIGHT)) {
-                int8_t calc = (platPtr->y - (playerPosY + 8));
+                int8_t calc = (platPtr->y - (playerPosY + PLAYER_HEIGHT));
                 playerPosY += calc; //calc
                 offsetY -= calc;
             }
@@ -447,66 +520,41 @@ void draw() {
     drawPlatforms();
 
 */
-    printPlayer(playerPosX,playerPosY);
-    printPlayer(5,52);
+    //printPlayer(playerPosX, playerPosY);
+    printPlayer(5, 52);
+
+
     drawPlatforms();
+
+    /*
     combineCollidingPages();
     drawFromBuffer();
-
- //HAS TO BE THE LAST CALL IN DRAW()!!!!!!!!
+*/
+    //HAS TO BE THE LAST CALL IN DRAW()!!!!!!!!
 }
 
 
+void printPlayer(uint8_t x, uint8_t y) {
 
-void printPlayer(uint8_t x, uint8_t y){
 
-
-    drawCorrect(x+4,y+8,0x10);
-    drawCorrect(x+4,y+12,0xFC);
-
-    drawCorrect(x+5,y+8,0x0C);
-    drawCorrect(x+5,y+12,0x28);
-    drawCorrect(x+6,y+0,0xF0);
-    drawCorrect(x+6,y+4,0x5F);
-    drawCorrect(x+6,y+8,0x03);
-    drawCorrect(x+6,y+12,0x0A);
-    drawCorrect(x+7,y+0,0x7C);
-    drawCorrect(x+7,y+4,0x55);
-    drawCorrect(x+7,y+8,0x03);
-    drawCorrect(x+7,y+12,0x0A);
-    drawCorrect(x+8,y+0,0x7C);
-    drawCorrect(x+8,y+4,0x55);
-    drawCorrect(x+8,y+8,0xBF);
-    drawCorrect(x+8,y+12,0x02);
-    drawCorrect(x+9,y+0,0x7F);
-    drawCorrect(x+9,y+4,0x55);
-    drawCorrect(x+9,y+8,0xBF);
-    drawCorrect(x+9,y+12,0x02);
-    drawCorrect(x+10,y+0,0x7F);
-    drawCorrect(x+10,y+4,0x55);
-    drawCorrect(x+10,y+8,0xBF);
-    drawCorrect(x+10,y+12,0x02);
-    drawCorrect(x+11,y+0,0x7F);
-    drawCorrect(x+11,y+4,0x77);
-    drawCorrect(x+11,y+8,0xBF);
-    drawCorrect(x+11,y+12,0x02);
-    drawCorrect(x+12,y+0,0x7F);
-    drawCorrect(x+12,y+4,0x75);
-    drawCorrect(x+12,y+8,0x83);
-    drawCorrect(x+12,y+12,0xEA);
-    drawCorrect(x+13,y+0,0x3F);
-    drawCorrect(x+13,y+8,0x03);
-    drawCorrect(x+13,y+12,0xEA);
-    drawCorrect(x+14,y+0,0x0F);
-    drawCorrect(x+14,y+4,0xC0);
-
-    drawCorrect(x+14,y+12,0xC0);
-    drawCorrect(x+15,y+0,0x0F);
-    drawCorrect(x+15,y+4,0x10);
+    drawCorrect(x + 0, y + 0, 0x3C);
+    drawCorrect(x + 0, y + 4, 0x3F);
+    drawCorrect(x + 1, y + 0, 0x08);
+    drawCorrect(x + 1, y + 4, 0x57);
+    drawCorrect(x + 2, y + 0, 0x0A);
+    drawCorrect(x + 2, y + 4, 0x57);
+    drawCorrect(x + 3, y + 0, 0x0A);
+    drawCorrect(x + 3, y + 4, 0x57);
+    drawCorrect(x + 4, y + 0, 0x0A);
+    drawCorrect(x + 4, y + 4, 0x5B);
+    drawCorrect(x + 5, y + 0, 0xEA);
+    drawCorrect(x + 5, y + 4, 0x57);
+    drawCorrect(x + 6, y + 0, 0xC2);
+    drawCorrect(x + 6, y + 4, 0x03);
+    drawCorrect(x + 7, y + 0, 0x02);
 
 
 }
-
 
 
 int main(void) {
@@ -530,16 +578,18 @@ int main(void) {
  */
 
         if (getMsTimer() % 34 == 0) {
-        getInput();
-        update();
-        draw();
+            getInput();
+            clearColliding();
+            update();
+            draw();
 
-          }
+        }
+
 /*
  * Allow repress of buttons every 100 ms TODO: find nice value
  */
         if (timePressed + 150 <= getMsTimer()) {
-           buttonPressed = '0';
+            buttonPressed = '0';
         }
     }
 }

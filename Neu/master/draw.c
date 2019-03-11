@@ -29,7 +29,6 @@ typedef int bool;
 #define false 0
 
 
-
 void bufferInit() {
     // Set pointer to DrawingBuffer[0]
 
@@ -154,6 +153,7 @@ void addPageToBuffer(struct pageToDraw page, char which) {
         }
     }
 }
+
 /*
 bool inDrawBuffer(struct pageToDraw check){
     ptr = drawingBuffer;
@@ -228,7 +228,7 @@ void drawFromBuffer() {
  *
  *
  */
-void drawCorrect(int16_t x, int16_t y, uint8_t h) {
+void drawCorrect_old(int16_t x, int16_t y, uint8_t h) {
 
     if (x >= 0 && x <= 159 && y >= 0 && y <= 104) {
         int16_t nex = y / 4;
@@ -274,6 +274,58 @@ void drawCorrect(int16_t x, int16_t y, uint8_t h) {
 
             addPageToBuffer((struct pageToDraw) {x, nex, page_1}, 'd');
             addPageToBuffer((struct pageToDraw) {x, nex + 1, page_2}, 'd');
+        }
+    }
+}
+
+
+// the only shit we need
+void drawCorrect(int16_t x, int16_t y, uint8_t h) {
+
+    if (x >= 0 && x <= 159 && y >= 0 && y <= 104) {
+        int16_t nex = y / 4;
+
+        if (y % 4 == 0) {
+            page(x, nex, h);
+        }
+        if (y % 4 == 1) {
+            uint16_t hex = h << 2;
+            uint16_t del = 65280;
+
+            uint8_t page_2 = hex >> 8;
+
+
+            uint8_t page_1 = hex;
+            page_1 &= ~(del);
+
+            page(x, nex, page_1);
+            page(x, nex + 1, page_2);
+        }
+        if (y % 4 == 2) {
+            uint16_t hex = h << 4;
+            uint16_t del = 65280;
+
+            uint8_t page_2 = hex >> 8;
+
+
+            uint8_t page_1 = hex;
+            page_1 &= ~(del);
+
+            page(x, nex, page_1);
+            page(x, nex + 1, page_2);
+        }
+        if (y % 4 == 3) {
+            uint16_t hex = h << 6;
+            uint16_t del = 65280;
+
+            uint8_t page_2 = hex >> 8;
+
+
+            uint8_t page_1 = hex;
+            page_1 &= ~(del);
+
+            page(x, nex, page_1);
+            page(x, nex + 1, page_2);
         }
     }
 }
