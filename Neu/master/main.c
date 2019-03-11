@@ -56,7 +56,7 @@ volatile int8_t playerMovX = 0;
 #define PLAYER_HEIGHT 8
 
 volatile uint64_t score = 0;
-volatile uint8_t lifes = 3;
+volatile uint8_t lives = 4;
 
 struct platform {
     int16_t x;
@@ -73,6 +73,26 @@ struct platform getPlatformFromIndex(uint8_t ind) {
     struct platform *pointer = platforms;
     pointer += ind;
     return *pointer;
+}
+
+void printHeart(int16_t x, int16_t y) {
+    drawCorrect(x + 0, y + 0, 0xFC);
+
+    drawCorrect(x + 1, y + 0, 0xFF);
+    drawCorrect(x + 1, y + 4, 0x03);
+    drawCorrect(x + 2, y + 0, 0xFF);
+    drawCorrect(x + 2, y + 4, 0x0F);
+    drawCorrect(x + 3, y + 0, 0xFC);
+    drawCorrect(x + 3, y + 4, 0x3F);
+    drawCorrect(x + 4, y + 0, 0xF0);
+    drawCorrect(x + 4, y + 4, 0xFF);
+    drawCorrect(x + 5, y + 0, 0xFC);
+    drawCorrect(x + 5, y + 4, 0x3F);
+    drawCorrect(x + 6, y + 0, 0xFF);
+    drawCorrect(x + 6, y + 4, 0x0F);
+    drawCorrect(x + 7, y + 0, 0xFF);
+    drawCorrect(x + 7, y + 4, 0x03);
+    drawCorrect(x + 8, y + 0, 0xFC);
 }
 
 void printPlatform(int16_t x, int16_t y) {
@@ -107,77 +127,70 @@ void printPlatform(int16_t x, int16_t y) {
     drawCorrect(x + 14, y + 0, 0xBF);
     drawCorrect(x + 14, y + 4, 0x56);
 }
-void clearPlayerColumn(uint8_t y,char direction){
-    for(int i = 5; i < PLAYER_HEIGHT + 5; i++){
 
-        if(direction == 'u'){
+void clearPlayerColumn(uint8_t y, char direction) {
+    for (int i = 5; i < PLAYER_HEIGHT + 5; i++) {
 
-            for(int j = 0; j < 25; j++){
+        if (direction == 'u') {
 
-                page(i,j,0);
+            for (int j = 0; j < 25; j++) {
+
+                page(i, j, 0);
             }
 
 
+        } else if (direction == 'd') {
 
-        }else if(direction == 'd'){
+            for (int j = y / 4; j < 25 - y / 4; j++) {
 
-            for(int j = y/4; j < 25-y/4; j++){
-
-                page(i,j,0);
+                page(i, j, 0);
             }
 
 
         }
 
 
-
     }
 }
 
 
-
 void printPlayer(int16_t x, int16_t y) {
 
-    if(y  != lastPlayerPosY){
+    if (y != lastPlayerPosY) {
 
-        drawCorrect(x+0,lastPlayerPosY+4,0);
-        drawCorrect(x+0,lastPlayerPosY+0,0);
-        drawCorrect(x+1,lastPlayerPosY+4,0);
-        drawCorrect(x+1,lastPlayerPosY+0,0);
-        drawCorrect(x+2,lastPlayerPosY+4,0);
-        drawCorrect(x+2,lastPlayerPosY+0,0);
-        drawCorrect(x+3,lastPlayerPosY+4,0);
-        drawCorrect(x+3,lastPlayerPosY+0,0);
-        drawCorrect(x+4,lastPlayerPosY+4,0);
-        drawCorrect(x+4,lastPlayerPosY+0,0);
-        drawCorrect(x+5,lastPlayerPosY+4,0);
-        drawCorrect(x+5,lastPlayerPosY+0,0);
-        drawCorrect(x+6,lastPlayerPosY+4,0);
-        drawCorrect(x+6,lastPlayerPosY+0,0);
-        drawCorrect(x+7,lastPlayerPosY+4,0);
-        drawCorrect(x+7,lastPlayerPosY+4,0);
-
-
+        drawCorrect(x + 0, lastPlayerPosY + 4, 0);
+        drawCorrect(x + 0, lastPlayerPosY + 0, 0);
+        drawCorrect(x + 1, lastPlayerPosY + 4, 0);
+        drawCorrect(x + 1, lastPlayerPosY + 0, 0);
+        drawCorrect(x + 2, lastPlayerPosY + 4, 0);
+        drawCorrect(x + 2, lastPlayerPosY + 0, 0);
+        drawCorrect(x + 3, lastPlayerPosY + 4, 0);
+        drawCorrect(x + 3, lastPlayerPosY + 0, 0);
+        drawCorrect(x + 4, lastPlayerPosY + 4, 0);
+        drawCorrect(x + 4, lastPlayerPosY + 0, 0);
+        drawCorrect(x + 5, lastPlayerPosY + 4, 0);
+        drawCorrect(x + 5, lastPlayerPosY + 0, 0);
+        drawCorrect(x + 6, lastPlayerPosY + 4, 0);
+        drawCorrect(x + 6, lastPlayerPosY + 0, 0);
+        drawCorrect(x + 7, lastPlayerPosY + 0, 0);
+        drawCorrect(x + 7, lastPlayerPosY + 4, 0);
 
 
-        drawCorrect(x+0,y+4,0xF8);
-        drawCorrect(x+1,y+0,0x02);
-        drawCorrect(x+1,y+4,0x02);
-        drawCorrect(x+2,y+0,0xAA);
-        drawCorrect(x+2,y+4,0xAE);
-        drawCorrect(x+3,y+0,0x7A);
-        drawCorrect(x+3,y+4,0x2E);
-        drawCorrect(x+4,y+0,0x5A);
-        drawCorrect(x+4,y+4,0x2E);
-        drawCorrect(x+5,y+0,0x78);
-        drawCorrect(x+5,y+4,0xAE);
-        drawCorrect(x+6,y+0,0x03);
-        drawCorrect(x+6,y+4,0xC2);
-        drawCorrect(x+7,y+0,0xFC);
-        drawCorrect(x+7,y+4,0x3D);
-
-
-
+        drawCorrect(x + 0, y + 4, 0xF8);
+        drawCorrect(x + 1, y + 0, 0x02);
+        drawCorrect(x + 1, y + 4, 0x02);
+        drawCorrect(x + 2, y + 0, 0xAA);
+        drawCorrect(x + 2, y + 4, 0xAE);
+        drawCorrect(x + 3, y + 0, 0x7A);
+        drawCorrect(x + 3, y + 4, 0x2E);
+        drawCorrect(x + 4, y + 0, 0x5A);
+        drawCorrect(x + 4, y + 4, 0x2E);
+        drawCorrect(x + 5, y + 0, 0x78);
+        drawCorrect(x + 5, y + 4, 0xAE);
+        drawCorrect(x + 6, y + 0, 0x03);
+        drawCorrect(x + 6, y + 4, 0xC2);
+        drawCorrect(x + 7, y + 0, 0xFC);
+        drawCorrect(x + 7, y + 4, 0x3D);
 
 
     }
@@ -235,6 +248,22 @@ uint8_t getIndexMinX() {
 
 }
 
+void drawLives() {
+    for (int i = 0; i < lives; i++) {
+
+        printHeart(100  + i * 8, 4);
+
+    }
+
+
+}
+
+void drawScore(){
+    uint8_t d = score % 159;
+    page(d,4,0xff);
+
+}
+
 
 void platformInit() {
     struct platform *pointer = platforms;
@@ -263,34 +292,32 @@ void drawPlatform(int16_t x, int16_t y, uint8_t length) {
 }
 
 
-
-
 void reDrawPlatform(int16_t x, int16_t y, uint8_t length) {
 
-    drawCorrect(x + length+1, y, 0);
-    drawCorrect(x + length+1, y + 4, 0);
-    drawCorrect(x + length+2, y, 0);
-    drawCorrect(x + length+2, y + 4, 0);
-    drawCorrect(x + length+3, y, 0);
-    drawCorrect(x + length+3, y + 4, 0);
-    drawCorrect(x + length+4, y, 0);
-    drawCorrect(x + length+4, y + 4, 0);
-    drawCorrect(x + length+5, y, 0);
-    drawCorrect(x + length+5, y + 4, 0);
-    drawCorrect(x + length+6, y, 0);
-    drawCorrect(x + length+6, y + 4, 0);
-    drawCorrect(x + length+7, y, 0);
-    drawCorrect(x + length+7, y + 4, 0);
-    drawCorrect(x + length+8, y, 0);
-    drawCorrect(x + length+8, y + 4, 0);
-    drawCorrect(x + length+9, y, 0);
-    drawCorrect(x + length+9, y + 4, 0);
-    drawCorrect(x + length+10, y, 0);
-    drawCorrect(x + length+10, y + 4, 0);
-    drawCorrect(x + length+11, y, 0);
-    drawCorrect(x + length+11, y + 4, 0);
-    drawCorrect(x + length+12, y, 0);
-    drawCorrect(x + length+12, y + 4, 0);
+    drawCorrect(x + length + 1, y, 0);
+    drawCorrect(x + length + 1, y + 4, 0);
+    drawCorrect(x + length + 2, y, 0);
+    drawCorrect(x + length + 2, y + 4, 0);
+    drawCorrect(x + length + 3, y, 0);
+    drawCorrect(x + length + 3, y + 4, 0);
+    drawCorrect(x + length + 4, y, 0);
+    drawCorrect(x + length + 4, y + 4, 0);
+    drawCorrect(x + length + 5, y, 0);
+    drawCorrect(x + length + 5, y + 4, 0);
+    drawCorrect(x + length + 6, y, 0);
+    drawCorrect(x + length + 6, y + 4, 0);
+    drawCorrect(x + length + 7, y, 0);
+    drawCorrect(x + length + 7, y + 4, 0);
+    drawCorrect(x + length + 8, y, 0);
+    drawCorrect(x + length + 8, y + 4, 0);
+    drawCorrect(x + length + 9, y, 0);
+    drawCorrect(x + length + 9, y + 4, 0);
+    drawCorrect(x + length + 10, y, 0);
+    drawCorrect(x + length + 10, y + 4, 0);
+    drawCorrect(x + length + 11, y, 0);
+    drawCorrect(x + length + 11, y + 4, 0);
+    drawCorrect(x + length + 12, y, 0);
+    drawCorrect(x + length + 12, y + 4, 0);
 
 
     printPlatform(x, y);
@@ -328,8 +355,8 @@ struct platform createNewPlatform(struct platform last) {
 
     uint8_t len = 15 * (random % 2 + 1);
 
-    int16_t newX = (last.x + last.length) + (int16_t)(random % 45 + 1);
-    int16_t newY =  (int16_t)(random % 92 + 8);
+    int16_t newX = (last.x + last.length) + (int16_t)(random % 45 + 30);
+    int16_t newY = (int16_t)(random % 92 + 8);
 
     return (struct platform) {(int16_t) newX, (int16_t) newY, (uint8_t) len};
 }
@@ -467,8 +494,6 @@ struct platform panelCollisionWithPlatform(uint8_t pX, uint8_t pY) {
 }
 
 
-
-
 bool collisionFromTopOrBottom(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t x2, int16_t y2, uint8_t w2,
                               uint8_t h2) {
 
@@ -553,7 +578,7 @@ bool collisionWithPlatform() {
 
 void update() {
 
-    if(playerPosY >= 110){
+    if (playerPosY >= 110) {
         gameState = set;
     }
 
@@ -678,8 +703,8 @@ void draw() {
 
     //clearXX();
 
-
-
+    drawLives();
+    drawScore();
     printPlayer(5, playerPosY);
     reDrawPlatforms();
     /*
@@ -688,8 +713,6 @@ void draw() {
 */
     //HAS TO BE THE LAST CALL IN DRAW()!!!!!!!!
 }
-
-
 
 
 int main(void) {
@@ -703,6 +726,8 @@ int main(void) {
     uart_putc(10);
     _delay_ms(1000);
 
+
+
     //posX = 40;
     //posY = 40;
 
@@ -712,23 +737,28 @@ int main(void) {
  * Set to approx 30 frames per second
  */
         if (getMsTimer() % 34 == 0) {
-            if(gameState == set){
+            if (gameState == set) {
                 /*
                  * If Lifes = 0 --> scores = 0;
                  *
                  */
+                lives--;
+                if (lives == 0) {
 
+                    score = 0;
+                    lives = 3;
+                }
 
                 gameSpeed = INITIAL_SPEED;
 
                 clear();
-
                 platformInit();
-                _delay_ms(500);
+                drawLives();
+                drawScore();
                 offsetX = 5;
                 drawPlatforms();
                 lastPlayerPosY = 1;
-                printPlayer(5,0);
+                printPlayer(5, 0);
                 playerPosX = 0;
                 playerPosY = 0;
                 playerMovY = 0;

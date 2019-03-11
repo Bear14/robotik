@@ -29,6 +29,7 @@ void bufferInit();
 void toDrawingBuffer(uint8_t x, uint8_t y, uint8_t h);
 void drawFromBuffer();*/
 void drawCorrect(int16_t x, int16_t y, uint8_t h);
+uint8_t drawGlyph(char glyph, uint8_t x, uint8_t y);
 //void combineCollidingPages();
 
 #endif //ROBOTIK_DRAW_H
