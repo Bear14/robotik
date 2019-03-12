@@ -1,4 +1,4 @@
-/* 
+/*
  *	Basis
  *	2009 Benjamin Reh und Joachim Schleicher
  */
@@ -764,6 +764,7 @@ int main(void) {
                 playerPosY = 0;
                 playerMovY = 0;
                 gameState = stop;
+                drawString("HALLO", 50, 5);
 
             }
             getInput();
