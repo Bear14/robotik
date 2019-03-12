@@ -735,11 +735,13 @@ int main(void) {
     itoa(score, sc, 10);
     //posX = 40;
     //posY = 40;
+    menue();
+
     while (1) {
 
-      drawString(sc, 80 ,52 );
-      /* code */
+
     }
+
     //drawPlatforms();
     while (1) {
 /*

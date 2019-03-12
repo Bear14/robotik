@@ -466,6 +466,19 @@ void drawCorrect(int16_t x, int16_t y, uint8_t h) {
     }
 }
 
+void menue(){
+  drawString("HAUPTMENUE", 55, 15);
+  drawString("NEUES SPIEL", 55, 35);
+  drawString("HIGHSCORE", 55, 45);
+  drawString("SCHWIRIGKEIT", 55, 55);
+
+  drawPfeil(40, 35);
+}
+void drawPfeil(uint8_t x, uint8_t y){
+  drawCorrect(x+0,y+0,0xC0);drawCorrect(x+0,y+4,0x0C);drawCorrect(x+1,y+0,0xC0);drawCorrect(x+1,y+4,0x0C);drawCorrect(x+2,y+0,0xC0);drawCorrect(x+2,y+4,0x0C);drawCorrect(x+3,y+0,0xC0);drawCorrect(x+3,y+4,0x0C);drawCorrect(x+4,y+0,0xC0);drawCorrect(x+4,y+4,0x0C);drawCorrect(x+5,y+0,0x0C);drawCorrect(x+5,y+4,0xC0);drawCorrect(x+6,y+0,0x3C);drawCorrect(x+6,y+4,0xF0);drawCorrect(x+7,y+0,0xF0);drawCorrect(x+7,y+4,0x3C);drawCorrect(x+8,y+0,0xC0);drawCorrect(x+8,y+4,0x0F);drawCorrect(x+9,y+4,0x03);
+
+}
+
 void combineCollidingPages() {
     struct pageToDraw *pivotPtr;
     struct pageToDraw *searchPtr;
