@@ -394,7 +394,9 @@ void reset() {
 
     // TODO: Fix reset and speed up
 
-    if (playerPosX >= 1000) {
+    //find nice value
+
+    if (playerPosX >= 2000) {
         struct platform *pointer = platforms;
 
 
@@ -510,22 +512,6 @@ bool collisionFromTopOrBottom(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, in
 
 }
 
-bool collisionFromTop(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t x2, int16_t y2, uint8_t w2,
-                      uint8_t h2) {
-    if (y1 + h1 > y2) {
-        return true;
-    }
-    return false;
-}
-
-bool collisionFromBottom(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t x2, int16_t y2, uint8_t w2,
-                         uint8_t h2) {
-    if (y1 < y2 + h2) {
-        return true;
-    }
-    return false;
-}
-
 
 bool collisionWithPlatform() {
 
@@ -612,8 +598,9 @@ void update() {
 
         playerPosY += playerMovY;
         offsetY -= playerMovY;
-        playerMovY += GRAVITY;
-
+        if(playerMovY < 5) {
+            playerMovY += GRAVITY;
+        }
         collisionWithPlatform();
 
     }
