@@ -5,8 +5,8 @@ import math
 if __name__ == '__main__':
     #WO soll das Bild beginnen Linkes Eck
 
-    quell = input("Quelldatei: (nur .pgm)")
-    ziel = input("Name der Zieldatei: ")
+    quell = raw_input("Quelldatei: (nur .pgm)")
+    ziel = raw_input("Name der Zieldatei: ")
 
     quellfile = open(quell, "r")
     zielfile = open("Sprites", "a")
@@ -42,17 +42,17 @@ if __name__ == '__main__':
             #Das das Display von unten nach oben die Pages Schreibt
             pages.append(int(pic[i][j+3] + pic[i][j+2] + pic[i][j+1] + pic[i][j] ,2))
 
-    zielfile.write("case '"+str(ziel)+"': return glyph_ende ="+str(picwidth)+"; " )
+    zielfile.write("case '"+str(ziel)+"': glyph_ende ="+str(picwidth)+"; " )
     for elem in pages:
         if elem != 0:
             zielfile.write("drawCorrect(x+"+str(x)+",y+"+str(y)+",0x%02X" %(elem)+");")
-            y=y+4
-            #Am ende der ersten Pixelzeile in die naechste Pixelzeile springen
-            if y == int(picheight):
-                y=0
-                x=x+1
-            elif y > int(picheight):
-                print("Error: Hoehe ueberlaufen")
+        y=y+4
+        #Am ende der ersten Pixelzeile in die naechste Pixelzeile springen
+        if y == int(picheight):
+            y=0
+            x=x+1
+        elif y > int(picheight):
+            print("Error: Hoehe ueberlaufen")
 
-    zielfile.write(";  break;\n")
+    zielfile.write("  break;\n")
     zielfile.close()
