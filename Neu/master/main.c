@@ -31,6 +31,7 @@ typedef int bool;
 
 void init();
 
+
 volatile int16_t gameSpeed = INITIAL_SPEED;
 
 volatile int16_t lastOffsetY = 52;
