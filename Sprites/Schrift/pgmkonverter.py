@@ -45,8 +45,7 @@ if __name__ == '__main__':
     zielfile.write("case '"+str(ziel)+"': return glyph_ende ="+str(picwidth)+"; " )
     for elem in pages:
         if elem != 0:
-            zielfile.write("drawCorrect(x+"+str(x)+",y+"+str(y)+",0x%02X" %(elem))
-
+            zielfile.write("drawCorrect(x+"+str(x)+",y+"+str(y)+",0x%02X" %(elem)+");")
             y=y+4
             #Am ende der ersten Pixelzeile in die naechste Pixelzeile springen
             if y == int(picheight):
@@ -54,6 +53,6 @@ if __name__ == '__main__':
                 x=x+1
             elif y > int(picheight):
                 print("Error: Höhe überlaufen")
-            zielfile.write(");")
+
     zielfile.write(";  break;\n")
     zielfile.close()
