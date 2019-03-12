@@ -18,6 +18,8 @@ typedef int bool;
 #include <avr/interrupt.h>
 #include "draw.h"
 
+ #include <stdlib.h> //itoa() int ins char* umwandeln
+
 
 #define GRAVITY 1
 #define JUMP_HEIGHT -8
@@ -728,10 +730,16 @@ int main(void) {
     _delay_ms(1000);
 
 
-
+    uint16_t score=123;
+    char sc[7] ;
+    itoa(score, sc, 10);
     //posX = 40;
     //posY = 40;
+    while (1) {
 
+      drawString(sc, 80 ,52 );
+      /* code */
+    }
     //drawPlatforms();
     while (1) {
 /*
