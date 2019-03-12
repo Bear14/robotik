@@ -222,6 +222,16 @@ void drawFromBuffer() {
 
 
 }
+void drawString(char text[],uint8_t x,uint8_t y){
+  char *pointer =text;
+  uint8_t new_x = x, new_y = y;
+
+  for (; *pointer != '\0' ; pointer++ ){
+    drawGlyph(*pointer, new_x, new_y );
+    new_x += 5;
+  }
+}
+
 uint8_t drawGlyph(char glyph, uint8_t x, uint8_t y){
   uint8_t glyph_ende = -1;
   switch (glyph) {
