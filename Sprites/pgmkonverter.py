@@ -42,7 +42,7 @@ if __name__ == '__main__':
             #Das das Display von unten nach oben die Pages Schreibt
             pages.append(int(pic[i][j+3] + pic[i][j+2] + pic[i][j+1] + pic[i][j] ,2))
 
-    zielfile.write("case '"+str(ziel)+"': return glyph_ende ="+str(picwidth)+"; " )
+    
     for elem in pages:
         if elem != 0:
             zielfile.write("drawCorrect(x+"+str(x)+",y+"+str(y)+",0x%02X" %(elem)+");")
