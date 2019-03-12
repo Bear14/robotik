@@ -5,8 +5,8 @@ import math
 if __name__ == '__main__':
     #WO soll das Bild beginnen Linkes Eck
 
-    quell = input("Quelldatei: (nur .pgm)")
-    ziel = input("Name der Zieldatei: ")
+    quell = raw_input("Quelldatei: (nur .pgm)")
+    ziel = raw_input("Name der Zieldatei: ")
 
     quellfile = open(quell, "r")
     zielfile = open("Sprites", "a")
