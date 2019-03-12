@@ -18,8 +18,6 @@ typedef int bool;
 #include <avr/interrupt.h>
 #include "draw.h"
 
- #include <stdlib.h> //itoa() int ins char* umwandeln
-
 
 #define GRAVITY 1
 #define JUMP_HEIGHT -8
@@ -33,12 +31,11 @@ typedef int bool;
 
 void init();
 
+volatile int8_t platWidth = 6;
 
 volatile int16_t gameSpeed = INITIAL_SPEED;
 
-volatile int16_t lastOffsetY = 52;
 volatile int16_t lastOffsetX = 5;
-volatile int16_t offsetY = 52;
 volatile int16_t offsetX = 5;
 volatile char buttonPressed = '0';
 volatile uint32_t timePressed = 0;
@@ -53,7 +50,6 @@ volatile int16_t lastPlayerPosY = 1;
 volatile int16_t playerPosY = 0;
 volatile int16_t playerPosX = 0;
 volatile int8_t playerMovY = 0;
-volatile int8_t playerMovX = 0;
 // Player height is 8!
 
 #define PLAYER_HEIGHT 8
@@ -157,9 +153,9 @@ void clearPlayerColumn(uint8_t y, char direction) {
 }
 
 
-void printPlayer(int16_t x, int16_t y) {
+void printPlayer(int16_t x, int16_t y,int16_t lastY) {
 
-    if (y != lastPlayerPosY) {
+    if (y != lastY) {
 
         drawCorrect(x + 0, lastPlayerPosY + 4, 0);
         drawCorrect(x + 0, lastPlayerPosY + 0, 0);
@@ -261,12 +257,6 @@ void drawLives() {
 
 }
 
-void drawScore(){
-    uint8_t d = score % 159;
-    page(d,4,0xff);
-
-}
-
 
 void platformInit() {
     struct platform *pointer = platforms;
@@ -356,10 +346,14 @@ void drawPlatforms() {
 struct platform createNewPlatform(struct platform last) {
     int random = rand() % 1024;
 
-    uint8_t len = 15 * (random % 2 + 1);
+    uint8_t len = 15 * (random % platWidth + 1);
 
     int16_t newX = (last.x + last.length) + (int16_t)(random % 45 + 30);
-    int16_t newY = (int16_t)(random % 92 + 8);
+
+    int16_t newY = (int16_t)(random % 21 + 4);
+    newY *= 4;
+
+    //int16_t newY = (int16_t)(random % 82 + 18);
 
     return (struct platform) {(int16_t) newX, (int16_t) newY, (uint8_t) len};
 }
@@ -389,14 +383,17 @@ void checkIfPlatformOutOfFrame() {
 
 
 }
+enum state {
+    standing, dashing, jumping, falling
+};
+enum state playerState = falling;
+
 
 void reset() {
 
-    // TODO: Fix reset and speed up
+    if (playerPosX >= 3000) {
 
-    //find nice value
-
-    if (playerPosX >= 2000) {
+        cli();
         struct platform *pointer = platforms;
 
 
@@ -406,10 +403,11 @@ void reset() {
         }
 
         offsetX = 5;
-
+        platWidth--;
         playerPosX = 0;
         gameSpeed += 1;
-
+        playerState = falling;
+        sei();
 
     }
 
@@ -421,10 +419,6 @@ void reset() {
 
 
 
-enum state {
-    standing, dashing, jumping, falling
-};
-enum state playerState = falling;
 
 enum gState {
     run, stop, set
@@ -477,26 +471,7 @@ bool collisionRectangles(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t
 
 }
 
-struct platform panelCollisionWithPlatform(uint8_t pX, uint8_t pY) {
 
-    struct platform *pointer = platforms;
-
-    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
-
-        if (collisionRectangles(pX, pY, PANEL_SIZE, PANEL_SIZE, pointer->x + offsetX, pointer->y + offsetY,
-                                pointer->length,
-                                PLATFORM_HEIGHT)) {
-
-            return *pointer;
-
-        }
-        pointer++;
-
-    }
-    return (struct platform) {-1, -1, 0};
-
-
-}
 
 
 bool collisionFromTopOrBottom(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t x2, int16_t y2, uint8_t w2,
@@ -534,14 +509,14 @@ bool collisionWithPlatform() {
 
                 int8_t calc = (platPtr->y - (playerPosY + PLAYER_HEIGHT));
                 playerPosY += calc; //calc
-                offsetY -= calc;
+             //   offsetY -= calc;
 
             } else if (abs(playerPosY + PLAYER_HEIGHT - platPtr->y) <= abs(playerPosY - platPtr->y + PLATFORM_HEIGHT)) {
                 //page(100, 0, 0xFF);
 
                 int8_t calc = (platPtr->y + PLATFORM_HEIGHT - playerPosY);
                 playerPosY += calc;
-                offsetY -= calc;
+              //  offsetY -= calc;
 
                 playerState = falling;
             }
@@ -573,7 +548,7 @@ void update() {
 
     lastPlayerPosY = playerPosY;
     lastOffsetX = offsetX;
-    lastOffsetY = offsetY;
+    //lastOffsetY = offsetY;
 
     checkIfPlatformOutOfFrame();
     reset();
@@ -597,7 +572,7 @@ void update() {
     if (playerState == falling) {
 
         playerPosY += playerMovY;
-        offsetY -= playerMovY;
+     //   offsetY -= playerMovY;
         if(playerMovY < 5) {
             playerMovY += GRAVITY;
         }
@@ -637,7 +612,7 @@ void getInput() {
                 buttonPressed = '1';
                 timePressed = getMsTimer();
                 playerPosY -= gameSpeed;
-                offsetY += gameSpeed;
+                //offsetY += gameSpeed;
 
             }
             if (B_DOWN) {
@@ -645,7 +620,7 @@ void getInput() {
                 buttonPressed = '1';
                 timePressed = getMsTimer();
                 playerPosY += gameSpeed;
-                offsetY -= gameSpeed;
+                //offsetY -= gameSpeed;
 
 
             }
@@ -683,27 +658,38 @@ void getInput() {
 }
 
 void draw() {
-/*
-    drawPlayerZero();
-    drawPlayer();
-    drawPlatforms();
-
-*/
-    //printPlayer(playerPosX, playerPosY);
-
-    //clearXX();
 
     drawLives();
-    drawScore();
-    printPlayer(5, playerPosY);
+
     reDrawPlatforms();
-    /*
-    combineCollidingPages();
-    drawFromBuffer();
-*/
-    //HAS TO BE THE LAST CALL IN DRAW()!!!!!!!!
+    printPlayer(5, playerPosY,lastPlayerPosY);
 }
 
+
+void setGame(){
+    lives--;
+    if (lives == 0) {
+
+        score = 0;
+        lives = 3;
+    }
+
+    gameSpeed = INITIAL_SPEED;
+
+    clear();
+    platformInit();
+    drawLives();
+    offsetX = 5;
+    drawPlatforms();
+    lastPlayerPosY = 1;
+    printPlayer(5, 0,lastPlayerPosY);
+
+    playerPosX = 0;
+    playerPosY = 0;
+    playerMovY = 0;
+    playerState = falling;
+    gameState = stop;
+}
 
 int main(void) {
     //Initialisierung ausfuehren
@@ -717,19 +703,6 @@ int main(void) {
     _delay_ms(1000);
 
 
-    uint16_t score=123;
-    char sc[7] ;
-    itoa(score, sc, 10);
-    //posX = 40;
-    //posY = 40;
-    menue();
-
-    while (1) {
-
-
-    }
-
-    //drawPlatforms();
     while (1) {
 /*
  * Set to approx 30 frames per second
@@ -740,28 +713,8 @@ int main(void) {
                  * If Lifes = 0 --> scores = 0;
                  *
                  */
-                lives--;
-                if (lives == 0) {
 
-                    score = 0;
-                    lives = 3;
-                }
-
-                gameSpeed = INITIAL_SPEED;
-
-                clear();
-                platformInit();
-                drawLives();
-                drawScore();
-                offsetX = 5;
-                drawPlatforms();
-                lastPlayerPosY = 1;
-                printPlayer(5, 0);
-                playerPosX = 0;
-                playerPosY = 0;
-                playerMovY = 0;
-                gameState = stop;
-                drawString("HALLO", 50, 5);
+                setGame();
 
             }
             getInput();

@@ -15,13 +15,6 @@ struct pageToDraw {
 
 
 
-
-
-struct pageToDraw drawingBuffer[DRAWING_BUFFER_SIZE];
-struct pageToDraw eraseBuffer[DRAWING_BUFFER_SIZE];
-
-struct pageToDraw *ptr; // = drawingBuffer;
-struct pageToDraw *erasePtr; // = eraseBuffer;
 /*
 void flushDrawingBuffer();
 void flushEraseBuffer();
