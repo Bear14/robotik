@@ -245,8 +245,10 @@ uint8_t nextGlyph(char glyph, uint8_t x, uint8_t y){
     case '1': glyph_ende =3; break;
     case '2': glyph_ende =4; break;
     case '3': glyph_ende =4; break;
+    case '4': glyph_ende =4; break;
     case '5': glyph_ende =4; break;
     case '6': glyph_ende =4; break;
+    case '7': glyph_ende =4; break;
     case '8': glyph_ende =4; break;
     case '9': glyph_ende =4; break;
     case 'A': glyph_ende =5; break;
@@ -283,15 +285,15 @@ uint8_t nextGlyph(char glyph, uint8_t x, uint8_t y){
 void drawGlyph(char glyph, uint8_t x, uint8_t y){
   switch (glyph) {
     case '0':  drawCorrect(x+0,y+0,0xF0);drawCorrect(x+0,y+4,0x3F);drawCorrect(x+1,y+0,0x0C);drawCorrect(x+1,y+4,0xCC);drawCorrect(x+2,y+0,0x0C);drawCorrect(x+2,y+4,0xC3);drawCorrect(x+3,y+0,0xF0);drawCorrect(x+3,y+4,0x3F);  break;
-    case '1':  drawCorrect(x+0,y+0,0x30);drawCorrect(x+0,y+4,0xC0);drawCorrect(x+1,y+0,0xFC);drawCorrect(x+1,y+4,0xFF);drawCorrect(x+2,y+0,0xC0);  break;
-    case '2': drawCorrect(x+0,y+0,0x30);drawCorrect(x+0,y+4,0xF0);drawCorrect(x+1,y+0,0x0C);drawCorrect(x+1,y+4,0xCC);drawCorrect(x+2,y+0,0x0C);drawCorrect(x+2,y+4,0xC3);drawCorrect(x+3,y+0,0xF0);drawCorrect(x+3,y+4,0xC0);  break;
+    case '1':  drawCorrect(x+0,y+0,0x30);drawCorrect(x+0,y+4,0xC0);drawCorrect(x+1,y+0,0xFC);drawCorrect(x+1,y+4,0xFF);drawCorrect(x+2,y+0,0x00);drawCorrect(x+2,x+4,0xC0);  break;
+    case '2':  drawCorrect(x+0,y+0,0x30);drawCorrect(x+0,y+4,0xF0);drawCorrect(x+1,y+0,0x0C);drawCorrect(x+1,y+4,0xCC);drawCorrect(x+2,y+0,0x0C);drawCorrect(x+2,y+4,0xC3);drawCorrect(x+3,y+0,0xF0);drawCorrect(x+3,y+4,0xC0);  break;
     case '3':  drawCorrect(x+0,y+0,0x30);drawCorrect(x+0,y+4,0x30);drawCorrect(x+1,y+0,0x0C);drawCorrect(x+1,y+4,0xC0);drawCorrect(x+2,y+0,0x0C);drawCorrect(x+2,y+4,0xC3);drawCorrect(x+3,y+0,0xF0);drawCorrect(x+3,y+4,0x3C);  break;
-    case '4':  drawCorrect(x+0,y+0,0xC0);drawCorrect(x+0,y+4,0x0F);drawCorrect(x+1,y+0,0x30);drawCorrect(x+1,y+4,0x0C);drawCorrect(x+2,y+0,0xFC);drawCorrect(x+2,y+4,0xFF);drawCorrect(x+3,y+0,0x0C);  break;
+    case '4':  drawCorrect(x+0,y+0,0xC0);drawCorrect(x+0,y+4,0x0F);drawCorrect(x+1,y+0,0x30);drawCorrect(x+1,y+4,0x0C);drawCorrect(x+2,y+0,0xFC);drawCorrect(x+2,y+4,0xFF);drawCorrect(x+3,y+4,0x0C);  break;
     case '5':  drawCorrect(x+0,y+0,0xFC);drawCorrect(x+0,y+4,0xC3);drawCorrect(x+1,y+0,0x0C);drawCorrect(x+1,y+4,0xC3);drawCorrect(x+2,y+0,0x0C);drawCorrect(x+2,y+4,0xC3);drawCorrect(x+3,y+0,0x0C);drawCorrect(x+3,y+4,0xFF);  break;
     case '6':  drawCorrect(x+0,y+0,0xC0);drawCorrect(x+0,y+4,0x3F);drawCorrect(x+1,y+0,0x30);drawCorrect(x+1,y+4,0xC3);drawCorrect(x+2,y+0,0x0C);drawCorrect(x+2,y+4,0xC3);drawCorrect(x+3,y+0,0x0C);drawCorrect(x+3,y+4,0x3C);  break;
-    case '7':  drawCorrect(x+0,y+0,0x3C);drawCorrect(x+0,y+4,0x0C);drawCorrect(x+1,y+0,0xFC);drawCorrect(x+1,y+4,0x0C);drawCorrect(x+2,y+0,0x03);drawCorrect(x+2,y+4,0xFC);  break;
-    case '8': ; drawCorrect(x+0,y+0,0xF0);drawCorrect(x+0,y+4,0x3C);drawCorrect(x+1,y+0,0x0C);drawCorrect(x+1,y+4,0xC3);drawCorrect(x+2,y+0,0x0C);drawCorrect(x+2,y+4,0xC3);drawCorrect(x+3,y+0,0xF0);drawCorrect(x+3,y+4,0x3C);  break;
-    case '9':  drawCorrect(x+0,y+0,0xF0);drawCorrect(x+0,y+4,0x0C);drawCorrect(x+1,y+0,0xC3);drawCorrect(x+1,y+4,0x0C);drawCorrect(x+2,y+0,0xC3);drawCorrect(x+2,y+4,0xF0);drawCorrect(x+3,y+0,0x3F);  break;
+    case '7':  drawCorrect(x+0,y+0,0x3C);drawCorrect(x+1,y+0,0x0C);drawCorrect(x+1,y+4,0xFC);drawCorrect(x+2,y+0,0x0C);drawCorrect(x+2,y+4,0x03);drawCorrect(x+3,y+0,0xFC);  break;
+    case '8':  drawCorrect(x+0,y+0,0xF0);drawCorrect(x+0,y+4,0x3C);drawCorrect(x+1,y+0,0x0C);drawCorrect(x+1,y+4,0xC3);drawCorrect(x+2,y+0,0x0C);drawCorrect(x+2,y+4,0xC3);drawCorrect(x+3,y+0,0xF0);drawCorrect(x+3,y+4,0x3C);  break;
+    case '9':  drawCorrect(x+0,y+0,0xF0);drawCorrect(x+1,y+0,0x0C);drawCorrect(x+1,y+4,0xC3);drawCorrect(x+2,y+0,0x0C);drawCorrect(x+2,y+4,0xC3);drawCorrect(x+3,y+0,0xF0);drawCorrect(x+3,y+4,0x3F);  break;
     case 'A':  drawCorrect(x+0,y+0,0xF0);drawCorrect(x+0,y+4,0xFF);drawCorrect(x+1,y+0,0x0C);drawCorrect(x+1,y+4,0x03);drawCorrect(x+2,y+0,0x0C);drawCorrect(x+2,y+4,0x03);drawCorrect(x+3,y+0,0x0C);drawCorrect(x+3,y+4,0x03);drawCorrect(x+4,y+0,0xF0);drawCorrect(x+4,y+4,0xFF);  break;
     case 'B':  drawCorrect(x+0,y+0,0xFC);drawCorrect(x+0,y+4,0xFF);drawCorrect(x+1,y+0,0x0C);drawCorrect(x+1,y+4,0xC3);drawCorrect(x+2,y+0,0x0C);drawCorrect(x+2,y+4,0xC3);drawCorrect(x+3,y+0,0x0C);drawCorrect(x+3,y+4,0xC3);drawCorrect(x+4,y+0,0xF0);drawCorrect(x+4,y+4,0x3C);  break;
     case 'C':  drawCorrect(x+0,y+0,0xF0);drawCorrect(x+0,y+4,0x3F);drawCorrect(x+1,y+0,0x0C);drawCorrect(x+1,y+4,0xC0);drawCorrect(x+2,y+0,0x0C);drawCorrect(x+2,y+4,0xC0);drawCorrect(x+3,y+0,0x0C);drawCorrect(x+3,y+4,0xC0);drawCorrect(x+4,y+0,0x30);drawCorrect(x+4,y+4,0x30);  break;
