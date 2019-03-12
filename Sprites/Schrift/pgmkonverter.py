@@ -9,7 +9,7 @@ if __name__ == '__main__':
     ziel = input("Name der Zieldatei: ")
 
     quellfile = open(quell, "r")
-    zielfile = open("Schrift", "a")
+    zielfile = open("Sprites", "a")
 
     quelllines = quellfile.read().splitlines()
     picwidth = int(quelllines[2].split(" ")[0])
