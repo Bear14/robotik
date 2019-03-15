@@ -421,7 +421,7 @@ void reset() {
 
 
 enum gState {
-    run, stop, set
+    run, stop, set, menue
 };
 
 enum gState gameState = set;
@@ -726,6 +726,9 @@ int main(void) {
                 //printPlatform(10,12);
                 draw();
 
+            }
+            if(gameState == menue){
+              menue()
             }
         }
 
