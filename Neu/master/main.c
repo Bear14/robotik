@@ -516,6 +516,22 @@ void collisionHandling() {
 
 
 }
+bool dashCollision(){
+    struct platform *pointer = platforms;
+    for(int i = 0; i < PLATFORM_COUNT; i++){
+
+        if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, pointer->x, pointer->y,
+                                pointer->length,
+                                PLATFORM_HEIGHT)) {
+            return true;
+        }
+
+
+        pointer++;
+    }
+    return false;
+
+}
 
 
 
@@ -549,6 +565,9 @@ void update() {
         dashLen -= gameSpeed;
         playerPosX += gameSpeed * 2;
         offsetX -= gameSpeed * 2;
+        if(dashCollision()){
+            gameState = set;
+        }
     }
     if (dashLen == 0 && playerState == dashing) {
 
