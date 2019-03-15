@@ -472,21 +472,25 @@ bool collisionRectangles(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t
 }
 
 
+bool dropCollision(){
+    struct platform *pointer = platforms;
+    for(uint8_t i = 0; i < PLATFORM_COUNT;i++){
 
 
-bool collisionFromTopOrBottom(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t x2, int16_t y2, uint8_t w2,
-                              uint8_t h2) {
+        if (collisionRectangles(playerPosX, playerPosY + PLAYER_HEIGHT, PLATFORM_HEIGHT,1 , pointer->x, pointer->y,
+                                pointer->length,
+                                PLATFORM_HEIGHT)){
+            return true;
+        }
 
-    if (
-            y1 < y2 + h2 &&
-            y1 + h1 > y2) {
-        return true;
+
+
+        pointer++;
     }
+
     return false;
 
-
 }
-
 
 bool collisionWithPlatform() {
 
@@ -556,7 +560,10 @@ void update() {
     if (playerState == standing) {
         jumpCounter = 2;
         dashCounter = 2;
-        collisionWithPlatform();
+        //collisionWithPlatform(); // TODO: new Collison for standing
+        if(!dropCollision()){
+            playerState = falling;
+        }
     }
     if (playerState == jumping) {
         collisionWithPlatform();
