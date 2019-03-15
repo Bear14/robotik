@@ -602,6 +602,7 @@ void getInput() {
             buttonPressed = '1';
             timePressed = getMsTimer();
             //gameState = run;
+            gameState = menue;
         }
         if (B_PAUSE) {
 
