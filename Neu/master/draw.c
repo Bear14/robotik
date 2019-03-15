@@ -195,7 +195,7 @@ void drawCorrect(int16_t x, int16_t y, uint8_t h) {
     }
 }
 
-void menue(){
+void drawmenue(){
   drawString("HAUPTMENUE", 55, 15);
   drawString("NEUES SPIEL", 55, 35);
   drawString("HIGHSCORE", 55, 45);
@@ -209,7 +209,7 @@ void menue(){
       pfeilPosY = 25;
     }
     drawPfeil();
-    getInput()
+    getInput();
   }
 }
 void drawPfeil(){

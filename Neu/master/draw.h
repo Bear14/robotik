@@ -28,6 +28,6 @@ void drawString(char text[],uint8_t x,uint8_t y);
 uint8_t nextGlyph(char glyph, uint8_t x, uint8_t y);
 void drawGlyph(char glyph, uint8_t x, uint8_t y);
 //void combineCollidingPages();
-void menue();
+void drawmenue();
 void drawPfeil(uint8_t x, uint8_t y);
 #endif //ROBOTIK_DRAW_H
