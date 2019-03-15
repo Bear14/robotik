@@ -7,6 +7,6 @@
 
 #include <inttypes.h>
 
-void printPlayer(uint8_t x, uint8_t y)
+void printPlayer(int16_t x, int16_t y, int16_t lastY);
 
 #endif //ROBOTIK_SPRITES_H

@@ -17,6 +17,7 @@ typedef int bool;
 #include "display.h"
 #include <avr/interrupt.h>
 #include "draw.h"
+#include "sprites.h"
 
 
 #define GRAVITY 1
@@ -152,47 +153,6 @@ void clearPlayerColumn(uint8_t y, char direction) {
 }
 
 
-void printPlayer(int16_t x, int16_t y, int16_t lastY) {
-
-    if (y != lastY) {
-
-        drawCorrect(x + 0, lastPlayerPosY + 4, 0);
-        drawCorrect(x + 0, lastPlayerPosY + 0, 0);
-        drawCorrect(x + 1, lastPlayerPosY + 4, 0);
-        drawCorrect(x + 1, lastPlayerPosY + 0, 0);
-        drawCorrect(x + 2, lastPlayerPosY + 4, 0);
-        drawCorrect(x + 2, lastPlayerPosY + 0, 0);
-        drawCorrect(x + 3, lastPlayerPosY + 4, 0);
-        drawCorrect(x + 3, lastPlayerPosY + 0, 0);
-        drawCorrect(x + 4, lastPlayerPosY + 4, 0);
-        drawCorrect(x + 4, lastPlayerPosY + 0, 0);
-        drawCorrect(x + 5, lastPlayerPosY + 4, 0);
-        drawCorrect(x + 5, lastPlayerPosY + 0, 0);
-        drawCorrect(x + 6, lastPlayerPosY + 4, 0);
-        drawCorrect(x + 6, lastPlayerPosY + 0, 0);
-        drawCorrect(x + 7, lastPlayerPosY + 0, 0);
-        drawCorrect(x + 7, lastPlayerPosY + 4, 0);
-
-
-        drawCorrect(x + 0, y + 4, 0xF8);
-        drawCorrect(x + 1, y + 0, 0x02);
-        drawCorrect(x + 1, y + 4, 0x02);
-        drawCorrect(x + 2, y + 0, 0xAA);
-        drawCorrect(x + 2, y + 4, 0xAE);
-        drawCorrect(x + 3, y + 0, 0x7A);
-        drawCorrect(x + 3, y + 4, 0x2E);
-        drawCorrect(x + 4, y + 0, 0x5A);
-        drawCorrect(x + 4, y + 4, 0x2E);
-        drawCorrect(x + 5, y + 0, 0x78);
-        drawCorrect(x + 5, y + 4, 0xAE);
-        drawCorrect(x + 6, y + 0, 0x03);
-        drawCorrect(x + 6, y + 4, 0xC2);
-        drawCorrect(x + 7, y + 0, 0xFC);
-        drawCorrect(x + 7, y + 4, 0x3D);
-
-
-    }
-}
 
 
 uint8_t getIndexMaxX() {
@@ -596,18 +556,16 @@ void update() {
 
 void getInput() {
     if (buttonPressed == '0') {
-      if(gameState = menue){
+      if(gameState == menue){
         if (B_DOWN) {
             //uart_putc(60);
             buttonPressed = '1';
             timePressed = getMsTimer();
-            pfeilPosY += 10;
         }
         if (B_UP) {
             //uart_putc(50);
             buttonPressed = '1';
             timePressed = getMsTimer();
-            pfeilPosY -=10;
         }
         if (B_A) {
             //uart_putc(90);
@@ -755,7 +713,7 @@ int main(void) {
 
             }
             if(gameState == menue){
-              drawmenue();
+
             }
         }
 
