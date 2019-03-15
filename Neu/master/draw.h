@@ -26,4 +26,9 @@ void drawString(char text[],uint8_t x,uint8_t y);
 uint8_t nextGlyph(char glyph, uint8_t x, uint8_t y);
 void drawGlyph(char glyph, uint8_t x, uint8_t y);
 void drawPfeil(uint8_t x, uint8_t y);
+void drawLives(uint8_t live);
+void drawPlatform(int16_t x, int16_t y, uint8_t length);
+void reDrawPlatform(int16_t x, int16_t y, uint8_t length);
+void reDrawPlatforms(int16_t offsetX);
+void drawPlatforms(int16_t offsetX);
 #endif //ROBOTIK_DRAW_H
