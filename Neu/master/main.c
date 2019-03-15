@@ -736,11 +736,8 @@ int main(void) {
 
             }
             if(gameState == menue){
-<<<<<<< HEAD
               drawmenue();
-=======
-              menue()
->>>>>>> dc6b81f62d043fd586baf356b37ab4eb909a5ba2
+              menue();
             }
         }
 
