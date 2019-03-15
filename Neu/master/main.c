@@ -18,21 +18,16 @@ typedef int bool;
 #include <avr/interrupt.h>
 #include "draw.h"
 #include "sprites.h"
+#include "platform.h"
 
 
 #define GRAVITY 1
 #define JUMP_HEIGHT -8
 #define INITIAL_SPEED 2
 #define DASH_LENGTH 12
-#define PLATFORM_COUNT 3
-
-#define PLATFORM_HEIGHT 8
-
-#define PANEL_SIZE 16
 
 void init();
-
-volatile int8_t platWidth = 6;
+volatile int8_t platWidth= 6;
 
 volatile int16_t gameSpeed = INITIAL_SPEED;
 
@@ -59,198 +54,6 @@ volatile int8_t playerMovY = 0;
 
 volatile uint64_t score = 0;
 volatile uint8_t lives = 4;
-
-struct platform {
-    int16_t x;
-    int16_t y;
-    uint8_t length;
-};
-
-
-struct platform platforms[PLATFORM_COUNT];
-
-struct platform getPlatformFromIndex(uint8_t ind) {
-    struct platform *pointer = platforms;
-    pointer += ind;
-    return *pointer;
-}
-
-uint8_t getIndexMaxX() {
-    struct platform *pointer = platforms;
-
-    struct platform max = (struct platform) {
-            -32767, 0, 0
-    };
-
-    uint8_t ind = 5;
-    for (int i = 0; i < PLATFORM_COUNT; i++) {
-        struct platform compare = *pointer;
-
-
-        //
-        if ((compare.x + compare.length) > (max.x + max.length)) {
-            max = compare;
-            ind = i;
-        }
-
-        pointer++;
-
-    }
-    return ind;
-
-}
-
-uint8_t getIndexMinX() {
-    struct platform *pointer = platforms;
-
-    struct platform min = (struct platform) {
-            32767, 0, 0
-    };
-
-    uint8_t ind = 5;
-    for (int i = 0; i < PLATFORM_COUNT; i++) {
-        struct platform compare = *pointer;
-
-
-        if (compare.x + compare.length < min.x + min.length) {
-            min = compare;
-            ind = i;
-
-        }
-
-        pointer++;
-
-    }
-    return ind;
-
-
-}
-
-void platformInit() {
-    struct platform *pointer = platforms;
-    *pointer = (struct platform) {0, 52, 90};
-    pointer++;
-    *pointer = (struct platform) {40, 20, 60};
-    pointer++;
-    *pointer = (struct platform) {200, 80, 90};
-    pointer++;
-};
-
-void drawPlatform(int16_t x, int16_t y, uint8_t length) {
-
-
-    for (int16_t i = x; i < x + length; i += 15) {
-
-
-        //printPlatform(i,y);
-
-        printPlatform(i, y);
-        //printPlayer(i,y);
-        //drawCorrect(i,y,0x1F);
-        //drawCorrect(i,y,0xFF);
-    }
-
-}
-
-
-void reDrawPlatform(int16_t x, int16_t y, uint8_t length) {
-
-    drawCorrect(x + length + 1, y, 0);
-    drawCorrect(x + length + 1, y + 4, 0);
-    drawCorrect(x + length + 2, y, 0);
-    drawCorrect(x + length + 2, y + 4, 0);
-    drawCorrect(x + length + 3, y, 0);
-    drawCorrect(x + length + 3, y + 4, 0);
-    drawCorrect(x + length + 4, y, 0);
-    drawCorrect(x + length + 4, y + 4, 0);
-    drawCorrect(x + length + 5, y, 0);
-    drawCorrect(x + length + 5, y + 4, 0);
-    drawCorrect(x + length + 6, y, 0);
-    drawCorrect(x + length + 6, y + 4, 0);
-    drawCorrect(x + length + 7, y, 0);
-    drawCorrect(x + length + 7, y + 4, 0);
-    drawCorrect(x + length + 8, y, 0);
-    drawCorrect(x + length + 8, y + 4, 0);
-    drawCorrect(x + length + 9, y, 0);
-    drawCorrect(x + length + 9, y + 4, 0);
-    drawCorrect(x + length + 10, y, 0);
-    drawCorrect(x + length + 10, y + 4, 0);
-    drawCorrect(x + length + 11, y, 0);
-    drawCorrect(x + length + 11, y + 4, 0);
-    drawCorrect(x + length + 12, y, 0);
-    drawCorrect(x + length + 12, y + 4, 0);
-
-
-    printPlatform(x, y);
-
-}
-
-void reDrawPlatforms() {
-    struct platform *pointer = platforms;
-
-    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
-        struct platform toDraw = *pointer;
-        reDrawPlatform(toDraw.x + offsetX, toDraw.y, toDraw.length);
-
-        pointer++;
-
-    }
-}
-
-void drawPlatforms() {
-
-    struct platform *pointer = platforms;
-
-    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
-        struct platform toDraw = *pointer;
-        drawPlatform(toDraw.x + offsetX, toDraw.y, toDraw.length);
-
-        pointer++;
-
-    }
-
-}
-
-struct platform createNewPlatform(struct platform last) {
-    int random = rand() % 1024;
-
-    uint8_t len = 15 * (random % platWidth + 1);
-
-    int16_t newX = (last.x + last.length) + (int16_t)(random % 45 + 30);
-
-    int16_t newY = (int16_t)(random % 21 + 4);
-    newY *= 4;
-
-    //int16_t newY = (int16_t)(random % 82 + 18);
-
-    return (struct platform) {(int16_t) newX, (int16_t) newY, (uint8_t) len};
-}
-
-void addPlatformAtIndex(uint8_t ind, struct platform newPlatform) {
-
-    if (ind >= 0 && ind < PLATFORM_COUNT) {
-        struct platform *pointer = platforms;
-        pointer += ind;
-        *pointer = newPlatform;
-    }
-}
-
-void checkIfPlatformOutOfFrame() {
-
-    uint8_t ind = getIndexMinX();
-
-    struct platform farthestLeft = getPlatformFromIndex(ind);
-
-    if (farthestLeft.x + farthestLeft.length < playerPosX - 5) {
-
-        struct platform toAdd = createNewPlatform(getPlatformFromIndex(getIndexMaxX()));
-
-        addPlatformAtIndex(ind, toAdd); // make platform
-
-    }
-
-
-}
 
 enum state {
     standing, dashing, jumping, falling
@@ -414,7 +217,7 @@ void update() {
     lastPlayerPosX = playerPosX;
     lastOffsetX = offsetX;
 
-    checkIfPlatformOutOfFrame();
+    checkIfPlatformOutOfFrame(playerPosX,platWidth);
     reset();
 
     if (playerState == standing) {
@@ -555,7 +358,7 @@ void draw() {
 
     drawLives(lives);
 
-    reDrawPlatforms();
+    reDrawPlatforms(offsetX);
     printPlayer(5, playerPosY, lastPlayerPosY);
 }
 
@@ -574,7 +377,7 @@ void setGame() {
     platformInit();
     drawLives(lives);
     offsetX = 5;
-    drawPlatforms();
+    drawPlatforms(offsetX);
     lastPlayerPosY = 1;
     printPlayer(5, 0, lastPlayerPosY);
 
