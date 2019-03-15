@@ -4,6 +4,7 @@
 #include <inttypes.h>
 #include "display.h"
 #include "draw.h"
+#include "sprites.h"
 
 void drawString(char text[],uint8_t x,uint8_t y){
   char *pointer =text;
@@ -208,3 +209,12 @@ void drawPfeil(uint8_t x, uint8_t y){
 
 }
 
+void drawLives(uint8_t live) {
+    for (int i = 0; i < live; i++) {
+
+        printHeart(100 + i * 8, 4);
+
+    }
+
+
+}
