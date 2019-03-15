@@ -201,10 +201,19 @@ void menue(){
   drawString("HIGHSCORE", 55, 45);
   drawString("SCHWIRIGKEIT", 55, 55);
 
-  drawPfeil(40, 35);
+  pfeilPosX =40;
+  pfeilPosY = 25;
+  while(1){
+    if(pfeilPosX > 55){
+      pfeilPosX =40;
+      pfeilPosY = 25;
+    }
+    drawPfeil();
+    getInput()
+  }
 }
-void drawPfeil(uint8_t x, uint8_t y){
-  drawCorrect(x+0,y+0,0xC0);drawCorrect(x+0,y+4,0x0C);drawCorrect(x+1,y+0,0xC0);drawCorrect(x+1,y+4,0x0C);drawCorrect(x+2,y+0,0xC0);drawCorrect(x+2,y+4,0x0C);drawCorrect(x+3,y+0,0xC0);drawCorrect(x+3,y+4,0x0C);drawCorrect(x+4,y+0,0xC0);drawCorrect(x+4,y+4,0x0C);drawCorrect(x+5,y+0,0x0C);drawCorrect(x+5,y+4,0xC0);drawCorrect(x+6,y+0,0x3C);drawCorrect(x+6,y+4,0xF0);drawCorrect(x+7,y+0,0xF0);drawCorrect(x+7,y+4,0x3C);drawCorrect(x+8,y+0,0xC0);drawCorrect(x+8,y+4,0x0F);drawCorrect(x+9,y+4,0x03);
+void drawPfeil(){
+  drawCorrect(pfeilPosX+0,pfeilPosY+0,0xC0);drawCorrect(pfeilPosX+0,pfeilPosY+4,0x0C);drawCorrect(pfeilPosX+1,pfeilPosY+0,0xC0);drawCorrect(pfeilPosX+1,pfeilPosY+4,0x0C);drawCorrect(pfeilPosX+2,pfeilPosY+0,0xC0);drawCorrect(pfeilPosX+2,pfeilPosY+4,0x0C);drawCorrect(pfeilPosX+3,pfeilPosY+0,0xC0);drawCorrect(pfeilPosX+3,pfeilPosY+4,0x0C);drawCorrect(pfeilPosX+4,pfeilPosY+0,0xC0);drawCorrect(pfeilPosX+4,pfeilPosY+4,0x0C);drawCorrect(pfeilPosX+5,pfeilPosY+0,0x0C);drawCorrect(pfeilPosX+5,pfeilPosY+4,0xC0);drawCorrect(pfeilPosX+6,pfeilPosY+0,0x3C);drawCorrect(pfeilPosX+6,pfeilPosY+4,0xF0);drawCorrect(pfeilPosX+7,pfeilPosY+0,0xF0);drawCorrect(pfeilPosX+7,pfeilPosY+4,0x3C);drawCorrect(pfeilPosX+8,pfeilPosY+0,0xC0);drawCorrect(pfeilPosX+8,pfeilPosY+4,0x0F);drawCorrect(pfeilPosX+9,pfeilPosY+4,0x03);
 
 }
 
