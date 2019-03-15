@@ -29,5 +29,5 @@ uint8_t nextGlyph(char glyph, uint8_t x, uint8_t y);
 void drawGlyph(char glyph, uint8_t x, uint8_t y);
 //void combineCollidingPages();
 void drawmenue();
-void drawPfeil(uint8_t x, uint8_t y);
+void drawPfeil();
 #endif //ROBOTIK_DRAW_H

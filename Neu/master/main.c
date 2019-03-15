@@ -735,7 +735,7 @@ int main(void) {
 
             }
             if(gameState == menue){
-              drawmenue()
+              drawmenue();
             }
         }
 
