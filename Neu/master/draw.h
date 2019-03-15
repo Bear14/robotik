@@ -6,6 +6,8 @@
 #define ROBOTIK_DRAW_H
 
 #define DRAWING_BUFFER_SIZE 300
+volatile pfeilPosX=0;
+volatile pfeilPosY=0;
 
 struct pageToDraw {
     uint8_t x;
