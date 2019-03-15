@@ -417,7 +417,7 @@ void reset() {
 
 
 enum gState {
-    run, stop, set
+    run, stop, set, menue
 };
 
 enum gState gameState = set;
@@ -577,11 +577,32 @@ void update() {
 
 void getInput() {
     if (buttonPressed == '0') {
+      if(gameState = menue){
+        if (B_DOWN) {
+            //uart_putc(60);
+            buttonPressed = '1';
+            timePressed = getMsTimer();
+            pfeilPosY += 10;
+        }
+        if (B_UP) {
+            //uart_putc(50);
+            buttonPressed = '1';
+            timePressed = getMsTimer();
+            pfeilPosY -=10;
+        }
+        if (B_A) {
+            //uart_putc(90);
+            buttonPressed = '1';
+            timePressed = getMsTimer();
+
+        }
+      }
         if (B_SELECT) {
             //uart_putc(20);
             buttonPressed = '1';
             timePressed = getMsTimer();
             //gameState = run;
+            gameState = menue;
         }
         if (B_PAUSE) {
 
@@ -609,8 +630,6 @@ void getInput() {
                 timePressed = getMsTimer();
                 playerPosY += gameSpeed;
                 //offsetY -= gameSpeed;
-
-
             }
             if (B_RIGHT) {
                 //uart_putc(70);
@@ -634,6 +653,7 @@ void getInput() {
                 buttonPressed = '1';
                 jump();
                 timePressed = getMsTimer();
+
             }
             if (B_B) {
                 //uart_putc(100);
@@ -714,6 +734,9 @@ int main(void) {
                 //printPlatform(10,12);
                 draw();
 
+            }
+            if(gameState == menue){
+              drawmenue();
             }
         }
 
