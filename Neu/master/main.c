@@ -153,7 +153,7 @@ void clearPlayerColumn(uint8_t y, char direction) {
 }
 
 
-void printPlayer(int16_t x, int16_t y,int16_t lastY) {
+void printPlayer(int16_t x, int16_t y, int16_t lastY) {
 
     if (y != lastY) {
 
@@ -250,7 +250,7 @@ uint8_t getIndexMinX() {
 void drawLives() {
     for (int i = 0; i < lives; i++) {
 
-        printHeart(100  + i * 8, 4);
+        printHeart(100 + i * 8, 4);
 
     }
 
@@ -262,7 +262,7 @@ void platformInit() {
     struct platform *pointer = platforms;
     *pointer = (struct platform) {0, 52, 90};
     pointer++;
-    *pointer = (struct platform) {91, 60, 60};
+    *pointer = (struct platform) {40, 20, 60};
     pointer++;
     *pointer = (struct platform) {200, 80, 90};
     pointer++;
@@ -383,6 +383,7 @@ void checkIfPlatformOutOfFrame() {
 
 
 }
+
 enum state {
     standing, dashing, jumping, falling
 };
@@ -472,23 +473,69 @@ bool collisionRectangles(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t
 }
 
 
-bool dropCollision(){
+bool collisionWithTopOfPlatform(struct platform _platform) {
+    if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, _platform.x, _platform.y,
+                            _platform.length, PLATFORM_HEIGHT / 2)) {
+        return true;
+    }
+    return false;
+
+}
+
+bool collisionWithBottomOfPlatform(struct platform _platform) {
+    if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, _platform.x,
+                            _platform.y + PLATFORM_HEIGHT / 2, _platform.length, PLATFORM_HEIGHT / 2)) {
+        return true;
+    }
+    return false;
+
+}
+
+
+bool dropCollision() {
     struct platform *pointer = platforms;
-    for(uint8_t i = 0; i < PLATFORM_COUNT;i++){
+    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
 
 
-        if (collisionRectangles(playerPosX, playerPosY + PLAYER_HEIGHT, PLATFORM_HEIGHT,1 , pointer->x, pointer->y,
+        if (collisionRectangles(playerPosX, playerPosY + PLAYER_HEIGHT, PLATFORM_HEIGHT, 1, pointer->x, pointer->y,
                                 pointer->length,
-                                PLATFORM_HEIGHT)){
+                                PLATFORM_HEIGHT)) {
             return true;
         }
-
 
 
         pointer++;
     }
 
     return false;
+
+}
+
+
+void collisionHandling() {
+
+    struct platform *pointer = platforms;
+    for (int i = 0; i < PLATFORM_COUNT; i++) {
+
+        struct platform plat = *pointer;
+
+        if (collisionWithTopOfPlatform(plat) || collisionWithBottomOfPlatform(plat)) {
+
+            playerState = standing;
+            playerMovY = 0;
+            if (lastPlayerPosY < plat.y) {
+                playerPosY = plat.y - PLAYER_HEIGHT;
+            } else if (lastPlayerPosY > plat.y+PLATFORM_HEIGHT) {
+                playerPosY = plat.y +PLATFORM_HEIGHT;
+            }
+
+
+        }
+
+
+        pointer++;
+    }
+
 
 }
 
@@ -513,14 +560,14 @@ bool collisionWithPlatform() {
 
                 int8_t calc = (platPtr->y - (playerPosY + PLAYER_HEIGHT));
                 playerPosY += calc; //calc
-             //   offsetY -= calc;
+                //   offsetY -= calc;
 
             } else if (abs(playerPosY + PLAYER_HEIGHT - platPtr->y) <= abs(playerPosY - platPtr->y + PLATFORM_HEIGHT)) {
                 //page(100, 0, 0xFF);
 
                 int8_t calc = (platPtr->y + PLATFORM_HEIGHT - playerPosY);
                 playerPosY += calc;
-              //  offsetY -= calc;
+                //  offsetY -= calc;
 
                 playerState = falling;
             }
@@ -561,12 +608,14 @@ void update() {
         jumpCounter = 2;
         dashCounter = 2;
         //collisionWithPlatform(); // TODO: new Collison for standing
-        if(!dropCollision()){
+        if (!dropCollision()) {
             playerState = falling;
         }
     }
     if (playerState == jumping) {
         collisionWithPlatform();
+        //       collisionWithTopOfPlatform();
+        collisionHandling();
     }
     if (dashLen > 0 && playerState == dashing) {
         dashLen -= gameSpeed;
@@ -574,21 +623,27 @@ void update() {
         offsetX -= gameSpeed * 2;
     }
     if (dashLen == 0 && playerState == dashing) {
-        collisionWithPlatform();
+        //collisionWithPlatform();
+        // collisionWithTopOfPlatform();
+        if (!dropCollision()) {
+            playerState = falling;
+        }
     }
     if (playerState == falling) {
 
         playerPosY += playerMovY;
-     //   offsetY -= playerMovY;
-        if(playerMovY < 5) {
+        //   offsetY -= playerMovY;
+        if (playerMovY < 5) {
             playerMovY += GRAVITY;
         }
-        collisionWithPlatform();
+        //collisionWithPlatform();
+        collisionHandling();
+        //collisionWithTopOfPlatform();
 
     }
-    score += gameSpeed;
-    playerPosX += gameSpeed;
-    offsetX -= gameSpeed;
+//    score += gameSpeed;
+//    playerPosX += gameSpeed;
+ //   offsetX -= gameSpeed;
 
 
 }
@@ -669,11 +724,11 @@ void draw() {
     drawLives();
 
     reDrawPlatforms();
-    printPlayer(5, playerPosY,lastPlayerPosY);
+    printPlayer(5, playerPosY, lastPlayerPosY);
 }
 
 
-void setGame(){
+void setGame() {
     lives--;
     if (lives == 0) {
 
@@ -689,7 +744,7 @@ void setGame(){
     offsetX = 5;
     drawPlatforms();
     lastPlayerPosY = 1;
-    printPlayer(5, 0,lastPlayerPosY);
+    printPlayer(5, 0, lastPlayerPosY);
 
     playerPosX = 0;
     playerPosY = 0;
