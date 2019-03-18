@@ -46,10 +46,10 @@ uint8_t getIndexMinX();
 
 void platformInit();
 
-struct platform createNewPlatform(struct platform last, uint8_t platWidth);
+struct platform createNewPlatform(struct platform last, uint8_t platWidth,int16_t speed);
 
 void addPlatformAtIndex(uint8_t ind, struct platform newPlatform);
 
-void checkIfPlatformOutOfFrame(int16_t playerPosX, uint8_t platWidth);
+void checkIfPlatformOutOfFrame(int16_t playerPosX, uint8_t platWidth,int16_t speed);
 
 #endif //ROBOTIK_PLATFORM_H

@@ -34,9 +34,8 @@ int8_t getMinXPowerUp(){
 
 }
 
-void createPowerUp(struct platform base){
+void createPowerUp(struct platform base,int16_t random){
 
-    int random = rand() % 10;
 
 
     powerUps[getMinXPowerUp()] = (struct PowerUp){base.x+base.length/2,base.y - 12,random};
@@ -106,20 +105,17 @@ void platformInit() {
     *pointer = (struct platform) {200, 80, 90};
     pointer++;
 };
-struct platform createNewPlatform(struct platform last,uint8_t platWidth) {
+struct platform createNewPlatform(struct platform last,uint8_t platWidth,int16_t speed) {
     int random = rand() % 1024;
 
 
+    int16_t minJump = 8 * 2 * speed;       // make dependant
 
+    int16_t maxJump = 8 * 2 * speed * 2;
 
+    uint8_t len = 15 * (random % (1 + platWidth) + 2);
 
-
-    int16_t maxJump = 8 * 2 * 2 + 12;       // make dependant
-
-
-    uint8_t len = 15 * (random % (platWidth-4) + 5);
-
-    int16_t newX = (last.x + last.length) + (int16_t)(random % (maxJump+1 - 30) + 30);
+    int16_t newX = (last.x + last.length) + (int16_t)(random % (maxJump+1 - minJump) + minJump);
 
     int16_t newY = (int16_t)(random % 21 + 4);
     newY *= 4;
@@ -129,7 +125,7 @@ struct platform createNewPlatform(struct platform last,uint8_t platWidth) {
 
     int8_t power = random % 20;
     if(power == 0){
-        createPowerUp(newPlat);
+        createPowerUp(newPlat,random);
     }
 
 
@@ -144,7 +140,7 @@ void addPlatformAtIndex(uint8_t ind, struct platform newPlatform) {
     }
 }
 
-void checkIfPlatformOutOfFrame(int16_t playerPosX,uint8_t platWidth) {
+void checkIfPlatformOutOfFrame(int16_t playerPosX,uint8_t platWidth,int16_t speed) {
 
     uint8_t ind = getIndexMinX();
 
@@ -152,7 +148,7 @@ void checkIfPlatformOutOfFrame(int16_t playerPosX,uint8_t platWidth) {
 
     if (farthestLeft.x + farthestLeft.length < playerPosX - 5) {
 
-        struct platform toAdd = createNewPlatform(getPlatformFromIndex(getIndexMaxX()),platWidth);
+        struct platform toAdd = createNewPlatform(getPlatformFromIndex(getIndexMaxX()),platWidth,speed);
 
         addPlatformAtIndex(ind, toAdd); // make platform
 

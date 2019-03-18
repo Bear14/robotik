@@ -29,7 +29,7 @@ typedef int bool;
 
 void init();
 
-volatile int8_t platWidth = 6;
+volatile int8_t platWidth = 5;
 
 volatile int16_t gameSpeed = INITIAL_SPEED;
 
@@ -212,49 +212,53 @@ void collisionWithPowerUp() {
     for (int8_t j = 0; j < POWER_UP_COUNT; j++) {
 
         if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, powerUps[j].x, powerUps[j].y,
-                                POWER_UP_SIZE, POWER_UP_SIZE)) {
+                                1, POWER_UP_SIZE)) {
 
+            if (playerState != dashing) {
+                gameState = set;
+            } else {
 
-            switch (powerUps[j].type) {
-                case none:
-                    break;
-                case live:
-                    if (lives < 5) {
-                        lives++;
-                    }
-                    powerUps[j].type = none;
-                    break;
-                case death:
-                    gameState = set;
-                    powerUps[j].type = none;
-                    break;
-                case speedUp:
-                    gameSpeed += 1; // TODO: MAX GAME SPEED
-                    powerUps[j].type = none;
-                    break;
-                case slow:
-                    if (gameSpeed <= 1) {
-                        gameSpeed -= 1;
-                    }
-                    powerUps[j].type = none;
-                    break;
-                case pointsUp:
-                    score += 1000;
-                    powerUps[j].type = none;
-                    break;
-                case pointsDown:
-                    score -= 500;
-                    powerUps[j].type = none;
-                    break;
+                switch (powerUps[j].type) {
+                    case none:
+                        break;
+                    case live:
+                        if (lives < 5) {
+                            lives++;
+                        }
+                        powerUps[j].type = none;
+                        break;
+                    case death:
+                        gameState = set;
+                        powerUps[j].type = none;
+                        break;
+                    case speedUp:
+                        gameSpeed += 1; // TODO: MAX GAME SPEED
+                        powerUps[j].type = none;
+                        break;
+                    case slow:
+                        if (gameSpeed <= 1) {
+                            gameSpeed -= 1;
+                        }
+                        powerUps[j].type = none;
+                        break;
+                    case pointsUp:
+                        score += 1000;
+                        powerUps[j].type = none;
+                        break;
+                    case pointsDown:
+                        score -= 500;
+                        powerUps[j].type = none;
+                        break;
 
+                }
 
+                clearPowerUp(powerUps[j].x + offsetX, powerUps[j].y, gameSpeed);
+                powerUps[j].x = -10;
+                powerUps[j].y = -10;
+                printPlayer(playerPosX, playerPosY, lastPlayerPosY);
+                lastPlayerPosY = 0;
+                printPlayer(playerPosX, playerPosY, lastPlayerPosY);
             }
-            clearPowerUp(powerUps[j].x + offsetX, powerUps[j].y, gameSpeed);
-            powerUps[j].x = -10;
-            powerUps[j].y = -10;
-            printPlayer(playerPosX, playerPosY, lastPlayerPosY);
-            lastPlayerPosY = 0;
-            printPlayer(playerPosX, playerPosY, lastPlayerPosY);
 
         }
 
@@ -275,7 +279,7 @@ void update() {
     lastPlayerPosX = playerPosX;
     lastOffsetX = offsetX;
 
-    checkIfPlatformOutOfFrame(playerPosX, platWidth);
+    checkIfPlatformOutOfFrame(playerPosX, platWidth, gameSpeed);
     reset();
 
     collisionWithPowerUp();
@@ -318,7 +322,7 @@ void update() {
 
     }
 
-    if(playerPosX % 100){
+    if (playerPosX % 100) {
         score += 1;
     }
     //score += gameSpeed;
@@ -434,7 +438,7 @@ void setGame() {
         lives = 3;
     }
 
-    gameSpeed = INITIAL_SPEED;
+    gameSpeed = 4;
 
     clear();
     platformInit();
