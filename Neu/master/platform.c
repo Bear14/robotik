@@ -73,9 +73,12 @@ void platformInit() {
 struct platform createNewPlatform(struct platform last,uint8_t platWidth) {
     int random = rand() % 1024;
 
+    int16_t maxJump = 8 * 2 * 2 + 12;       // make dependant
+
+
     uint8_t len = 15 * (random % platWidth + 1);
 
-    int16_t newX = (last.x + last.length) + (int16_t)(random % 45 + 30);
+    int16_t newX = (last.x + last.length) + (int16_t)(random % (maxJump+1 - 15) + 15);
 
     int16_t newY = (int16_t)(random % 21 + 4);
     newY *= 4;
