@@ -127,7 +127,7 @@ struct platform createNewPlatform(struct platform last,uint8_t platWidth) {
     //int16_t newY = (int16_t)(random % 82 + 18);
     struct platform newPlat = (struct platform){(int16_t) newX, (int16_t) newY, (uint8_t) len};
 
-    int8_t power = random % 10;
+    int8_t power = random % 20;
     if(power == 0){
         createPowerUp(newPlat);
     }
