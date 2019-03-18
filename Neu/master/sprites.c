@@ -179,3 +179,56 @@ void printPlatform(int16_t x, int16_t y) {
     drawCorrect(x + 14, y + 0, 0xBF);
     drawCorrect(x + 14, y + 4, 0x56);
 }
+
+void printPowerUp(int16_t x, int16_t y,enum PowerUpType type,int16_t speed){
+
+    for(int i = 0; i < speed; i++){
+        drawCorrect(x+8+i,y,0);
+        drawCorrect(x+8+i,y+4,0);
+
+
+    }
+
+
+
+    drawCorrect(x+0,y+0,0x3C);
+    drawCorrect(x+0,y+4,0x3F);
+    drawCorrect(x+1,y+0,0x08);
+    drawCorrect(x+1,y+4,0x57);
+    drawCorrect(x+2,y+0,0x0A);
+    drawCorrect(x+2,y+4,0x57);
+    drawCorrect(x+3,y+0,0x0A);
+    drawCorrect(x+3,y+4,0x57);
+    drawCorrect(x+4,y+0,0x0A);
+    drawCorrect(x+4,y+4,0x5B);
+    drawCorrect(x+5,y+0,0xEA);
+    drawCorrect(x+5,y+4,0x57);
+    drawCorrect(x+6,y+0,0xC2);
+    drawCorrect(x+6,y+4,0x03);
+    drawCorrect(x+7,y+0,0x02);
+}
+void clearPowerUp(int16_t x , int16_t y,int16_t speed){
+    for(int i = 0; i < speed; i++){
+        drawCorrect(x+8+i,y,0);
+        drawCorrect(x+8+i,y+4,0);
+
+
+    }
+
+    drawCorrect(x+0,y+0,0);
+    drawCorrect(x+0,y+4,0);
+    drawCorrect(x+1,y+0,0);
+    drawCorrect(x+1,y+4,0);
+    drawCorrect(x+2,y+0,0);
+    drawCorrect(x+2,y+4,0);
+    drawCorrect(x+3,y+0,0);
+    drawCorrect(x+3,y+4,0);
+    drawCorrect(x+4,y+0,0);
+    drawCorrect(x+4,y+4,0);
+    drawCorrect(x+5,y+0,0);
+    drawCorrect(x+5,y+4,0);
+    drawCorrect(x+6,y+0,0);
+    drawCorrect(x+6,y+4,0);
+    drawCorrect(x+7,y+0,0);
+
+}

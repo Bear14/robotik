@@ -206,6 +206,60 @@ bool dashCollision(){
 }
 
 
+void collisionWithPowerUp(){
+    for(int8_t j = 0 ; j < POWER_UP_COUNT; j++){
+
+        if(collisionRectangles(playerPosX,playerPosY,PLAYER_HEIGHT,PLAYER_HEIGHT,powerUps[j].x,powerUps[j].y,POWER_UP_SIZE,POWER_UP_SIZE)){
+
+
+            switch (powerUps[j].type){
+                case none:
+                    break;
+                case live:
+                    lives++;
+                    powerUps[j].type = none;
+                    break;
+                case death:
+                    lives--;
+                    powerUps[j].type = none;
+                    break;
+                case speedUp:
+                    gameSpeed += 1; // TODO: MAX GAME SPEED
+                    powerUps[j].type = none;
+                    break;
+                case slow:
+                    if(gameSpeed <= 1) {
+                        gameSpeed -= 1;
+                    }
+                    powerUps[j].type = none;
+                    break;
+                case pointsUp:
+                    score += 1000;
+                    powerUps[j].type = none;
+                    break;
+                case pointsDown:
+                    score -= 500;
+                    powerUps[j].type = none;
+                    break;
+
+
+
+            }
+            clearPowerUp(powerUps[j].x+offsetX,powerUps[j].y,gameSpeed);
+            powerUps[j].x = -10;
+            powerUps[j].y = -10;
+            printPlayer(playerPosX,playerPosY,lastPlayerPosY);
+            lastPlayerPosY = 0;
+            printPlayer(playerPosX,playerPosY,lastPlayerPosY);
+
+        }
+
+
+    }
+
+
+}
+
 
 void update() {
 
@@ -220,6 +274,7 @@ void update() {
     checkIfPlatformOutOfFrame(playerPosX,platWidth);
     reset();
 
+    collisionWithPowerUp();
     if (playerState == standing) {
         jumpCounter = 2;
         dashCounter = 2;
@@ -357,7 +412,7 @@ void getInput() {
 void draw() {
 
     drawLives(lives);
-
+    drawPowerUps(offsetX,playerPosX-lastPlayerPosX);
     reDrawPlatforms(offsetX);
     printPlayer(5, playerPosY, lastPlayerPosY);
 }
@@ -451,4 +506,5 @@ void init() {
     displayInit();
     //bufferInit();
     platformInit();
+    initPowerUps();
 }

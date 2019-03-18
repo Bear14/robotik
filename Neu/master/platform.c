@@ -7,6 +7,42 @@
 #include <stdlib.h>
 
 
+void initPowerUps(){
+    for(int i = 0; i < POWER_UP_COUNT; i++){
+
+        powerUps[i] = (struct PowerUp){-10+i,-10+i,none};
+
+    }
+}
+
+int8_t getMinXPowerUp(){
+
+    struct PowerUp *pointer = powerUps;
+
+    int16_t min = 9000;
+    uint8_t ind = 0;
+
+    for(int i = 0; i < POWER_UP_COUNT; i++){
+
+        if(pointer->x < min){
+            min = pointer->x;
+            ind = i;
+        }
+        pointer++;
+    }
+    return ind;
+
+}
+
+void createPowerUp(struct platform base){
+
+    int random = rand() % 10;
+
+
+    powerUps[getMinXPowerUp()] = (struct PowerUp){base.x+base.length/2,base.y - 12,random};
+
+}
+
 struct platform getPlatformFromIndex(uint8_t ind) {
     struct platform *pointer = platforms;
     pointer += ind;
@@ -73,19 +109,31 @@ void platformInit() {
 struct platform createNewPlatform(struct platform last,uint8_t platWidth) {
     int random = rand() % 1024;
 
+
+
+
+
+
     int16_t maxJump = 8 * 2 * 2 + 12;       // make dependant
 
 
-    uint8_t len = 15 * (random % platWidth + 1);
+    uint8_t len = 15 * (random % (platWidth-4) + 5);
 
-    int16_t newX = (last.x + last.length) + (int16_t)(random % (maxJump+1 - 15) + 15);
+    int16_t newX = (last.x + last.length) + (int16_t)(random % (maxJump+1 - 30) + 30);
 
     int16_t newY = (int16_t)(random % 21 + 4);
     newY *= 4;
 
     //int16_t newY = (int16_t)(random % 82 + 18);
+    struct platform newPlat = (struct platform){(int16_t) newX, (int16_t) newY, (uint8_t) len};
 
-    return (struct platform) {(int16_t) newX, (int16_t) newY, (uint8_t) len};
+    int8_t power = random % 10;
+    if(power == 0){
+        createPowerUp(newPlat);
+    }
+
+
+    return newPlat;
 }
 void addPlatformAtIndex(uint8_t ind, struct platform newPlatform) {
 
