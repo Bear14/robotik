@@ -11,6 +11,22 @@
 
 #define PLATFORM_HEIGHT 8
 
+#define POWER_UP_COUNT 3
+
+#define POWER_UP_SIZE 8
+
+enum PowerUpType {
+    none, live, death, knight, sorcerer,ranger,slow,speedUp,pointsUp,pointsDown
+};
+
+struct PowerUp {
+    int16_t x;
+    int16_t y;
+    enum PowerUpType type;
+
+};
+
+struct PowerUp powerUps[POWER_UP_COUNT];
 
 struct platform {
     int16_t x;
@@ -18,13 +34,22 @@ struct platform {
     uint8_t length;
 };
 
+void initPowerUps();
+
 struct platform platforms[PLATFORM_COUNT];
+
 struct platform getPlatformFromIndex(uint8_t ind);
+
 uint8_t getIndexMaxX();
+
 uint8_t getIndexMinX();
+
 void platformInit();
-struct platform createNewPlatform(struct platform last,uint8_t platWidth);
+
+struct platform createNewPlatform(struct platform last, uint8_t platWidth,int16_t speed);
+
 void addPlatformAtIndex(uint8_t ind, struct platform newPlatform);
-void checkIfPlatformOutOfFrame(int16_t playerPosX,uint8_t platWidth);
+
+void checkIfPlatformOutOfFrame(int16_t playerPosX, uint8_t platWidth,int16_t speed);
 
 #endif //ROBOTIK_PLATFORM_H

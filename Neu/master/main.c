@@ -25,9 +25,11 @@ typedef int bool;
 #define JUMP_HEIGHT -8
 #define INITIAL_SPEED 2
 #define DASH_LENGTH 12
+#define MAX_GAME_SPEED 8
 
 void init();
-volatile int8_t platWidth= 6;
+
+volatile int8_t platWidth = 5;
 
 volatile int16_t gameSpeed = INITIAL_SPEED;
 
@@ -47,7 +49,6 @@ volatile int16_t lastPlayerPosX = 0;
 volatile int16_t playerPosY = 0;
 volatile int16_t playerPosX = 0;
 volatile int8_t playerMovY = 0;
-
 
 
 #define PLAYER_HEIGHT 16
@@ -77,15 +78,15 @@ void reset() {
         offsetX = 5;
         platWidth--;
         playerPosX = 0;
-        gameSpeed += 1;
+        if (gameSpeed < MAX_GAME_SPEED) {
+            gameSpeed += 1;
+        }
         playerState = falling;
         sei();
 
     }
 
 }
-
-
 
 
 enum gState {
@@ -140,7 +141,6 @@ bool collisionRectangles(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t
 }
 
 
-
 bool dropCollision() {
     struct platform *pointer = platforms;
     for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
@@ -168,7 +168,8 @@ void collisionHandling() {
 
         struct platform plat = *pointer;
 
-        if (collisionRectangles(playerPosX,playerPosY,PLAYER_HEIGHT,PLAYER_HEIGHT,plat.x,plat.y,plat.length,PLATFORM_HEIGHT)) {
+        if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, plat.x, plat.y, plat.length,
+                                PLATFORM_HEIGHT)) {
 
 
             playerMovY = 0;
@@ -176,7 +177,7 @@ void collisionHandling() {
                 playerPosY = plat.y - PLAYER_HEIGHT;
                 playerState = standing;
             } else if (lastPlayerPosY > plat.y) {
-                playerPosY = plat.y +PLATFORM_HEIGHT;
+                playerPosY = plat.y + PLATFORM_HEIGHT;
             }
 
 
@@ -188,9 +189,10 @@ void collisionHandling() {
 
 
 }
-bool dashCollision(){
+
+bool dashCollision() {
     struct platform *pointer = platforms;
-    for(int i = 0; i < PLATFORM_COUNT; i++){
+    for (int i = 0; i < PLATFORM_COUNT; i++) {
 
         if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, pointer->x, pointer->y,
                                 pointer->length,
@@ -206,6 +208,66 @@ bool dashCollision(){
 }
 
 
+void collisionWithPowerUp() {
+    for (int8_t j = 0; j < POWER_UP_COUNT; j++) {
+
+        if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, powerUps[j].x, powerUps[j].y,
+                                1, POWER_UP_SIZE)) {
+
+            if (playerState != dashing) {
+                gameState = set;
+            } else {
+
+                switch (powerUps[j].type) {
+                    case none:
+                        break;
+                    case live:
+                        if (lives < 5) {
+                            lives++;
+                        }
+                        powerUps[j].type = none;
+                        break;
+                    case death:
+                        gameState = set;
+                        powerUps[j].type = none;
+                        break;
+                    case speedUp:
+                        gameSpeed += 1; // TODO: MAX GAME SPEED
+                        powerUps[j].type = none;
+                        break;
+                    case slow:
+                        if (gameSpeed <= 1) {
+                            gameSpeed -= 1;
+                        }
+                        powerUps[j].type = none;
+                        break;
+                    case pointsUp:
+                        score += 1000;
+                        powerUps[j].type = none;
+                        break;
+                    case pointsDown:
+                        score -= 500;
+                        powerUps[j].type = none;
+                        break;
+
+                }
+
+                clearPowerUp(powerUps[j].x + offsetX, powerUps[j].y, gameSpeed);
+                powerUps[j].x = -10;
+                powerUps[j].y = -10;
+                printPlayer(playerPosX, playerPosY, lastPlayerPosY);
+                lastPlayerPosY = 0;
+                printPlayer(playerPosX, playerPosY, lastPlayerPosY);
+            }
+
+        }
+
+
+    }
+
+
+}
+
 
 void update() {
 
@@ -217,9 +279,10 @@ void update() {
     lastPlayerPosX = playerPosX;
     lastOffsetX = offsetX;
 
-    checkIfPlatformOutOfFrame(playerPosX,platWidth);
+    checkIfPlatformOutOfFrame(playerPosX, platWidth, gameSpeed);
     reset();
 
+    collisionWithPowerUp();
     if (playerState == standing) {
         jumpCounter = 2;
         dashCounter = 2;
@@ -237,11 +300,11 @@ void update() {
         dashLen -= gameSpeed;
         playerPosX += gameSpeed * 2;
         offsetX -= gameSpeed * 2;
-        if(dashCollision()){
+        if (dashCollision()) {
             gameState = set;
         }
     }
-    if (dashLen == 0 && playerState == dashing) {
+    if (dashLen <= 0 && playerState == dashing) {
 
         if (!dropCollision()) {
             playerState = falling;
@@ -258,7 +321,11 @@ void update() {
 
 
     }
-    score += gameSpeed;
+
+    if (playerPosX % 100) {
+        score += 1;
+    }
+    //score += gameSpeed;
     playerPosX += gameSpeed;
     offsetX -= gameSpeed;
 
@@ -268,24 +335,24 @@ void update() {
 
 void getInput() {
     if (buttonPressed == '0') {
-      if(gameState == menue){
-        if (B_DOWN) {
-            //uart_putc(60);
-            buttonPressed = '1';
-            timePressed = getMsTimer();
-        }
-        if (B_UP) {
-            //uart_putc(50);
-            buttonPressed = '1';
-            timePressed = getMsTimer();
-        }
-        if (B_A) {
-            //uart_putc(90);
-            buttonPressed = '1';
-            timePressed = getMsTimer();
+        if (gameState == menue) {
+            if (B_DOWN) {
+                //uart_putc(60);
+                buttonPressed = '1';
+                timePressed = getMsTimer();
+            }
+            if (B_UP) {
+                //uart_putc(50);
+                buttonPressed = '1';
+                timePressed = getMsTimer();
+            }
+            if (B_A) {
+                //uart_putc(90);
+                buttonPressed = '1';
+                timePressed = getMsTimer();
 
+            }
         }
-      }
         if (B_SELECT) {
             //uart_putc(20);
             buttonPressed = '1';
@@ -357,7 +424,7 @@ void getInput() {
 void draw() {
 
     drawLives(lives);
-
+    drawPowerUps(offsetX, playerPosX - lastPlayerPosX);
     reDrawPlatforms(offsetX);
     printPlayer(5, playerPosY, lastPlayerPosY);
 }
@@ -371,10 +438,11 @@ void setGame() {
         lives = 3;
     }
 
-    gameSpeed = INITIAL_SPEED;
+    gameSpeed = 4;
 
     clear();
     platformInit();
+    initPowerUps();
     drawLives(lives);
     offsetX = 5;
     drawPlatforms(offsetX);
@@ -424,7 +492,7 @@ int main(void) {
                 draw();
 
             }
-            if(gameState == menue){
+            if (gameState == menue) {
 
             }
         }
@@ -451,4 +519,5 @@ void init() {
     displayInit();
     //bufferInit();
     platformInit();
+    initPowerUps();
 }
