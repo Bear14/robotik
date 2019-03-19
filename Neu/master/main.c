@@ -50,6 +50,8 @@ volatile int16_t playerPosY = 0;
 volatile int16_t playerPosX = 0;
 volatile int8_t playerMovY = 0;
 
+volatile uint8_t pfeilPosX=35;
+volatile uint8_t pfeilPosY=35;
 
 #define PLAYER_HEIGHT 16
 
@@ -90,7 +92,7 @@ void reset() {
 
 
 enum gState {
-    run, stop, set, menue
+    run, stop, set, menue1, menue2
 };
 
 enum gState gameState = set;
@@ -335,88 +337,189 @@ void update() {
 
 void getInput() {
     if (buttonPressed == '0') {
-        if (gameState == menue) {
-            if (B_DOWN) {
-                //uart_putc(60);
-                buttonPressed = '1';
-                timePressed = getMsTimer();
-            }
-            if (B_UP) {
-                //uart_putc(50);
-                buttonPressed = '1';
-                timePressed = getMsTimer();
-            }
-            if (B_A) {
-                //uart_putc(90);
-                buttonPressed = '1';
-                timePressed = getMsTimer();
+        switch(gameState){
+            case menue1:
+                if (B_DOWN) {
+                    //uart_putc(60);
+                    buttonPressed = '1';
+                    timePressed = getMsTimer();
+                    deletePfeil(pfeilPosX, pfeilPosY);
+                    if(pfeilPosY+10 <= 65 ){
+                        pfeilPosY+=10;
+                    }else{
+                        pfeilPosY=45;
+                    }
+                    drawPfeil(pfeilPosX, pfeilPosY);
+                }
+                if (B_UP) {
+                    //uart_putc(50);
+                    buttonPressed = '1';
+                    timePressed = getMsTimer();
+                    deletePfeil(pfeilPosX, pfeilPosY);
+                    if(pfeilPosY-10 >= 45 ){
+                        pfeilPosY-=10;
+                    }else{
+                        pfeilPosY=65;
+                    }
+                    drawPfeil(pfeilPosX, pfeilPosY);
+                }
+                if (B_A) {
+                    //uart_putc(90);
+                    buttonPressed = '1';
+                    timePressed = getMsTimer();
+                    if(pfeilPosY == 45){ // Neues Game
+                        gameState =set;
+                    }
+                    if(pfeilPosY == 55){
 
-            }
-        }
-        if (B_SELECT) {
-            //uart_putc(20);
-            buttonPressed = '1';
-            timePressed = getMsTimer();
-            //gameState = run;
-            gameState = menue;
-        }
-        if (B_PAUSE) {
+                    }
+                    if(pfeilPosY == 65){ //SCHWIRIGKEIT Menue2
+                        clearAll();
+                        drawMenue2();
+                        gameState = menue2;
+                        pfeilPosY = 55;
+                        drawPfeil(pfeilPosX, pfeilPosY);
+                    }
+                }
+                break;
+            case menue2:
+                if (B_DOWN) {
+                    //uart_putc(60);
+                    buttonPressed = '1';
+                    timePressed = getMsTimer();
+                    deletePfeil(pfeilPosX, pfeilPosY);
+                    if(pfeilPosY+10 <= 65 ){
+                        pfeilPosY+=10;
+                    }else{
+                        pfeilPosY=45;
+                    }
+                    drawPfeil(pfeilPosX, pfeilPosY);
+                }
+                if (B_UP) {
+                    //uart_putc(50);
+                    buttonPressed = '1';
+                    timePressed = getMsTimer();
+                    deletePfeil(pfeilPosX, pfeilPosY);
+                    if(pfeilPosY-10 >= 45 ){
+                        pfeilPosY-=10;
+                    }else{
+                        pfeilPosY=65;
+                    }
+                    drawPfeil(pfeilPosX, pfeilPosY);
+                }
+                if (B_A) {
+                    //uart_putc(90);
+                    buttonPressed = '1';
+                    timePressed = getMsTimer();
+                    if(pfeilPosY == 45){ // Neues Game
+                        gameSpeed = INITIAL_SPEED-1;
+                    }
+                    if(pfeilPosY == 55){
+                        gameSpeed = INITIAL_SPEED;
+                    }
+                    if(pfeilPosY == 65){ //SCHWIRIGKEIT Menue2
+                        gameSpeed = INITIAL_SPEED+5;
+                    }
+                    clearAll();
+                    drawMenue1();
+                    gameState = menue1;
+                    pfeilPosY = 45;
+                    drawPfeil(pfeilPosX, pfeilPosY);
+                }
+                break;
+            case run:
+                if (B_UP) {
+                    //uart_putc(50);
+                    buttonPressed = '1';
+                    timePressed = getMsTimer();
+                    playerPosY -= gameSpeed;
+                    //offsetY += gameSpeed;
 
-            //uart_putc(30);
-            buttonPressed = '1';
-            timePressed = getMsTimer();
-            if (gameState == run) {
-                gameState = stop;
-            } else {
-                gameState = run;
-            }
-        }
-        if (gameState == run) {
-            if (B_UP) {
-                //uart_putc(50);
-                buttonPressed = '1';
-                timePressed = getMsTimer();
-                playerPosY -= gameSpeed;
-                //offsetY += gameSpeed;
+                }
+                if (B_DOWN) {
+                    //uart_putc(60);
+                    buttonPressed = '1';
+                    timePressed = getMsTimer();
+                    playerPosY += gameSpeed;
+                    //offsetY -= gameSpeed;
+                }
+                if (B_RIGHT) {
+                    //uart_putc(70);
+                    buttonPressed = '1';
+                    timePressed = getMsTimer();
+                    playerPosX += gameSpeed;
+                    offsetX -= gameSpeed;
 
-            }
-            if (B_DOWN) {
-                //uart_putc(60);
-                buttonPressed = '1';
-                timePressed = getMsTimer();
-                playerPosY += gameSpeed;
-                //offsetY -= gameSpeed;
-            }
-            if (B_RIGHT) {
-                //uart_putc(70);
-                buttonPressed = '1';
-                timePressed = getMsTimer();
-                playerPosX += gameSpeed;
-                offsetX -= gameSpeed;
+                }
+                if (B_LEFT) {
+                    //uart_putc(80);
+                    buttonPressed = '1';
+                    timePressed = getMsTimer();
+                    playerPosX -= gameSpeed;
+                    offsetX += gameSpeed;
+                }
 
-            }
-            if (B_LEFT) {
-                //uart_putc(80);
-                buttonPressed = '1';
-                timePressed = getMsTimer();
-                playerPosX -= gameSpeed;
-                offsetX += gameSpeed;
+                if (B_A) {
+                    //uart_putc(90);
+                    buttonPressed = '1';
+                    jump();
+                    timePressed = getMsTimer();
+                }
+                if (B_B) {
+                    //uart_putc(100);
+                    buttonPressed = '1';
+                    dash();
+                    timePressed = getMsTimer();
+                }
+                if (B_SELECT) {
+                    //uart_putc(20);
+                    buttonPressed = '1';
+                    timePressed = getMsTimer();
+                    //gameState = run;
+                    gameState = menue1;
+                    clearAll();
+                    drawMenue1();
+                    pfeilPosX=45;
+                    pfeilPosY=45;
+                    drawPfeil(pfeilPosX, pfeilPosY);
+                }
+                if (B_PAUSE) {
 
-            }
+                    //uart_putc(30);
+                    buttonPressed = '1';
+                    timePressed = getMsTimer();
+                    if (gameState == run) {
+                        gameState = stop;
+                    } else {
+                        gameState = run;
+                    }
+                }
+                break;
+            default:
+                if (B_SELECT) {
+                    //uart_putc(20);
+                    buttonPressed = '1';
+                    timePressed = getMsTimer();
+                    //gameState = run;
+                    gameState = menue1;
+                    clearAll();
+                    drawMenue1();
+                    pfeilPosX=45;
+                    pfeilPosY=45;
+                    drawPfeil(pfeilPosX, pfeilPosY);
+                }
+                if (B_PAUSE) {
 
-            if (B_A) {
-                //uart_putc(90);
-                buttonPressed = '1';
-                jump();
-                timePressed = getMsTimer();
-
-            }
-            if (B_B) {
-                //uart_putc(100);
-                buttonPressed = '1';
-                dash();
-                timePressed = getMsTimer();
-            }
+                    //uart_putc(30);
+                    buttonPressed = '1';
+                    timePressed = getMsTimer();
+                    if (gameState == run) {
+                        gameState = stop;
+                    } else {
+                        gameState = run;
+                    }
+                }
+                break;
         }
     }
 }
@@ -424,6 +527,8 @@ void getInput() {
 void draw() {
 
     drawLives(lives);
+    drawScore(score);
+
     drawPowerUps(offsetX, playerPosX - lastPlayerPosX);
     reDrawPlatforms(offsetX);
     printPlayer(5, playerPosY, lastPlayerPosY);
@@ -438,12 +543,13 @@ void setGame() {
         lives = 3;
     }
 
-    gameSpeed = 4;
+    //gameSpeed = 4;
 
     clear();
     platformInit();
     initPowerUps();
     drawLives(lives);
+    drawScore(score);
     offsetX = 5;
     drawPlatforms(offsetX);
     lastPlayerPosY = 1;
@@ -467,6 +573,15 @@ int main(void) {
     uart_putc(10);
     _delay_ms(1000);
 
+    printDragon();
+    _delay_ms(5000);
+
+    clear();
+    gameState = menue1;
+    pfeilPosX = 40;
+    pfeilPosY = 45;
+    drawMenue1();
+    drawPfeil(pfeilPosX, pfeilPosY);
 
     while (1) {
 /*
