@@ -32,8 +32,7 @@ int8_t getMinXPowerUp() {
 
 void createPowerUp(struct platform base, int16_t random) {
 
-
-    powerUps[getMinXPowerUp()] = (struct PowerUp) {base.x + base.length / 2, base.y - 12, random};
+    powerUps[getMinXPowerUp()] = (struct PowerUp) {base.x +random % base.length, base.y - 8, random%10};
 
 }
 
@@ -68,7 +67,7 @@ uint8_t getIndexMinX() {
 
 void platformInit() {
     platforms[0] = (struct platform) {0, 52, 90};
-    platforms[1] = (struct platform) {40, 20, 60};
+    platforms[1] = (struct platform) {100, 20, 60};
     platforms[2] = (struct platform) {200, 80, 90};
 };
 
@@ -91,9 +90,9 @@ struct platform createNewPlatform(struct platform last, uint8_t platWidth, int16
     struct platform newPlat = (struct platform) {(int16_t) newX, (int16_t) newY, (uint8_t) len};
 
     int8_t power = random % 20;
-    if (power == 0) {
+    //if (power == 0) {
         createPowerUp(newPlat, random);
-    }
+   // }
 
 
     return newPlat;
