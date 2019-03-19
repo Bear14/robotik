@@ -374,7 +374,7 @@ void getInput() {
 
                     }
                     if(pfeilPosY == 65){ //SCHWIRIGKEIT Menue2
-                        clearAll();
+                        clear();
                         drawMenue2();
                         gameState = menue2;
                         pfeilPosY = 55;
@@ -420,7 +420,7 @@ void getInput() {
                     if(pfeilPosY == 65){ //SCHWIRIGKEIT Menue2
                         gameSpeed = INITIAL_SPEED+5;
                     }
-                    clearAll();
+                    clear();
                     drawMenue1();
                     gameState = menue1;
                     pfeilPosY = 45;
@@ -477,7 +477,7 @@ void getInput() {
                     timePressed = getMsTimer();
                     //gameState = run;
                     gameState = menue1;
-                    clearAll();
+                    clear();
                     drawMenue1();
                     pfeilPosX=45;
                     pfeilPosY=45;
@@ -502,7 +502,7 @@ void getInput() {
                     timePressed = getMsTimer();
                     //gameState = run;
                     gameState = menue1;
-                    clearAll();
+                    clear();
                     drawMenue1();
                     pfeilPosX=45;
                     pfeilPosY=45;
