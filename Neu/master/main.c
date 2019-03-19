@@ -77,6 +77,9 @@ void reset() {
             pointer->x -= playerPosX;
             pointer++;
         }
+        for (int j = 0; j < POWER_UP_COUNT; j++) {
+            powerUps[j].x -= playerPosX;
+        }
 
         offsetX = 5;
         platWidth--;
@@ -217,51 +220,53 @@ void collisionWithPowerUp() {
         if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, powerUps[j].x, powerUps[j].y,
                                 1, POWER_UP_SIZE)) {
 
-            if (playerState != dashing) {
-                gameState = set;
-            } else {
 
-                switch (powerUps[j].type) {
-                    case none:
-                        break;
-                    case live:
-                        if (lives < 5) {
-                            lives++;
-                        }
-                        powerUps[j].type = none;
-                        break;
-                    case death:
-                        gameState = set;
-                        powerUps[j].type = none;
-                        break;
-                    case speedUp:
-                        gameSpeed += 1; // TODO: MAX GAME SPEED
-                        powerUps[j].type = none;
-                        break;
-                    case slow:
-                        if (gameSpeed <= 1) {
-                            gameSpeed -= 1;
-                        }
-                        powerUps[j].type = none;
-                        break;
-                    case pointsUp:
-                        score += 1000;
-                        powerUps[j].type = none;
-                        break;
-                    case pointsDown:
-                        score -= 500;
-                        powerUps[j].type = none;
-                        break;
+            switch (powerUps[j].type) {
+                case none:
+                    break;
+                case live:
+                    if (lives < 5) {
+                        lives++;
+                    }
+                    powerUps[j].type = none;
+                    break;
+                case death:
+                    gameState = set;
+                    powerUps[j].type = none;
+                    break;
+                case speedUp:
+                    if (gameSpeed < MAX_GAME_SPEED) {
+                        gameSpeed += 1;
+                    }
+                    powerUps[j].type = none;
+                    break;
+                case slow:
+                    if (gameSpeed <= 1) {
+                        gameSpeed -= 1;
+                    }
+                    powerUps[j].type = none;
+                    break;
+                case pointsUp:
+                    score += gameSpeed * 50;
+                    powerUps[j].type = none;
+                    break;
+                case pointsDown:
+                    if (score <= gameSpeed * 20) {
+                        score = 0;
+                    } else {
+                        score -= gameSpeed * 20;
+                    }
+                    powerUps[j].type = none;
+                    break;
 
-                }
-
-                clearPowerUp(powerUps[j].x + offsetX, powerUps[j].y, gameSpeed);
-                powerUps[j].x = -10;
-                powerUps[j].y = -10;
-                printPlayer(playerPosX, playerPosY, lastPlayerPosY);
-                lastPlayerPosY = 0;
-                printPlayer(playerPosX, playerPosY, lastPlayerPosY);
             }
+
+
+            //printPowerUp(powerUps[j].x,powerUps[j].y,none,gameSpeed);
+            clearPowerUp(powerUps[j].x+offsetX,powerUps[j].y);
+            powerUps[j].x = -100;
+            powerUps[j].y = -100;
+            printPlayer(playerPosX, playerPosY, lastPlayerPosY,'1');
 
         }
 
@@ -529,11 +534,11 @@ void draw() {
 
     //drawLives(lives);
     if (lastScore != score) {
-       // drawScore(score);
+        // drawScore(score);
     }
     drawPowerUps(offsetX, playerPosX - lastPlayerPosX);
     reDrawPlatforms(offsetX);
-    printPlayer(5, playerPosY, lastPlayerPosY);
+    printPlayer(5, playerPosY, lastPlayerPosY,'0');
 }
 
 
@@ -543,6 +548,7 @@ void setGame() {
 
         score = 0;
         lives = 3;
+        gameSpeed = INITIAL_SPEED;
     }
 
     //gameSpeed = 4;
@@ -555,7 +561,7 @@ void setGame() {
     offsetX = 5;
     drawPlatforms(offsetX);
     lastPlayerPosY = 1;
-    printPlayer(5, 0, lastPlayerPosY);
+    printPlayer(5, 0, lastPlayerPosY,'0');
 
     playerPosX = 0;
     playerPosY = 0;
@@ -576,7 +582,7 @@ int main(void) {
     _delay_ms(1000);
 
     printDragon();
-    _delay_ms(5000);
+    _delay_ms(1000);
 
     clear();
     gameState = menue1;

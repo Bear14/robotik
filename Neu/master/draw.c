@@ -7,6 +7,7 @@
 #include "draw.h"
 #include "sprites.h"
 #include "platform.h"
+#include <stdio.h>
 
 void drawString(char text[], uint8_t x, uint8_t y) {
     char *pointer = text;
@@ -31,7 +32,7 @@ uint8_t nextGlyph(char glyph, uint8_t x, uint8_t y) {
             glyph_ende = 4;
             break;
         case '1':
-            glyph_ende = 3;
+            glyph_ende = 4;
             break;
         case '2':
             glyph_ende = 4;
@@ -162,7 +163,10 @@ void drawGlyph(char glyph, uint8_t x, uint8_t y) {
             drawCorrect(x + 1, y + 0, 0xFC);
             drawCorrect(x + 1, y + 4, 0xFF);
             drawCorrect(x + 2, y + 0, 0x00);
-            drawCorrect(x + 2, x + 4, 0xC0);
+            drawCorrect(x + 2, y + 4, 0xC0);
+            drawCorrect(x + 3, y + 0, 0);
+            drawCorrect(x + 3, y + 4, 0);
+
             break;
         case '2':
             drawCorrect(x + 0, y + 0, 0x30);
@@ -192,6 +196,7 @@ void drawGlyph(char glyph, uint8_t x, uint8_t y) {
             drawCorrect(x + 2, y + 0, 0xFC);
             drawCorrect(x + 2, y + 4, 0xFF);
             drawCorrect(x + 3, y + 4, 0x0C);
+            drawCorrect(x + 3, y + 0, 0);
             break;
         case '5':
             drawCorrect(x + 0, y + 0, 0xFC);
@@ -220,6 +225,8 @@ void drawGlyph(char glyph, uint8_t x, uint8_t y) {
             drawCorrect(x + 2, y + 0, 0x0C);
             drawCorrect(x + 2, y + 4, 0x03);
             drawCorrect(x + 3, y + 0, 0xFC);
+            drawCorrect(x + 0, y + 4, 0);
+            drawCorrect(x + 3, y + 4, 0);
             break;
         case '8':
             drawCorrect(x + 0, y + 0, 0xF0);
@@ -239,6 +246,7 @@ void drawGlyph(char glyph, uint8_t x, uint8_t y) {
             drawCorrect(x + 2, y + 4, 0xC3);
             drawCorrect(x + 3, y + 0, 0xF0);
             drawCorrect(x + 3, y + 4, 0x3F);
+            drawCorrect(x + 0, y + 4, 0);
             break;
         case 'A':
             drawCorrect(x + 0, y + 0, 0xF0);
@@ -606,18 +614,21 @@ void drawCorrect(int16_t x, int16_t y, uint8_t h) {
         }
     }
 }
-void drawScore(uint32_t score){
+
+void drawScore(uint32_t score) {
     char text[18];
-    sprintf(text,"%010d",score);
-    drawString(text, 80, 96);
+    sprintf(text, "%010d", score);
+    drawString(text, 109, 96);
 }
-void drawMenue1(){
+
+void drawMenue1() {
     drawString("HAUPTMENUE", 55, 25);
     drawString("NEUES SPIEL", 55, 45);
     drawString("HIGHSCORE", 55, 55);
     drawString("SCHWIRIGKEIT", 55, 65);
 }
-void drawMenue2(){
+
+void drawMenue2() {
     drawString("SCHWIRIGKEIT", 55, 25);
     drawString("LEICHT", 55, 45);
     drawString("NORMAL", 55, 55);
@@ -646,32 +657,33 @@ void drawPfeil(uint8_t x, uint8_t y) {
     drawCorrect(x + 9, y + 4, 0x03);
 
 }
-void deletePfeil(uint8_t x, uint8_t y){
-    drawCorrect(x+0,y+0,0x00);
-    drawCorrect(x+0,y+4,0x00);
-    drawCorrect(x+1,y+0,0x00);
-    drawCorrect(x+1,y+4,0x00);
-    drawCorrect(x+2,y+0,0x00);
-    drawCorrect(x+2,y+4,0x00);
-    drawCorrect(x+3,y+0,0x00);
-    drawCorrect(x+3,y+4,0x00);
-    drawCorrect(x+4,y+0,0x00);
-    drawCorrect(x+4,y+4,0x00);
-    drawCorrect(x+5,y+0,0x00);
-    drawCorrect(x+5,y+4,0x00);
-    drawCorrect(x+6,y+0,0x00);
-    drawCorrect(x+6,y+4,0x00);
-    drawCorrect(x+7,y+0,0x00);
-    drawCorrect(x+7,y+4,0x00);
-    drawCorrect(x+8,y+0,0x00);
-    drawCorrect(x+8,y+4,0x00);
-    drawCorrect(x+9,y+4,0x00);
+
+void deletePfeil(uint8_t x, uint8_t y) {
+    drawCorrect(x + 0, y + 0, 0x00);
+    drawCorrect(x + 0, y + 4, 0x00);
+    drawCorrect(x + 1, y + 0, 0x00);
+    drawCorrect(x + 1, y + 4, 0x00);
+    drawCorrect(x + 2, y + 0, 0x00);
+    drawCorrect(x + 2, y + 4, 0x00);
+    drawCorrect(x + 3, y + 0, 0x00);
+    drawCorrect(x + 3, y + 4, 0x00);
+    drawCorrect(x + 4, y + 0, 0x00);
+    drawCorrect(x + 4, y + 4, 0x00);
+    drawCorrect(x + 5, y + 0, 0x00);
+    drawCorrect(x + 5, y + 4, 0x00);
+    drawCorrect(x + 6, y + 0, 0x00);
+    drawCorrect(x + 6, y + 4, 0x00);
+    drawCorrect(x + 7, y + 0, 0x00);
+    drawCorrect(x + 7, y + 4, 0x00);
+    drawCorrect(x + 8, y + 0, 0x00);
+    drawCorrect(x + 8, y + 4, 0x00);
+    drawCorrect(x + 9, y + 4, 0x00);
 }
 
 void drawLives(uint8_t live) {
     for (int i = 0; i < live; i++) {
 
-        printHeart(i * 8, 96);
+        printHeart(50 + i * 8, 96);
 
     }
 
@@ -752,13 +764,13 @@ void drawPlatforms(int16_t offsetX) {
 
 }
 
-void drawPowerUps(int16_t offsetX,int16_t speed) {
+void drawPowerUps(int16_t offsetX, int16_t speed) {
 
     struct PowerUp *pointer = powerUps;
 
     for (uint8_t i = 0; i < POWER_UP_COUNT; i++) {
         struct PowerUp toDraw = *pointer;
-        printPowerUp(toDraw.x + offsetX, toDraw.y,toDraw.type,speed);
+        printPowerUp(toDraw.x + offsetX, toDraw.y, toDraw.type, speed);
         pointer++;
 
     }
