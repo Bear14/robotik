@@ -35,4 +35,5 @@ void reDrawPlatform(int16_t x, int16_t y, uint8_t length);
 void reDrawPlatforms(int16_t offsetX);
 void drawPlatforms(int16_t offsetX);
 void drawPowerUps(int16_t offsetX,int16_t speed);
+void drawScore(uint32_t score);
 #endif //ROBOTIK_DRAW_H

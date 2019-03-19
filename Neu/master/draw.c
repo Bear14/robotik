@@ -608,7 +608,7 @@ void drawCorrect(int16_t x, int16_t y, uint8_t h) {
 }
 void drawScore(uint32_t score){
     char text[18];
-    sprintf(text,"SCORE %d",score);
+    sprintf(text,"%010d",score);
     drawString(text, 80, 96);
 }
 void drawMenue1(){
