@@ -605,14 +605,22 @@ void drawCorrect(int16_t x, int16_t y, uint8_t h) {
         }
     }
 }
-
-void menue() {
-    drawString("HAUPTMENUE", 55, 15);
-    drawString("NEUES SPIEL", 55, 35);
-    drawString("HIGHSCORE", 55, 45);
-    drawString("SCHWIRIGKEIT", 55, 55);
-
-    drawPfeil(40, 35);
+void drawScore(uint32_t score){
+    char text[18];
+    sprintf(text,"SCORE %d",score);
+    drawString(text, 80, 96);
+}
+void drawMenue1(){
+    drawString("HAUPTMENUE", 55, 25);
+    drawString("NEUES SPIEL", 55, 45);
+    drawString("HIGHSCORE", 55, 55);
+    drawString("SCHWIRIGKEIT", 55, 65);
+}
+void drawMenue2(){
+    drawString("SCHWIRIGKEIT", 55, 25);
+    drawString("LEICHT", 55, 45);
+    drawString("NORMAL", 55, 55);
+    drawString("SCHWER", 55, 65);
 }
 
 void drawPfeil(uint8_t x, uint8_t y) {
@@ -637,11 +645,32 @@ void drawPfeil(uint8_t x, uint8_t y) {
     drawCorrect(x + 9, y + 4, 0x03);
 
 }
+void deletePfeil(uint8_t x, uint8_t y){
+    drawCorrect(x+0,y+0,0x00);
+    drawCorrect(x+0,y+4,0x00);
+    drawCorrect(x+1,y+0,0x00);
+    drawCorrect(x+1,y+4,0x00);
+    drawCorrect(x+2,y+0,0x00);
+    drawCorrect(x+2,y+4,0x00);
+    drawCorrect(x+3,y+0,0x00);
+    drawCorrect(x+3,y+4,0x00);
+    drawCorrect(x+4,y+0,0x00);
+    drawCorrect(x+4,y+4,0x00);
+    drawCorrect(x+5,y+0,0x00);
+    drawCorrect(x+5,y+4,0x00);
+    drawCorrect(x+6,y+0,0x00);
+    drawCorrect(x+6,y+4,0x00);
+    drawCorrect(x+7,y+0,0x00);
+    drawCorrect(x+7,y+4,0x00);
+    drawCorrect(x+8,y+0,0x00);
+    drawCorrect(x+8,y+4,0x00);
+    drawCorrect(x+9,y+4,0x00);
+}
 
 void drawLives(uint8_t live) {
     for (int i = 0; i < live; i++) {
 
-        printHeart(100 + i * 8, 4);
+        printHeart(i * 8, 96);
 
     }
 
