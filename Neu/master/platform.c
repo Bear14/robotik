@@ -84,7 +84,7 @@ struct platform createNewPlatform(struct platform last, uint8_t platWidth, int16
 
     int16_t newX = (last.x + last.length) + (int16_t)(random % (maxJump + 1 - minJump) + minJump);
 
-    int16_t newY = (int16_t)(random % 21 + 4);
+    int16_t newY = (int16_t)(random % 19 + 4);
     newY *= 4;
 
     //int16_t newY = (int16_t)(random % 82 + 18);
