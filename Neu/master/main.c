@@ -607,9 +607,7 @@ int main(void) {
                 draw();
 
             }
-            if (gameState == menue) {
 
-            }
         }
 
 
