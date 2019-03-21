@@ -2,6 +2,10 @@
  *	Basis
  *	2009 Benjamin Reh und Joachim Schleicher
  */
+
+/*
+ * There is no bool in c
+ */
 typedef int bool;
 #define true 1
 #define false 0
@@ -15,124 +19,155 @@ typedef int bool;
 #include "timer.h"
 #include "buttons.h"
 #include "display.h"
-#include <avr/interrupt.h>
 #include "draw.h"
 #include "sprites.h"
 #include "platform.h"
 
 
+/*
+ * Game logic turning knobs
+ */
 #define GRAVITY 1
 #define JUMP_HEIGHT -8
 #define INITIAL_SPEED 2
 #define DASH_LENGTH 12
 #define MAX_GAME_SPEED 8
+#define PLAYER_HEIGHT 16
 
 void init();
 
-volatile int8_t platWidth = 5;
+// volatile int16_t lastOffsetX = 5; TODO: delete
 
-volatile int16_t gameSpeed = INITIAL_SPEED;
-
-volatile int16_t lastOffsetX = 5;
-volatile int16_t offsetX = 5;
+/*
+ * Debounce
+ */
 volatile char buttonPressed = '0';
 volatile uint32_t timePressed = 0;
 
-
+/*
+ * Actions
+ */
 volatile int8_t dashLen;
 volatile int8_t dashCounter = 2;
 volatile int8_t jumpCounter = 2;
 
-
+/*
+ * Draw
+ */
+volatile int16_t offsetX = 5;
 volatile int16_t lastPlayerPosY = 1;
-volatile int16_t lastPlayerPosX = 0;
+volatile int16_t lastPlayerPosX = 0; // TODO: may be deleted
+
+/*
+ * Position
+ */
 volatile int16_t playerPosY = 0;
 volatile int16_t playerPosX = 0;
 volatile int8_t playerMovY = 0;
 
+/*
+ * Menu
+ */
 volatile uint8_t pfeilPosX = 35;
 volatile uint8_t pfeilPosY = 35;
 
-#define PLAYER_HEIGHT 16
-
+/*
+ * Score and difficulty
+ */
+volatile int8_t platWidth = 5;
+volatile int16_t gameSpeed = INITIAL_SPEED;
 volatile uint32_t score = 0;
 volatile uint32_t lastScore = 0;
-volatile uint8_t lives = 4;
+volatile uint8_t lives = 4; // TODO: move to Init;
 
+
+/*
+ * State machines
+ */
 enum state {
     standing, dashing, jumping, falling
 };
-enum state playerState = falling;
+enum state playerState = falling; //TODO: move to Init;
 
+enum gState {
+    run, stop, set, menu_1, menu_2
+};
+enum gState gameState = set; //TODO: move to Init
 
+/*
+ * To keep the player infinitely running we need to reset the position x integer before it overflows.
+ * At every reset the difficulty is raised.
+ *
+ * @params void
+ * @return void
+ */
 void reset() {
 
-    if (playerPosX >= 3000) {
+    if (playerPosX >= 3000) { // TODO: make this a #define variable
 
-        cli();
-        struct platform *pointer = platforms;
+        /*
+         * Reset platforms, powerUps and the player
+         */
+        for(uint8_t i = 0; i < PLATFORM_COUNT; i++){
 
+            platforms[i].x -= playerPosX;
 
-        for (int i = 0; i < PLATFORM_COUNT; i++) {
-            pointer->x -= playerPosX;
-            pointer++;
         }
-        for (int j = 0; j < POWER_UP_COUNT; j++) {
+        for (uint8_t j = 0; j < POWER_UP_COUNT; j++) {
             powerUps[j].x -= playerPosX;
         }
 
         offsetX = 5;
-        platWidth--;
         playerPosX = 0;
+        playerState = falling;
+
+        /*
+         * Raise difficulty
+         */
+        platWidth--;
         if (gameSpeed < MAX_GAME_SPEED) {
             gameSpeed += 1;
         }
-        playerState = falling;
-        sei();
+
 
     }
 
 }
 
-
-enum gState {
-    run, stop, set, menue1, menue2
-};
-
-enum gState gameState = set;
-
-
+/*
+ * @params void
+ * @return void
+ */
 void dash() {
 
-
-    page(159, 25, 0xFF);
     if (dashCounter > 0) {
         playerState = dashing;
         playerMovY = 0;
         dashLen = DASH_LENGTH;
         dashCounter--;
     }
-
-
 }
 
+/*
+ * @params void
+ * @return void
+ */
 void jump() {
-    //page(159, 25, 0xFF);
+
     if (jumpCounter > 0) {
         playerState = jumping;
         playerMovY = JUMP_HEIGHT;
         dashLen = 0;
         jumpCounter--;
     }
-
 }
 
 /*
- * Apply every change to playerPosX and playerPosY to offsetX and offsetY but in reverse;
+ * Basic collision detection of to rectangles
+ *
+ * @params takes to rectangles descried as { x, y, width, height}
+ * @return bool
  */
-
-
-
 bool collisionRectangles(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t x2, int16_t y2, uint8_t w2,
                          uint8_t h2) {
 
@@ -146,8 +181,27 @@ bool collisionRectangles(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t
 
 }
 
-
+/*
+ * @params void
+ * @return bool
+ */
 bool dropCollision() {
+
+    for(uint8_t i = 0; i < PLATFORM_COUNT; i++){
+
+        if (collisionRectangles(playerPosX, playerPosY + PLAYER_HEIGHT, PLATFORM_HEIGHT, 1, platforms[i].x, platforms[i].y,
+                                platforms[i].length,
+                                PLATFORM_HEIGHT)) {
+            return true;
+        }
+
+    }
+    return false;
+
+
+    // TODO: delete
+/*
+
     struct platform *pointer = platforms;
     for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
 
@@ -163,11 +217,32 @@ bool dropCollision() {
     }
 
     return false;
-
+*/
 }
 
-
+/*
+ * @params void
+ * @return void
+ */
 void collisionHandling() {
+
+
+    for(uint8_t i = 0; i < PLATFORM_COUNT; i++){
+
+        if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, platforms[i].x, platforms[i].y, platforms[i].length,
+                                PLATFORM_HEIGHT)){
+
+            if (lastPlayerPosY < platforms[i].y) {
+                playerPosY = platforms[i].y - PLAYER_HEIGHT;
+                playerState = standing;
+            } else if (lastPlayerPosY > platforms[i].y) {
+                playerPosY = platforms[i].y + PLATFORM_HEIGHT;
+            }
+        }
+
+    }
+    // TODO: delete
+    /*
 
     struct platform *pointer = platforms;
     for (int i = 0; i < PLATFORM_COUNT; i++) {
@@ -193,10 +268,26 @@ void collisionHandling() {
         pointer++;
     }
 
-
+*/
 }
 
+/*
+ * @params void
+ * @return bool
+ */
 bool dashCollision() {
+
+    for(uint8_t i = 0; i < PLATFORM_COUNT; i++){
+        if(collisionRectangles(playerPosX,playerPosY,PLAYER_HEIGHT,PLAYER_HEIGHT,platforms[i].x,platforms[i].y,platforms[i].length,PLATFORM_HEIGHT)){
+            return true;
+        }
+
+
+    }
+    return false;
+    // TODO: delete
+/*
+
     struct platform *pointer = platforms;
     for (int i = 0; i < PLATFORM_COUNT; i++) {
 
@@ -210,12 +301,15 @@ bool dashCollision() {
         pointer++;
     }
     return false;
-
+*/
 }
 
-
+/*
+ * @params void
+ * @return void
+ */
 void collisionWithPowerUp() {
-    for (int8_t j = 0; j < POWER_UP_COUNT; j++) {
+    for (uint8_t j = 0; j < POWER_UP_COUNT; j++) {
 
         if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, powerUps[j].x, powerUps[j].y,
                                 1, POWER_UP_SIZE)) {
@@ -248,6 +342,7 @@ void collisionWithPowerUp() {
                     break;
                 case pointsUp:
                     score += gameSpeed * 50;
+                    drawScore(score);
                     powerUps[j].type = none;
                     break;
                 case pointsDown:
@@ -256,13 +351,12 @@ void collisionWithPowerUp() {
                     } else {
                         score -= gameSpeed * 20;
                     }
+                    drawScore(score);
                     powerUps[j].type = none;
                     break;
 
             }
 
-
-            //printPowerUp(powerUps[j].x,powerUps[j].y,none,gameSpeed);
             clearPowerUp(powerUps[j].x+offsetX,powerUps[j].y);
             powerUps[j].x = -100;
             powerUps[j].y = -100;
@@ -277,6 +371,10 @@ void collisionWithPowerUp() {
 }
 
 
+/*
+ * @params void
+ * @return void
+ */
 void update() {
 
     if (playerPosY >= 110) {
@@ -285,7 +383,7 @@ void update() {
 
     lastPlayerPosY = playerPosY;
     lastPlayerPosX = playerPosX;
-    lastOffsetX = offsetX;
+    // lastOffsetX = offsetX; TODO: delete
 
     checkIfPlatformOutOfFrame(playerPosX, platWidth, gameSpeed);
     reset();
@@ -340,11 +438,14 @@ void update() {
 
 }
 
-
+/*
+ * @params void
+ * @return void
+ */
 void getInput() {
     if (buttonPressed == '0') {
         switch (gameState) {
-            case menue1:
+            case menu_1:
                 if (B_DOWN) {
                     //uart_putc(60);
                     buttonPressed = '1';
@@ -382,13 +483,13 @@ void getInput() {
                     if (pfeilPosY == 65) { //SCHWIRIGKEIT Menue2
                         clear();
                         drawMenue2();
-                        gameState = menue2;
+                        gameState = menu_2;
                         pfeilPosY = 55;
                         drawPfeil(pfeilPosX, pfeilPosY);
                     }
                 }
                 break;
-            case menue2:
+            case menu_2:
                 if (B_DOWN) {
                     //uart_putc(60);
                     buttonPressed = '1';
@@ -428,7 +529,7 @@ void getInput() {
                     }
                     clear();
                     drawMenue1();
-                    gameState = menue1;
+                    gameState = menu_1;
                     pfeilPosY = 45;
                     drawPfeil(pfeilPosX, pfeilPosY);
                 }
@@ -482,7 +583,7 @@ void getInput() {
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     //gameState = run;
-                    gameState = menue1;
+                    gameState = menu_1;
                     clear();
                     drawMenue1();
                     pfeilPosX = 45;
@@ -507,7 +608,7 @@ void getInput() {
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     //gameState = run;
-                    gameState = menue1;
+                    gameState = menu_1;
                     clear();
                     drawMenue1();
                     pfeilPosX = 45;
@@ -530,6 +631,10 @@ void getInput() {
     }
 }
 
+/*
+ * @params void
+ * @return void
+ */
 void draw() {
 
     //drawLives(lives);
@@ -541,7 +646,10 @@ void draw() {
     printPlayer(5, playerPosY, lastPlayerPosY,'0');
 }
 
-
+/*
+ * @params void
+ * @return void
+ */
 void setGame() {
     lives--;
     if (lives == 0) {
@@ -570,6 +678,10 @@ void setGame() {
     gameState = stop;
 }
 
+/*
+ * @params void
+ * @return void
+ */
 int main(void) {
     //Initialisierung ausfuehren
 
@@ -585,7 +697,7 @@ int main(void) {
     _delay_ms(1000);
 
     clear();
-    gameState = menue1;
+    gameState = menu_1;
     pfeilPosX = 40;
     pfeilPosY = 45;
     drawMenue1();
@@ -593,7 +705,7 @@ int main(void) {
 
     while (1) {
 /*
- * Set to approx 30 frames per second
+ * Smooth frames
  */
         if (getMsTimer() % 34 == 0) {
             if (gameState == set) {
@@ -608,20 +720,15 @@ int main(void) {
             getInput();
             if (gameState == run) {
 
-                //clearPlatforms();
-                //clearColliding();
                 update();
-                //printPlatform(10,12);
                 draw();
 
             }
 
         }
 
-
-
 /*
- * Allow repress of buttons every 100 ms TODO: find nice value
+ * Allow repress of buttons every 150 ms TODO: find nice value
  */
         if (timePressed + 150 <= getMsTimer()) {
             buttonPressed = '0';
@@ -638,7 +745,6 @@ void init() {
     timerInit();  // "Systemzeit" initialisieren
     buttonsInit();
     displayInit();
-    //bufferInit();
     platformInit();
     initPowerUps();
 }
