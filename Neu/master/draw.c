@@ -690,23 +690,29 @@ void drawLives(uint8_t live) {
 
 }
 
+/*
+ * make function dat draws random new platforms
+ */
+
 void drawPlatform(int16_t x, int16_t y, uint8_t length) {
+
+    /*
+     * TODO: same as with power ups
+     */
 
 
     for (int16_t i = x; i < x + length; i += 15) {
 
 
-        //printPlatform(i,y);
 
         printPlatform(i, y);
-        //printPlayer(i,y);
-        //drawCorrect(i,y,0x1F);
-        //drawCorrect(i,y,0xFF);
+
     }
 
 }
 
 void reDrawPlatform(int16_t x, int16_t y, uint8_t length) {
+
 
     drawCorrect(x + length + 1, y, 0);
     drawCorrect(x + length + 1, y + 4, 0);
@@ -766,6 +772,14 @@ void drawPlatforms(int16_t offsetX) {
 
 void drawPowerUps(int16_t offsetX, int16_t speed) {
 
+    for(uint8_t i = 0;i < POWER_UP_COUNT; i++){
+
+        printPowerUp(powerUps[i].x + offsetX,powerUps[i].y,powerUps[i].type,speed);
+
+    }
+
+    // TODO: delete
+/*
     struct PowerUp *pointer = powerUps;
 
     for (uint8_t i = 0; i < POWER_UP_COUNT; i++) {
@@ -775,5 +789,5 @@ void drawPowerUps(int16_t offsetX, int16_t speed) {
 
     }
 
-
+*/
 }
