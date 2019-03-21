@@ -266,7 +266,7 @@ void collisionWithPowerUp() {
             clearPowerUp(powerUps[j].x+offsetX,powerUps[j].y);
             powerUps[j].x = -100;
             powerUps[j].y = -100;
-            printPlayer(playerPosX, playerPosY, lastPlayerPosY,'1');
+            printPlayer(5, playerPosY, lastPlayerPosY,'1');
 
         }
 
