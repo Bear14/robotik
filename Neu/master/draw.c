@@ -690,84 +690,23 @@ void drawLives(uint8_t live) {
 
 }
 
-/*
- * make function dat draws random new platforms
- */
-
-void drawPlatform(int16_t x, int16_t y, uint8_t length) {
-
-    /*
-     * TODO: same as with power ups
-     */
-
-
-    for (int16_t i = x; i < x + length; i += 15) {
-
-
-
-        printPlatform(i, y);
-
-    }
-
-}
-
-void reDrawPlatform(int16_t x, int16_t y, uint8_t length) {
-
-
-    drawCorrect(x + length + 1, y, 0);
-    drawCorrect(x + length + 1, y + 4, 0);
-    drawCorrect(x + length + 2, y, 0);
-    drawCorrect(x + length + 2, y + 4, 0);
-    drawCorrect(x + length + 3, y, 0);
-    drawCorrect(x + length + 3, y + 4, 0);
-    drawCorrect(x + length + 4, y, 0);
-    drawCorrect(x + length + 4, y + 4, 0);
-    drawCorrect(x + length + 5, y, 0);
-    drawCorrect(x + length + 5, y + 4, 0);
-    drawCorrect(x + length + 6, y, 0);
-    drawCorrect(x + length + 6, y + 4, 0);
-    drawCorrect(x + length + 7, y, 0);
-    drawCorrect(x + length + 7, y + 4, 0);
-    drawCorrect(x + length + 8, y, 0);
-    drawCorrect(x + length + 8, y + 4, 0);
-    drawCorrect(x + length + 9, y, 0);
-    drawCorrect(x + length + 9, y + 4, 0);
-    drawCorrect(x + length + 10, y, 0);
-    drawCorrect(x + length + 10, y + 4, 0);
-    drawCorrect(x + length + 11, y, 0);
-    drawCorrect(x + length + 11, y + 4, 0);
-    drawCorrect(x + length + 12, y, 0);
-    drawCorrect(x + length + 12, y + 4, 0);
-
-
-    printPlatform(x, y);
-
-}
-
-void reDrawPlatforms(int16_t offsetX) {
-    struct platform *pointer = platforms;
-
-    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
-        struct platform toDraw = *pointer;
-        reDrawPlatform(toDraw.x + offsetX, toDraw.y, toDraw.length);
-
-        pointer++;
-
-    }
-}
-
 void drawPlatforms(int16_t offsetX) {
 
-    struct platform *pointer = platforms;
 
-    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
-        struct platform toDraw = *pointer;
-        drawPlatform(toDraw.x + offsetX, toDraw.y, toDraw.length);
+    for(uint8_t i = 0;i < PLATFORM_COUNT; i++){
 
-        pointer++;
 
+        printPlatform(platforms[i]);
     }
+}
+void reDrawPlatforms(int16_t offsetX,int16_t speed) {
 
+
+    for(uint8_t i = 0;i < PLATFORM_COUNT; i++){
+
+
+        rePrintPlatform(platforms[i],offsetX,speed);
+    }
 }
 
 void drawPowerUps(int16_t offsetX, int16_t speed) {
@@ -777,17 +716,4 @@ void drawPowerUps(int16_t offsetX, int16_t speed) {
         printPowerUp(powerUps[i].x + offsetX,powerUps[i].y,powerUps[i].type,speed);
 
     }
-
-    // TODO: delete
-/*
-    struct PowerUp *pointer = powerUps;
-
-    for (uint8_t i = 0; i < POWER_UP_COUNT; i++) {
-        struct PowerUp toDraw = *pointer;
-        printPowerUp(toDraw.x + offsetX, toDraw.y, toDraw.type, speed);
-        pointer++;
-
-    }
-
-*/
 }
