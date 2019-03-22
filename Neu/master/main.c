@@ -50,6 +50,7 @@ volatile uint32_t timePressed = 0;
 volatile int8_t dashLen;
 volatile int8_t dashCounter = 2;
 volatile int8_t jumpCounter = 2;
+volatile int8_t dashDist = DASH_LENGTH;
 
 /*
  * Draw
@@ -146,7 +147,7 @@ void dash() {
     if (dashCounter > 0) {
         playerState = dashing;
         playerMovY = 0;
-        dashLen = DASH_LENGTH;
+        dashLen = dashDist;
         dashCounter--;
     }
 }
@@ -408,8 +409,30 @@ void update() {
 
     collisionWithPowerUp();
     if (playerState == standing) {
-        jumpCounter = 2;
-        dashCounter = 2;
+
+        switch (playerForm){
+            case _normal:
+                jumpCounter = 2;
+                dashCounter = 2;
+                dashDist = DASH_LENGTH;
+                break;
+            case _knight:
+                jumpCounter = 2;
+                dashCounter = 2;
+                dashDist = 24;
+                break;
+            case _sorcerer:
+                jumpCounter = 2;
+                dashCounter = 3;
+                dashDist = DASH_LENGTH;
+                break;
+            case _ranger:
+                jumpCounter = 3;
+                dashCounter = 2;
+                dashDist = DASH_LENGTH;
+                break;
+
+        };
 
         if (!dropCollision()) {
             playerState = falling;
