@@ -135,10 +135,7 @@ void reset() {
         if (gameSpeed < MAX_GAME_SPEED) {
             gameSpeed += 1;
         }
-
-
     }
-
 }
 
 /*
@@ -205,27 +202,6 @@ bool dropCollision() {
 
     }
     return false;
-
-
-    // TODO: delete
-/*
-
-    struct platform *pointer = platforms;
-    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
-
-
-        if (collisionRectangles(playerPosX, playerPosY + PLAYER_HEIGHT, PLATFORM_HEIGHT, 1, pointer->x, pointer->y,
-                                pointer->length,
-                                PLATFORM_HEIGHT)) {
-            return true;
-        }
-
-
-        pointer++;
-    }
-
-    return false;
-*/
 }
 
 /*
@@ -247,38 +223,8 @@ void collisionHandling() {
             } else if (lastPlayerPosY > platforms[i].y) {
                 playerPosY = platforms[i].y + PLATFORM_HEIGHT;
             }
-
         }
-
     }
-    // TODO: delete
-    /*
-
-    struct platform *pointer = platforms;
-    for (int i = 0; i < PLATFORM_COUNT; i++) {
-
-        struct platform plat = *pointer;
-
-        if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, plat.x, plat.y, plat.length,
-                                PLATFORM_HEIGHT)) {
-
-
-            playerMovY = 0;
-            if (lastPlayerPosY < plat.y) {
-                playerPosY = plat.y - PLAYER_HEIGHT;
-                playerState = standing;
-            } else if (lastPlayerPosY > plat.y) {
-                playerPosY = plat.y + PLATFORM_HEIGHT;
-            }
-
-
-        }
-
-
-        pointer++;
-    }
-
-*/
 }
 
 /*
@@ -296,23 +242,6 @@ bool dashCollision() {
 
     }
     return false;
-    // TODO: delete
-/*
-
-    struct platform *pointer = platforms;
-    for (int i = 0; i < PLATFORM_COUNT; i++) {
-
-        if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, pointer->x, pointer->y,
-                                pointer->length,
-                                PLATFORM_HEIGHT)) {
-            return true;
-        }
-
-
-        pointer++;
-    }
-    return false;
-*/
 }
 
 /*
