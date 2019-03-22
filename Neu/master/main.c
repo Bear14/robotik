@@ -94,6 +94,12 @@ enum gState {
 };
 enum gState gameState = set; //TODO: move to Init
 
+enum Form {
+    _normal, _knight, _sorcerer, _ranger
+
+};
+enum Form playerForm = _normal; //TODO: move to Init
+
 /*
  * To keep the player infinitely running we need to reset the position x integer before it overflows.
  * At every reset the difficulty is raised.
@@ -108,7 +114,7 @@ void reset() {
         /*
          * Reset platforms, powerUps and the player
          */
-        for(uint8_t i = 0; i < PLATFORM_COUNT; i++){
+        for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
 
             platforms[i].x -= playerPosX;
 
@@ -187,9 +193,10 @@ bool collisionRectangles(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t
  */
 bool dropCollision() {
 
-    for(uint8_t i = 0; i < PLATFORM_COUNT; i++){
+    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
 
-        if (collisionRectangles(playerPosX, playerPosY + PLAYER_HEIGHT, PLATFORM_HEIGHT, 1, platforms[i].x, platforms[i].y,
+        if (collisionRectangles(playerPosX, playerPosY + PLAYER_HEIGHT, PLATFORM_HEIGHT, 1, platforms[i].x,
+                                platforms[i].y,
                                 platforms[i].length,
                                 PLATFORM_HEIGHT)) {
             return true;
@@ -227,10 +234,11 @@ bool dropCollision() {
 void collisionHandling() {
 
 
-    for(uint8_t i = 0; i < PLATFORM_COUNT; i++){
+    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
 
-        if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, platforms[i].x, platforms[i].y, platforms[i].length,
-                                PLATFORM_HEIGHT)){
+        if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, platforms[i].x, platforms[i].y,
+                                platforms[i].length,
+                                PLATFORM_HEIGHT)) {
 
             if (lastPlayerPosY < platforms[i].y) {
                 playerPosY = platforms[i].y - PLAYER_HEIGHT;
@@ -277,8 +285,9 @@ void collisionHandling() {
  */
 bool dashCollision() {
 
-    for(uint8_t i = 0; i < PLATFORM_COUNT; i++){
-        if(collisionRectangles(playerPosX,playerPosY,PLAYER_HEIGHT,PLAYER_HEIGHT,platforms[i].x,platforms[i].y,platforms[i].length,PLATFORM_HEIGHT)){
+    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
+        if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, platforms[i].x, platforms[i].y,
+                                platforms[i].length, PLATFORM_HEIGHT)) {
             return true;
         }
 
@@ -354,13 +363,25 @@ void collisionWithPowerUp() {
                     drawScore(score);
                     powerUps[j].type = none;
                     break;
+                case knight:
+                    playerForm = _knight;
+                    powerUps[j].type = none;
+                            break;
+                case sorcerer:
+                    playerForm = _sorcerer;
+                    powerUps[j].type = none;
+                    break;
+                case ranger:
+                    playerForm = _ranger;
+                    powerUps[j].type = none;
+                    break;
 
             }
 
-            clearPowerUp(powerUps[j].x+offsetX,powerUps[j].y);
+            clearPowerUp(powerUps[j].x + offsetX, powerUps[j].y);
             powerUps[j].x = -100;
             powerUps[j].y = -100;
-            printPlayer(5, playerPosY, lastPlayerPosY,'1');
+            printPlayer(5, playerPosY, lastPlayerPosY, '1');
 
         }
 
@@ -643,7 +664,7 @@ void draw() {
     }
     drawPowerUps(offsetX, playerPosX - lastPlayerPosX);
     reDrawPlatforms(offsetX);
-    printPlayer(5, playerPosY, lastPlayerPosY,'0');
+    printPlayer(5, playerPosY, lastPlayerPosY, '0');
 }
 
 /*
@@ -669,7 +690,7 @@ void setGame() {
     offsetX = 5;
     drawPlatforms(offsetX);
     lastPlayerPosY = 1;
-    printPlayer(5, 0, lastPlayerPosY,'0');
+    printPlayer(5, 0, lastPlayerPosY, '0');
 
     playerPosX = 0;
     playerPosY = 0;
