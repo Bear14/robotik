@@ -20,8 +20,8 @@ int8_t getMinXPowerUp() {
     int16_t min = 32767;
     uint8_t ind = 0;
 
-    for(int i = 0; i < POWER_UP_COUNT; i++){
-        if(powerUps[i].x < min){
+    for (int i = 0; i < POWER_UP_COUNT; i++) {
+        if (powerUps[i].x < min) {
             min = powerUps[i].x;
             ind = i;
         }
@@ -30,9 +30,46 @@ int8_t getMinXPowerUp() {
     return ind;
 }
 
-void createPowerUp(struct platform base, int16_t random) {
+void createPowerUp(struct platform base, int16_t random) { //random 0 - 1023
 
-    powerUps[getMinXPowerUp()] = (struct PowerUp) {base.x +random % base.length, base.y - 8, random%10};
+
+    //int16_t power = random % 100 + 1 ;  // power 1 - 100;
+
+    enum PowerUpType pType = none;
+
+    switch (random % 100 + 1) {
+        case 1 ... 2: // 2%
+            pType = death;
+            break;
+        case 3 ... 8: // 6%
+            pType = knight;
+            break;
+        case 9 ... 14: // 6%
+            pType = sorcerer;
+            break;
+        case 15 ... 20: // 6%
+            pType = ranger;
+            break;
+        case 21 ... 40: // 20%
+            pType = live;
+            break;
+        case 41 ... 60: // 20%
+            pType = slow;
+            break;
+        case 61 ... 70: // 10%
+            pType = speedUp;
+            break;
+        case 71 ... 85 : // 15%
+            pType = pointsUp;
+            break;
+        case 86 ... 100: // 15%
+            pType = pointsDown;
+            break;
+
+
+    };
+
+    powerUps[getMinXPowerUp()] = (struct PowerUp) {base.x + random % base.length, base.y - 8, pType};
 
 }
 
@@ -75,10 +112,13 @@ struct platform createNewPlatform(struct platform last, uint8_t platWidth, int16
     int random = rand() % 1024;
 
 
-    int16_t minJump = 8 * 2 * speed;       // make dependant
+    // Determine minimal jump reach
+    int16_t minJump = 8 * 2 * speed;
 
+    // Determine maximal jump reach
     int16_t maxJump = 8 * 2 * speed * 2;
 
+    // Determine maximal platform width. Decreasing with difficulty
     uint8_t len = 15 * (random % (1 + platWidth) + 2);
 
     int16_t newX = (last.x + last.length) + (int16_t)(random % (maxJump + 1 - minJump) + minJump);
@@ -89,10 +129,12 @@ struct platform createNewPlatform(struct platform last, uint8_t platWidth, int16
     //int16_t newY = (int16_t)(random % 82 + 18);
     struct platform newPlat = (struct platform) {(int16_t) newX, (int16_t) newY, (uint8_t) len};
 
-    int8_t power = random % 20;
-    //if (power == 0) {
+
+
+    int8_t power = random % POWER_UP_DROP_RATE;
+    if (power == 0) {
         createPowerUp(newPlat, random);
-   // }
+    }
 
 
     return newPlat;
