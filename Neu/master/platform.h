@@ -21,6 +21,11 @@ enum PowerUpType {
     none, live, death, knight, sorcerer,ranger,slow,speedUp,pointsUp,pointsDown
 };
 
+enum Form {
+    _normal, _knight, _sorcerer, _ranger
+
+};
+
 struct PowerUp {
     int16_t x;
     int16_t y;

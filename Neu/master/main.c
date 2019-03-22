@@ -94,10 +94,7 @@ enum gState {
 };
 enum gState gameState = set; //TODO: move to Init
 
-enum Form {
-    _normal, _knight, _sorcerer, _ranger
 
-};
 enum Form playerForm = _normal; //TODO: move to Init
 
 /*
@@ -381,7 +378,7 @@ void collisionWithPowerUp() {
             clearPowerUp(powerUps[j].x + offsetX, powerUps[j].y);
             powerUps[j].x = -100;
             powerUps[j].y = -100;
-            printPlayer(5, playerPosY, lastPlayerPosY, '1');
+            printPlayer(5, playerPosY, lastPlayerPosY, '1',playerForm);
 
         }
 
@@ -664,7 +661,7 @@ void draw() {
     }
     drawPowerUps(offsetX, playerPosX - lastPlayerPosX);
     reDrawPlatforms(offsetX);
-    printPlayer(5, playerPosY, lastPlayerPosY, '0');
+    printPlayer(5, playerPosY, lastPlayerPosY, '0',playerForm);
 }
 
 /*
@@ -690,7 +687,7 @@ void setGame() {
     offsetX = 5;
     drawPlatforms(offsetX);
     lastPlayerPosY = 1;
-    printPlayer(5, 0, lastPlayerPosY, '0');
+    printPlayer(5, 0, lastPlayerPosY, '0',playerForm);
 
     playerPosX = 0;
     playerPosY = 0;

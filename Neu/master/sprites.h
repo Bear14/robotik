@@ -8,7 +8,7 @@
 #include <inttypes.h>
 #include "platform.h"
 
-void printPlayer(int16_t x, int16_t y, int16_t lastY,char forceRedraw);
+void printPlayer(int16_t x, int16_t y, int16_t lastY,char forceRedraw, enum Form form);
 void printHeart(int16_t x, int16_t y);
 void printPlatform(int16_t x, int16_t y);
 void printPowerUp(int16_t x,int16_t y,enum PowerUpType type, int16_t speed);
