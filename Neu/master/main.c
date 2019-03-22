@@ -10,6 +10,7 @@ typedef int bool;
 #define true 1
 #define false 0
 
+#include <avr/interrupt.h>
 #include <stdlib.h>
 #include <avr/io.h>
 #include <inttypes.h>
@@ -33,6 +34,7 @@ typedef int bool;
 #define DASH_LENGTH 12
 #define MAX_GAME_SPEED 8
 #define PLAYER_HEIGHT 16
+#define STEPS_BEFORE_RESET 3000
 
 void init();
 
@@ -79,7 +81,7 @@ volatile int8_t platWidth = 5;
 volatile int16_t gameSpeed = INITIAL_SPEED;
 volatile uint32_t score = 0;
 volatile uint32_t lastScore = 0;
-volatile uint8_t lives = 4; // TODO: move to Init;
+volatile uint8_t lives = 3; // TODO: move to Init;
 
 
 /*
@@ -107,8 +109,7 @@ enum Form playerForm = _normal; //TODO: move to Init
  */
 void reset() {
 
-    if (playerPosX >= 3000) { // TODO: make this a #define variable
-
+    if (playerPosX >= STEPS_BEFORE_RESET) {
         /*
          * Reset platforms, powerUps and the player
          */
@@ -128,7 +129,9 @@ void reset() {
         /*
          * Raise difficulty
          */
-        platWidth--;
+        if(platWidth < 0) {
+            platWidth--;
+        }
         if (gameSpeed < MAX_GAME_SPEED) {
             gameSpeed += 1;
         }
@@ -244,6 +247,7 @@ void collisionHandling() {
             } else if (lastPlayerPosY > platforms[i].y) {
                 playerPosY = platforms[i].y + PLATFORM_HEIGHT;
             }
+
         }
 
     }
@@ -328,6 +332,7 @@ void collisionWithPowerUp() {
                 case live:
                     if (lives < 5) {
                         lives++;
+                        drawLives(lives);
                     }
                     powerUps[j].type = none;
                     break;
@@ -397,15 +402,18 @@ void collisionWithPowerUp() {
 void update() {
 
     if (playerPosY >= 110) {
+        lives--;
         gameState = set;
     }
+
+    reset();
 
     lastPlayerPosY = playerPosY;
     lastPlayerPosX = playerPosX;
     // lastOffsetX = offsetX; TODO: delete
 
     checkIfPlatformOutOfFrame(playerPosX, platWidth, gameSpeed);
-    reset();
+
 
     collisionWithPowerUp();
     if (playerState == standing) {
@@ -560,13 +568,16 @@ void getInput() {
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     if (pfeilPosY == 45) { // Neues Game
-                        gameSpeed = INITIAL_SPEED - 1;
+                        gameSpeed = 2;
+                        platWidth = 5;
                     }
                     if (pfeilPosY == 55) {
-                        gameSpeed = INITIAL_SPEED;
+                        gameSpeed = 4;
+                        platWidth = 3;
                     }
                     if (pfeilPosY == 65) { //SCHWIRIGKEIT Menue2
-                        gameSpeed = INITIAL_SPEED + 5;
+                        gameSpeed = 8;
+                        platWidth = 1;
                     }
                     clear();
                     drawMenue1();
@@ -678,29 +689,21 @@ void getInput() {
  */
 void draw() {
 
-    //drawLives(lives);
-    if (lastScore != score) {
-        // drawScore(score);
-    }
     drawPowerUps(offsetX, playerPosX - lastPlayerPosX);
-    reDrawPlatforms(offsetX);
+    reDrawPlatforms(offsetX,playerPosX -lastPlayerPosX);
     printPlayer(5, playerPosY, lastPlayerPosY, '0',playerForm);
 }
-
 /*
  * @params void
  * @return void
  */
 void setGame() {
-    lives--;
     if (lives == 0) {
 
         score = 0;
         lives = 3;
         gameSpeed = INITIAL_SPEED;
     }
-
-    //gameSpeed = 4;
 
     clear();
     platformInit();

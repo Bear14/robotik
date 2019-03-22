@@ -2,6 +2,8 @@
 // Created by torben on 11/03/19.
 //
 
+#include <stdlib.h>
+#include <avr/interrupt.h>
 #include "sprites.h"
 #include "draw.h"
 #include "platform.h"
@@ -245,37 +247,78 @@ void printHeart(int16_t x, int16_t y) {
     drawCorrect(x + 8, y + 0, 0xFC);
 }
 
-void printPlatform(int16_t x, int16_t y) {
-    drawCorrect(x + 0, y + 0, 0xFF);
-    drawCorrect(x + 0, y + 4, 0x56);
-    drawCorrect(x + 1, y + 0, 0xBF);
-    drawCorrect(x + 1, y + 4, 0x56);
-    drawCorrect(x + 2, y + 0, 0xAF);
-    drawCorrect(x + 2, y + 4, 0x55);
-    drawCorrect(x + 3, y + 0, 0x6F);
-    drawCorrect(x + 3, y + 4, 0x55);
-    drawCorrect(x + 4, y + 0, 0xAF);
-    drawCorrect(x + 4, y + 4, 0x55);
-    drawCorrect(x + 5, y + 0, 0xBF);
-    drawCorrect(x + 5, y + 4, 0x56);
-    drawCorrect(x + 6, y + 0, 0xFF);
-    drawCorrect(x + 6, y + 4, 0x6A);
-    drawCorrect(x + 7, y + 0, 0xFF);
-    drawCorrect(x + 7, y + 4, 0x6F);
-    drawCorrect(x + 8, y + 0, 0xFF);
-    drawCorrect(x + 8, y + 4, 0x6B);
-    drawCorrect(x + 9, y + 0, 0xFF);
-    drawCorrect(x + 9, y + 4, 0x5A);
-    drawCorrect(x + 10, y + 0, 0xBF);
-    drawCorrect(x + 10, y + 4, 0x56);
-    drawCorrect(x + 11, y + 0, 0xAF);
-    drawCorrect(x + 11, y + 4, 0x55);
-    drawCorrect(x + 12, y + 0, 0x6F);
-    drawCorrect(x + 12, y + 4, 0x55);
-    drawCorrect(x + 13, y + 0, 0xAF);
-    drawCorrect(x + 13, y + 4, 0x55);
-    drawCorrect(x + 14, y + 0, 0xBF);
-    drawCorrect(x + 14, y + 4, 0x56);
+void printPlatform(struct platform toDraw) {
+
+    for (uint16_t i = 0; i < toDraw.length; i++) {
+
+        int16_t random = rand() % 1024;
+
+        uint8_t underSide = 0;
+        switch (random % 4) {
+            case 0:
+                underSide = 0x55;
+                break;
+            case 1:
+                underSide = 0x57;
+                break;
+            case 2:
+                underSide = 0x5F;
+                break;
+            case 3:
+                underSide = 0x7F;
+                break;
+
+
+        };
+
+        drawCorrect(toDraw.x + i, toDraw.y, 0xFF);
+        drawCorrect(toDraw.x + i, toDraw.y + 4, underSide);
+
+
+    }
+
+}
+
+void rePrintPlatform(struct platform toDraw, int16_t offsetX, int16_t speed) {
+
+
+    // Clear behind platform
+    for (int i = 0; i < speed; i++) {
+        drawCorrect(toDraw.x + offsetX + toDraw.length + i, toDraw.y, 0);
+        drawCorrect(toDraw.x + offsetX + toDraw.length + i, toDraw.y + 4, 0);
+
+    }
+
+
+    for (uint16_t i = 0; i < speed; i++) {
+
+        int16_t random = rand() % 1024;
+
+        uint8_t underSide = 0;
+        switch (random % 4) {
+            case 0:
+                underSide = 0x55;
+                break;
+            case 1:
+                underSide = 0x57;
+                break;
+            case 2:
+                underSide = 0x5F;
+                break;
+            case 3:
+                underSide = 0x7F;
+                break;
+
+
+        };
+
+        drawCorrect(toDraw.x + offsetX + i, toDraw.y, 0xFF);
+        drawCorrect(toDraw.x + offsetX + i, toDraw.y + 4, underSide);
+
+
+    }
+
+
 }
 
 void printPowerUp(int16_t x, int16_t y, enum PowerUpType type, int16_t speed) {
