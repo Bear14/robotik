@@ -50,6 +50,7 @@ volatile uint32_t timePressed = 0;
 volatile int8_t dashLen;
 volatile int8_t dashCounter = 2;
 volatile int8_t jumpCounter = 2;
+volatile int8_t dashDist = DASH_LENGTH;
 
 /*
  * Draw
@@ -94,6 +95,9 @@ enum gState {
 };
 enum gState gameState = set; //TODO: move to Init
 
+
+enum Form playerForm = _normal; //TODO: move to Init
+
 /*
  * To keep the player infinitely running we need to reset the position x integer before it overflows.
  * At every reset the difficulty is raised.
@@ -108,7 +112,7 @@ void reset() {
         /*
          * Reset platforms, powerUps and the player
          */
-        for(uint8_t i = 0; i < PLATFORM_COUNT; i++){
+        for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
 
             platforms[i].x -= playerPosX;
 
@@ -143,7 +147,7 @@ void dash() {
     if (dashCounter > 0) {
         playerState = dashing;
         playerMovY = 0;
-        dashLen = DASH_LENGTH;
+        dashLen = dashDist;
         dashCounter--;
     }
 }
@@ -187,9 +191,10 @@ bool collisionRectangles(int16_t x1, int16_t y1, uint8_t w1, uint8_t h1, int16_t
  */
 bool dropCollision() {
 
-    for(uint8_t i = 0; i < PLATFORM_COUNT; i++){
+    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
 
-        if (collisionRectangles(playerPosX, playerPosY + PLAYER_HEIGHT, PLATFORM_HEIGHT, 1, platforms[i].x, platforms[i].y,
+        if (collisionRectangles(playerPosX, playerPosY + PLAYER_HEIGHT, PLATFORM_HEIGHT, 1, platforms[i].x,
+                                platforms[i].y,
                                 platforms[i].length,
                                 PLATFORM_HEIGHT)) {
             return true;
@@ -227,10 +232,11 @@ bool dropCollision() {
 void collisionHandling() {
 
 
-    for(uint8_t i = 0; i < PLATFORM_COUNT; i++){
+    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
 
-        if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, platforms[i].x, platforms[i].y, platforms[i].length,
-                                PLATFORM_HEIGHT)){
+        if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, platforms[i].x, platforms[i].y,
+                                platforms[i].length,
+                                PLATFORM_HEIGHT)) {
 
             if (lastPlayerPosY < platforms[i].y) {
                 playerPosY = platforms[i].y - PLAYER_HEIGHT;
@@ -277,8 +283,9 @@ void collisionHandling() {
  */
 bool dashCollision() {
 
-    for(uint8_t i = 0; i < PLATFORM_COUNT; i++){
-        if(collisionRectangles(playerPosX,playerPosY,PLAYER_HEIGHT,PLAYER_HEIGHT,platforms[i].x,platforms[i].y,platforms[i].length,PLATFORM_HEIGHT)){
+    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
+        if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, platforms[i].x, platforms[i].y,
+                                platforms[i].length, PLATFORM_HEIGHT)) {
             return true;
         }
 
@@ -354,13 +361,25 @@ void collisionWithPowerUp() {
                     drawScore(score);
                     powerUps[j].type = none;
                     break;
+                case knight:
+                    playerForm = _knight;
+                    powerUps[j].type = none;
+                            break;
+                case sorcerer:
+                    playerForm = _sorcerer;
+                    powerUps[j].type = none;
+                    break;
+                case ranger:
+                    playerForm = _ranger;
+                    powerUps[j].type = none;
+                    break;
 
             }
 
-            clearPowerUp(powerUps[j].x+offsetX,powerUps[j].y);
+            clearPowerUp(powerUps[j].x + offsetX, powerUps[j].y);
             powerUps[j].x = -100;
             powerUps[j].y = -100;
-            printPlayer(5, playerPosY, lastPlayerPosY,'1');
+            printPlayer(5, playerPosY, lastPlayerPosY, '1',playerForm);
 
         }
 
@@ -390,8 +409,30 @@ void update() {
 
     collisionWithPowerUp();
     if (playerState == standing) {
-        jumpCounter = 2;
-        dashCounter = 2;
+
+        switch (playerForm){
+            case _normal:
+                jumpCounter = 2;
+                dashCounter = 2;
+                dashDist = DASH_LENGTH;
+                break;
+            case _knight:
+                jumpCounter = 2;
+                dashCounter = 2;
+                dashDist = 24;
+                break;
+            case _sorcerer:
+                jumpCounter = 2;
+                dashCounter = 3;
+                dashDist = DASH_LENGTH;
+                break;
+            case _ranger:
+                jumpCounter = 3;
+                dashCounter = 2;
+                dashDist = DASH_LENGTH;
+                break;
+
+        };
 
         if (!dropCollision()) {
             playerState = falling;
@@ -643,7 +684,7 @@ void draw() {
     }
     drawPowerUps(offsetX, playerPosX - lastPlayerPosX);
     reDrawPlatforms(offsetX);
-    printPlayer(5, playerPosY, lastPlayerPosY,'0');
+    printPlayer(5, playerPosY, lastPlayerPosY, '0',playerForm);
 }
 
 /*
@@ -669,7 +710,7 @@ void setGame() {
     offsetX = 5;
     drawPlatforms(offsetX);
     lastPlayerPosY = 1;
-    printPlayer(5, 0, lastPlayerPosY,'0');
+    printPlayer(5, 0, lastPlayerPosY, '0',playerForm);
 
     playerPosX = 0;
     playerPosY = 0;

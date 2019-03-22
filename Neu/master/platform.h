@@ -15,8 +15,15 @@
 
 #define POWER_UP_SIZE 8
 
+#define POWER_UP_DROP_RATE 20
+
 enum PowerUpType {
     none, live, death, knight, sorcerer,ranger,slow,speedUp,pointsUp,pointsDown
+};
+
+enum Form {
+    _normal, _knight, _sorcerer, _ranger
+
 };
 
 struct PowerUp {
