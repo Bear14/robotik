@@ -6,15 +6,91 @@
 #include "draw.h"
 #include "platform.h"
 
-void drawPlaceHolder(int16_t x,int16_t y){
+void clearPlayer(int16_t x, int16_t y) {
 
+    drawCorrect(x + 0, y + 0, 0);
+    drawCorrect(x + 0, y + 4, 0);
+    drawCorrect(x + 0, y + 8, 0);
+    drawCorrect(x + 0, y + 12, 0);
+    drawCorrect(x + 1, y + 0, 0);
+    drawCorrect(x + 1, y + 4, 0);
+    drawCorrect(x + 1, y + 8, 0);
+    drawCorrect(x + 1, y + 12, 0);
+    drawCorrect(x + 2, y + 0, 0);
+    drawCorrect(x + 2, y + 4, 0);
+    drawCorrect(x + 2, y + 8, 0);
+    drawCorrect(x + 2, y + 12, 0);
+    drawCorrect(x + 3, y + 0, 0);
+    drawCorrect(x + 3, y + 4, 0);
+    drawCorrect(x + 3, y + 8, 0);
+    drawCorrect(x + 3, y + 12, 0);
+    drawCorrect(x + 4, y + 0, 0);
+    drawCorrect(x + 4, y + 4, 0);
+    drawCorrect(x + 4, y + 8, 0);
+    drawCorrect(x + 4, y + 12, 0);
+    drawCorrect(x + 5, y + 0, 0);
+    drawCorrect(x + 5, y + 4, 0);
+    drawCorrect(x + 5, y + 8, 0);
+    drawCorrect(x + 5, y + 12, 0);
+    drawCorrect(x + 6, y + 0, 0);
+    drawCorrect(x + 6, y + 4, 0);
+    drawCorrect(x + 6, y + 8, 0);
+    drawCorrect(x + 6, y + 12, 0);
+    drawCorrect(x + 7, y + 0, 0);
+    drawCorrect(x + 7, y + 4, 0);
+    drawCorrect(x + 7, y + 8, 0);
+    drawCorrect(x + 7, y + 12, 0);
+    drawCorrect(x + 8, y + 0, 0);
+    drawCorrect(x + 8, y + 4, 0);
+    drawCorrect(x + 8, y + 8, 0);
+    drawCorrect(x + 8, y + 12, 0);
+    drawCorrect(x + 9, y + 0, 0);
+    drawCorrect(x + 9, y + 4, 0);
+    drawCorrect(x + 9, y + 8, 0);
+    drawCorrect(x + 9, y + 12, 0);
+    drawCorrect(x + 10, y + 0, 0);
+    drawCorrect(x + 10, y + 4, 0);
+    drawCorrect(x + 10, y + 8, 0);
+    drawCorrect(x + 10, y + 12, 0);
+    drawCorrect(x + 11, y + 0, 0);
+    drawCorrect(x + 11, y + 4, 0);
+    drawCorrect(x + 11, y + 8, 0);
+    drawCorrect(x + 11, y + 12, 0);
+    drawCorrect(x + 12, y + 0, 0);
+    drawCorrect(x + 12, y + 4, 0);
+    drawCorrect(x + 12, y + 8, 0);
+    drawCorrect(x + 12, y + 12, 0);
+    drawCorrect(x + 13, y + 0, 0);
+    drawCorrect(x + 13, y + 4, 0);
+    drawCorrect(x + 13, y + 8, 0);
+    drawCorrect(x + 13, y + 12, 0);
+    drawCorrect(x + 14, y + 0, 0);
+    drawCorrect(x + 14, y + 4, 0);
+    drawCorrect(x + 14, y + 8, 0);
+    drawCorrect(x + 14, y + 12, 0);
+    drawCorrect(x + 15, y + 0, 0);
+    drawCorrect(x + 15, y + 4, 0);
+    drawCorrect(x + 15, y + 8, 0);
+    drawCorrect(x + 15, y + 12, 0);
+
+
+}
+
+void drawPlaceHolder(int16_t x, int16_t y) {
+
+    drawCorrect(x + 0, y + 0, 0xFF);
+    drawCorrect(x + 0, y + 4, 0xFF);
     drawCorrect(x + 0, y + 8, 0xFF);
+    drawCorrect(x + 0, y + 12, 0xFF);
+    drawCorrect(x + 1, y + 0, 0xFF);
     drawCorrect(x + 1, y + 4, 0xFF);
     drawCorrect(x + 1, y + 8, 0xFF);
     drawCorrect(x + 1, y + 12, 0xFF);
+    drawCorrect(x + 2, y + 0, 0xFF);
     drawCorrect(x + 2, y + 4, 0xFF);
     drawCorrect(x + 2, y + 8, 0xFF);
     drawCorrect(x + 2, y + 12, 0xFF);
+    drawCorrect(x + 3, y + 0, 0xFF);
     drawCorrect(x + 3, y + 4, 0xFF);
     drawCorrect(x + 3, y + 8, 0xFF);
     drawCorrect(x + 3, y + 12, 0xFF);
@@ -38,12 +114,14 @@ void drawPlaceHolder(int16_t x,int16_t y){
     drawCorrect(x + 8, y + 4, 0xFF);
     drawCorrect(x + 8, y + 8, 0xFF);
     drawCorrect(x + 8, y + 12, 0xFF);
+    drawCorrect(x + 9, y + 0, 0xFF);
     drawCorrect(x + 9, y + 4, 0xFF);
     drawCorrect(x + 9, y + 8, 0xFF);
     drawCorrect(x + 9, y + 12, 0xFF);
     drawCorrect(x + 10, y + 0, 0xFF);
     drawCorrect(x + 10, y + 4, 0xFF);
     drawCorrect(x + 10, y + 8, 0xFF);
+    drawCorrect(x + 10, y + 12, 0xFF);
     drawCorrect(x + 11, y + 0, 0xFF);
     drawCorrect(x + 11, y + 4, 0xFF);
     drawCorrect(x + 11, y + 8, 0xFF);
@@ -72,72 +150,17 @@ void printPlayer(int16_t x, int16_t y, int16_t lastY, char forceRedraw, enum For
 
     if (y != lastY || forceRedraw == '1') {
 
-        drawCorrect(x + 0, lastY + 8, 0);
-        drawCorrect(x + 1, lastY + 4, 0);
-        drawCorrect(x + 1, lastY + 8, 0);
-        drawCorrect(x + 1, lastY + 12, 0);
-        drawCorrect(x + 2, lastY + 4, 0);
-        drawCorrect(x + 2, lastY + 8, 0);
-        drawCorrect(x + 2, lastY + 12, 0);
-        drawCorrect(x + 3, lastY + 4, 0);
-        drawCorrect(x + 3, lastY + 8, 0);
-        drawCorrect(x + 3, lastY + 12, 0);
-        drawCorrect(x + 4, lastY + 0, 0);
-        drawCorrect(x + 4, lastY + 4, 0);
-        drawCorrect(x + 4, lastY + 8, 0);
-        drawCorrect(x + 4, lastY + 12, 0);
-        drawCorrect(x + 5, lastY + 0, 0);
-        drawCorrect(x + 5, lastY + 4, 0);
-        drawCorrect(x + 5, lastY + 8, 0);
-        drawCorrect(x + 5, lastY + 12, 0);
-        drawCorrect(x + 6, lastY + 0, 0);
-        drawCorrect(x + 6, lastY + 4, 0);
-        drawCorrect(x + 6, lastY + 8, 0);
-        drawCorrect(x + 6, lastY + 12, 0);
-        drawCorrect(x + 7, lastY + 0, 0);
-        drawCorrect(x + 7, lastY + 4, 0);
-        drawCorrect(x + 7, lastY + 8, 0);
-        drawCorrect(x + 7, lastY + 12, 0);
-        drawCorrect(x + 8, lastY + 0, 0);
-        drawCorrect(x + 8, lastY + 4, 0);
-        drawCorrect(x + 8, lastY + 8, 0);
-        drawCorrect(x + 8, lastY + 12, 0);
-        drawCorrect(x + 9, lastY + 4, 0);
-        drawCorrect(x + 9, lastY + 8, 0);
-        drawCorrect(x + 9, lastY + 12, 0);
-        drawCorrect(x + 10, lastY + 0, 0);
-        drawCorrect(x + 10, lastY + 4, 0);
-        drawCorrect(x + 10, lastY + 8, 0);
-        drawCorrect(x + 11, lastY + 0, 0);
-        drawCorrect(x + 11, lastY + 4, 0);
-        drawCorrect(x + 11, lastY + 8, 0);
-        drawCorrect(x + 11, lastY + 12, 0);
-        drawCorrect(x + 12, lastY + 0, 0);
-        drawCorrect(x + 12, lastY + 4, 0);
-        drawCorrect(x + 12, lastY + 8, 0);
-        drawCorrect(x + 12, lastY + 12, 0);
-        drawCorrect(x + 13, lastY + 0, 0);
-        drawCorrect(x + 13, lastY + 4, 0);
-        drawCorrect(x + 13, lastY + 8, 0);
-        drawCorrect(x + 13, lastY + 12, 0);
-        drawCorrect(x + 14, lastY + 0, 0);
-        drawCorrect(x + 14, lastY + 4, 0);
-        drawCorrect(x + 14, lastY + 8, 0);
-        drawCorrect(x + 14, lastY + 12, 0);
-        drawCorrect(x + 15, lastY + 0, 0);
-        drawCorrect(x + 15, lastY + 4, 0);
-        drawCorrect(x + 15, lastY + 8, 0);
-        drawCorrect(x + 15, lastY + 12, 0);
+        clearPlayer(x, lastY);
 
         switch (form) {
             case _normal:
-                drawPlaceHolder(x,y);
+                drawPlaceHolder(x, y);
                 break;
             case _sorcerer:
-                drawPlaceHolder(x,y);
+                drawPlaceHolder(x, y);
                 break;
             case _ranger:
-                drawPlaceHolder(x,y);
+                drawPlaceHolder(x, y);
                 break;
             case _knight:
                 drawCorrect(x + 0, y + 8, 0x02);
