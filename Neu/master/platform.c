@@ -39,7 +39,7 @@ void createPowerUp(struct platform base, int16_t random) { //random 0 - 1023
 
     switch (random % 100 + 1) {
         case 1 ... 2: // 2%
-            pType = death;
+            pType = knight;
             break;
         case 3 ... 8: // 6%
             pType = knight;

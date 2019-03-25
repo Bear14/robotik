@@ -8,6 +8,7 @@
 #include "sprites.h"
 #include "platform.h"
 #include <stdio.h>
+#include "save.h"
 
 void drawString(char text[], uint8_t x, uint8_t y) {
     char *pointer = text;
@@ -621,10 +622,17 @@ void drawScore(uint32_t score) {
     drawString(text, 109, 96);
 }
 
+void drawSpeed(int16_t speed) {
+    char text[2];
+    sprintf(text, "%d", speed);
+    drawString(text, 50, 96);
+}
+
 void drawMenue1() {
     drawString("HAUPTMENUE", 55, 25);
     drawString("NEUES SPIEL", 55, 45);
     drawString("HIGHSCORE", 55, 55);
+    drawScore(readScore());
     drawString("SCHWIRIGKEIT", 55, 65);
 }
 
@@ -683,7 +691,7 @@ void deletePfeil(uint8_t x, uint8_t y) {
 void drawLives(uint8_t live) {
     for (int i = 0; i < live; i++) {
 
-        printHeart(50 + i * 8, 96);
+        printHeart(65 + i * 8, 96);
 
     }
 
