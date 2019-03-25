@@ -635,7 +635,7 @@ void drawMenue1() {
     drawString("NEUES SPIEL", 75, 44);
     drawString("RESET HIGHSCORE", 75, 54);
     drawScore(readScore());
-    drawString("SCHWIRIGKEIT", 75, 64);
+    drawString("SCHWIRIGKEIT", 75, 65);
 }
 
 void drawMenue2() {
