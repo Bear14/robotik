@@ -692,12 +692,12 @@ int main(void) {
     uart_putc(10);
     _delay_ms(1000);
 
-    printDragon();
+    printScreen();
     _delay_ms(1000);
 
     clear();
     gameState = menu_1;
-    pfeilPosX = 40;
+    pfeilPosX = 60;
     pfeilPosY = 45;
     drawMenue1();
     drawPfeil(pfeilPosX, pfeilPosY);
