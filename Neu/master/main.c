@@ -129,7 +129,7 @@ void reset() {
         /*
          * Raise difficulty
          */
-        if(platWidth < 0) {
+        if (platWidth < 0) {
             platWidth--;
         }
         if (gameSpeed < MAX_GAME_SPEED) {
@@ -252,7 +252,7 @@ void collisionWithPowerUp() {
     for (uint8_t j = 0; j < POWER_UP_COUNT; j++) {
 
         if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, powerUps[j].x, powerUps[j].y,
-                                1, POWER_UP_SIZE)) {
+                                POWER_UP_SIZE, POWER_UP_SIZE)) {
 
 
             switch (powerUps[j].type) {
@@ -266,6 +266,7 @@ void collisionWithPowerUp() {
                     powerUps[j].type = none;
                     break;
                 case death:
+                    lives--;
                     gameState = set;
                     powerUps[j].type = none;
                     break;
@@ -298,7 +299,7 @@ void collisionWithPowerUp() {
                 case knight:
                     playerForm = _knight;
                     powerUps[j].type = none;
-                            break;
+                    break;
                 case sorcerer:
                     playerForm = _sorcerer;
                     powerUps[j].type = none;
@@ -313,7 +314,7 @@ void collisionWithPowerUp() {
             clearPowerUp(powerUps[j].x + offsetX, powerUps[j].y);
             powerUps[j].x = -100;
             powerUps[j].y = -100;
-            printPlayer(5, playerPosY, lastPlayerPosY, '1',playerForm);
+            printPlayer(5, playerPosY, lastPlayerPosY, '1', playerForm);
 
         }
 
@@ -347,7 +348,7 @@ void update() {
     collisionWithPowerUp();
     if (playerState == standing) {
 
-        switch (playerForm){
+        switch (playerForm) {
             case _normal:
                 jumpCounter = 2;
                 dashCounter = 2;
@@ -385,6 +386,7 @@ void update() {
         playerPosX += gameSpeed * 2;
         offsetX -= gameSpeed * 2;
         if (dashCollision()) {
+            lives--;
             gameState = set;
         }
     }
@@ -576,11 +578,17 @@ void getInput() {
                     //uart_putc(30);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
-                    if (gameState == run) {
-                        gameState = stop;
-                    } else {
-                        gameState = run;
-                    }
+
+                    gameState = stop;
+                    drawCorrect(0, 96, 0xFF);
+                    drawCorrect(0, 100, 0xFF);
+                    drawCorrect(1, 96, 0xFF);
+                    drawCorrect(1, 100, 0xFF);
+
+                    drawCorrect(3, 96, 0xFF);
+                    drawCorrect(3, 100, 0xFF);
+                    drawCorrect(4, 96, 0xFF);
+                    drawCorrect(4, 100, 0xFF);
                 }
                 break;
             default:
@@ -605,6 +613,15 @@ void getInput() {
                         gameState = stop;
                     } else {
                         gameState = run;
+                        drawCorrect(0, 96, 0);
+                        drawCorrect(0, 100, 0);
+                        drawCorrect(1, 96, 0);
+                        drawCorrect(1, 100, 0);
+
+                        drawCorrect(3, 96, 0);
+                        drawCorrect(3, 100, 0);
+                        drawCorrect(4, 96, 0);
+                        drawCorrect(4, 100, 0);
                     }
                 }
                 break;
@@ -619,9 +636,10 @@ void getInput() {
 void draw() {
 
     drawPowerUps(offsetX, playerPosX - lastPlayerPosX);
-    reDrawPlatforms(offsetX,playerPosX -lastPlayerPosX);
-    printPlayer(5, playerPosY, lastPlayerPosY, '0',playerForm);
+    reDrawPlatforms(offsetX, playerPosX - lastPlayerPosX);
+    printPlayer(5, playerPosY, lastPlayerPosY, '0', playerForm);
 }
+
 /*
  * @params void
  * @return void
@@ -642,7 +660,7 @@ void setGame() {
     offsetX = 5;
     drawPlatforms(offsetX);
     lastPlayerPosY = 1;
-    printPlayer(5, 0, lastPlayerPosY, '0',playerForm);
+    printPlayer(5, 0, lastPlayerPosY, '0', playerForm);
 
     playerPosX = 0;
     playerPosY = 0;
