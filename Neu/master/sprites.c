@@ -728,7 +728,7 @@ void printDragon() {
     drawCorrect(31, 72, 0xC3);
     drawCorrect(31, 76, 0x03);
     drawCorrect(32, 20, 0x30);
-    for (uint8_t i = 28; i <= 8; i += 4) {
+    for (uint8_t i = 28; i <= 68; i += 4) {
         drawCorrect(32, i, 0xFF);
     }
     drawCorrect(32, 72, 0x03);
@@ -1038,7 +1038,7 @@ void printDragon() {
     drawCorrect(62, 8, 0xFF);
     drawCorrect(62, 12, 0x03);
     for (uint8_t i = 20; i <= 36; i += 4) {
-        drawCorrect(62, 20, 0xFF);
+        drawCorrect(62, i, 0xFF);
     }
     drawCorrect(62, 40, 0x80);
     drawCorrect(62, 44, 0x0A);
