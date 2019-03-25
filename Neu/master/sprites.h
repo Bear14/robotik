@@ -7,6 +7,10 @@
 
 #include <inttypes.h>
 #include "platform.h"
+void printNormal(uint8_t x, uint8_t y);
+void printSorcerer(uint8_t x, uint8_t y);
+void printRanger(uint8_t x, uint8_t y);
+void printKnight(uint8_t x, uint8_t y);
 
 void printPlayer(int16_t x, int16_t y, int16_t lastY, char forceRedraw, enum Form form);
 
