@@ -8,6 +8,7 @@
 #include "sprites.h"
 #include "platform.h"
 #include <stdio.h>
+#include "save.h"
 
 void drawString(char text[], uint8_t x, uint8_t y) {
     char *pointer = text;
@@ -631,6 +632,7 @@ void drawMenue1() {
     drawString("HAUPTMENUE", 55, 25);
     drawString("NEUES SPIEL", 55, 45);
     drawString("HIGHSCORE", 55, 55);
+    drawScore(readScore());
     drawString("SCHWIRIGKEIT", 55, 65);
 }
 

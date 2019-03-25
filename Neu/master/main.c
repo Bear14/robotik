@@ -23,6 +23,7 @@ typedef int bool;
 #include "draw.h"
 #include "sprites.h"
 #include "platform.h"
+#include "save.h"
 
 
 /*
@@ -650,6 +651,10 @@ void draw() {
 void setGame() {
     if (lives == 0) {
 
+
+        if(readScore() <= score) {
+            writeScore(score);
+        }
         score = 0;
         lives = 3;
         gameSpeed = INITIAL_SPEED;
