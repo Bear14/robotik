@@ -3,6 +3,7 @@
 //
 
 #include <stdlib.h>
+#include <util/delay.h>
 #include <avr/interrupt.h>
 #include "sprites.h"
 #include "draw.h"
@@ -10,6 +11,12 @@
 
 void clearPlayer(int16_t x, int16_t y) {
 
+    for (uint8_t i=0; i <= 16; i++){
+        for (uint8_t j=0; j <= 12; j +=4){
+            drawCorrect(x+i, y+j, 0);
+        }
+    }
+    /*
     drawCorrect(x + 0, y + 0, 0);
     drawCorrect(x + 0, y + 4, 0);
     drawCorrect(x + 0, y + 8, 0);
@@ -74,8 +81,7 @@ void clearPlayer(int16_t x, int16_t y) {
     drawCorrect(x + 15, y + 4, 0);
     drawCorrect(x + 15, y + 8, 0);
     drawCorrect(x + 15, y + 12, 0);
-
-
+    */
 }
 
 void drawPlaceHolder(int16_t x, int16_t y) {
@@ -639,573 +645,376 @@ void printPowerUp(int16_t x, int16_t y, enum PowerUpType type, int16_t speed) {
 }
 
 void clearPowerUp(int16_t x, int16_t y) {
-    drawCorrect(x + 0, y + 0, 0);
-    drawCorrect(x + 0, y + 4, 0);
-    drawCorrect(x + 1, y + 0, 0);
-    drawCorrect(x + 1, y + 4, 0);
-    drawCorrect(x + 2, y + 0, 0);
-    drawCorrect(x + 2, y + 4, 0);
-    drawCorrect(x + 3, y + 0, 0);
-    drawCorrect(x + 3, y + 4, 0);
-    drawCorrect(x + 4, y + 0, 0);
-    drawCorrect(x + 4, y + 4, 0);
-    drawCorrect(x + 5, y + 0, 0);
-    drawCorrect(x + 5, y + 4, 0);
-    drawCorrect(x + 6, y + 0, 0);
-    drawCorrect(x + 6, y + 4, 0);
-    drawCorrect(x + 7, y + 0, 0);
-    drawCorrect(x + 7, y + 4, 0);
-
+    for(uint8_t i=0; i <= 7; i++){
+        drawCorrect(x + i, y + 0, 0);
+        drawCorrect(x + i, y + 4, 0);
+    }
+}
+void clearDragon(int8_t x, int8_t y){
+    for (uint8_t i = 0; i <= 60; i+=4) {
+        for (uint8_t j = 0; j <= 159; j++) {
+            drawCorrect(x+j,y+i, 0x00);
+        }
+    }
 }
 
-void printDragon(uint8_t x, uint8_t y) {
-    drawCorrect(x + 0, y + 32, 0x0C);
-    drawCorrect(x + 1, y + 32, 0x03);
-    drawCorrect(x + 2, y + 32, 0x03);
-    drawCorrect(x + 3, y + 32, 0x03);
-    drawCorrect(x + 3, y + 40, 0x3C);
-    drawCorrect(x + 4, y + 28, 0xC0);
-    drawCorrect(x + 4, y + 32, 0x03);
-    drawCorrect(x + 4, y + 36, 0xC0);
-    drawCorrect(x + 4, y + 40, 0x0F);
-    drawCorrect(x + 4, y + 48, 0x0F);
-    drawCorrect(x + 4, y + 52, 0xFC);
-    drawCorrect(x + 4, y + 56, 0xFF);
-    drawCorrect(x + 5, y + 28, 0xC0);
-    drawCorrect(x + 5, y + 36, 0xF0);
-    drawCorrect(x + 5, y + 40, 0x03);
-    drawCorrect(x + 5, y + 44, 0xFC);
-    drawCorrect(x + 5, y + 48, 0xC0);
-    drawCorrect(x + 5, y + 52, 0xFF);
-    drawCorrect(x + 5, y + 56, 0xFF);
-    drawCorrect(x + 5, y + 60, 0xFF);
-    drawCorrect(x + 6, y + 28, 0xF0);
-    drawCorrect(x + 6, y + 36, 0xFF);
-    drawCorrect(x + 6, y + 40, 0xF0);
-    drawCorrect(x + 6, y + 44, 0x0F);
-    drawCorrect(x + 6, y + 48, 0xFC);
-    drawCorrect(x + 6, y + 52, 0xFF);
-    drawCorrect(x + 6, y + 56, 0xFF);
-    drawCorrect(x + 6, y + 60, 0xFF);
-    drawCorrect(x + 7, y + 28, 0xF0);
-    drawCorrect(x + 7, y + 32, 0xC0);
-    drawCorrect(x + 7, y + 36, 0x3F);
-    drawCorrect(x + 7, y + 40, 0x3F);
-    drawCorrect(x + 7, y + 44, 0xF0);
-    drawCorrect(x + 7, y + 48, 0xFF);
-    drawCorrect(x + 7, y + 52, 0xFF);
-    drawCorrect(x + 7, y + 56, 0xFF);
-    drawCorrect(x + 7, y + 60, 0xFF);
-    drawCorrect(x + 8, y + 28, 0xF0);
-    drawCorrect(x + 8, y + 32, 0xC0);
-    drawCorrect(x + 8, y + 36, 0xFF);
-    drawCorrect(x + 8, y + 40, 0x0F);
-    drawCorrect(x + 8, y + 44, 0xFC);
-    drawCorrect(x + 8, y + 48, 0xFF);
-    drawCorrect(x + 8, y + 52, 0xFF);
-    drawCorrect(x + 8, y + 56, 0xFF);
-    drawCorrect(x + 8, y + 60, 0xFF);
-    drawCorrect(x + 9, y + 28, 0xF0);
-    drawCorrect(x + 9, y + 32, 0xF0);
-    drawCorrect(x + 9, y + 36, 0xFF);
-    drawCorrect(x + 9, y + 40, 0x30);
-    drawCorrect(x + 9, y + 44, 0xFF);
-    drawCorrect(x + 9, y + 48, 0xFF);
-    drawCorrect(x + 9, y + 52, 0xFF);
-    drawCorrect(x + 9, y + 56, 0xFF);
-    drawCorrect(x + 9, y + 60, 0xFF);
-    drawCorrect(x + 10, y + 28, 0xF0);
-    drawCorrect(x + 10, y + 32, 0xFC);
-    drawCorrect(x + 10, y + 36, 0x3F);
-    drawCorrect(x + 10, y + 40, 0xFC);
-    drawCorrect(x + 10, y + 44, 0xFF);
-    drawCorrect(x + 10, y + 48, 0xFF);
-    drawCorrect(x + 10, y + 52, 0xFF);
-    drawCorrect(x + 10, y + 56, 0xFF);
-    drawCorrect(x + 10, y + 60, 0xFF);
-    drawCorrect(x + 11, y + 28, 0xFC);
-    drawCorrect(x + 11, y + 32, 0xFC);
-    drawCorrect(x + 11, y + 36, 0xCF);
-    drawCorrect(x + 11, y + 40, 0xFF);
-    drawCorrect(x + 11, y + 44, 0xFF);
-    drawCorrect(x + 11, y + 48, 0xFF);
-    drawCorrect(x + 11, y + 52, 0xFF);
-    drawCorrect(x + 11, y + 56, 0xFF);
-    drawCorrect(x + 11, y + 60, 0xFF);
-    drawCorrect(x + 12, y + 28, 0xFC);
-    drawCorrect(x + 12, y + 32, 0xFF);
-    drawCorrect(x + 12, y + 36, 0xF3);
-    drawCorrect(x + 12, y + 40, 0xFF);
-    drawCorrect(x + 12, y + 44, 0xFF);
-    drawCorrect(x + 12, y + 48, 0xFF);
-    drawCorrect(x + 12, y + 52, 0xFF);
-    drawCorrect(x + 12, y + 56, 0xFF);
-    drawCorrect(x + 12, y + 60, 0xFF);
-    drawCorrect(x + 13, y + 28, 0xFC);
-    drawCorrect(x + 13, y + 32, 0xFF);
-    drawCorrect(x + 13, y + 36, 0xFF);
-    drawCorrect(x + 13, y + 40, 0xFF);
-    drawCorrect(x + 13, y + 44, 0xFF);
-    drawCorrect(x + 13, y + 48, 0xFF);
-    drawCorrect(x + 13, y + 52, 0xFF);
-    drawCorrect(x + 13, y + 56, 0xFF);
-    drawCorrect(x + 13, y + 60, 0xFF);
-    drawCorrect(x + 14, y + 20, 0x30);
-    drawCorrect(x + 14, y + 28, 0xFF);
-    drawCorrect(x + 14, y + 32, 0xFF);
-    drawCorrect(x + 14, y + 36, 0xFF);
-    drawCorrect(x + 14, y + 40, 0xFF);
-    drawCorrect(x + 14, y + 44, 0xFF);
-    drawCorrect(x + 14, y + 48, 0xFF);
-    drawCorrect(x + 14, y + 52, 0xFF);
-    drawCorrect(x + 14, y + 56, 0xFF);
-    drawCorrect(x + 14, y + 60, 0xFF);
-    drawCorrect(x + 15, y + 20, 0x30);
-    drawCorrect(x + 15, y + 28, 0xFF);
-    drawCorrect(x + 15, y + 32, 0xFF);
-    drawCorrect(x + 15, y + 36, 0xFF);
-    drawCorrect(x + 15, y + 40, 0xFF);
-    drawCorrect(x + 15, y + 44, 0xFF);
-    drawCorrect(x + 15, y + 48, 0xFF);
-    drawCorrect(x + 15, y + 52, 0xFF);
-    drawCorrect(x + 15, y + 56, 0xFF);
-    drawCorrect(x + 15, y + 60, 0xFF);
-    drawCorrect(x + 16, y + 20, 0x0C);
-    drawCorrect(x + 16, y + 24, 0xC0);
-    drawCorrect(x + 16, y + 28, 0xCF);
-    drawCorrect(x + 16, y + 32, 0xFF);
-    drawCorrect(x + 16, y + 36, 0xFF);
-    drawCorrect(x + 16, y + 40, 0xFF);
-    drawCorrect(x + 16, y + 44, 0xFF);
-    drawCorrect(x + 16, y + 48, 0xFF);
-    drawCorrect(x + 16, y + 52, 0xFF);
-    drawCorrect(x + 16, y + 56, 0xFF);
-    drawCorrect(x + 16, y + 60, 0xFF);
-    drawCorrect(x + 17, y + 20, 0x0C);
-    drawCorrect(x + 17, y + 24, 0xF0);
-    drawCorrect(x + 17, y + 28, 0xF3);
-    drawCorrect(x + 17, y + 32, 0xFF);
-    drawCorrect(x + 17, y + 36, 0xFF);
-    drawCorrect(x + 17, y + 40, 0xFF);
-    drawCorrect(x + 17, y + 44, 0xFF);
-    drawCorrect(x + 17, y + 48, 0xFF);
-    drawCorrect(x + 17, y + 52, 0xFF);
-    drawCorrect(x + 17, y + 56, 0xFF);
-    drawCorrect(x + 17, y + 60, 0xFF);
-    drawCorrect(x + 18, y + 20, 0x0F);
-    drawCorrect(x + 18, y + 24, 0xF0);
-    drawCorrect(x + 18, y + 28, 0xFC);
-    drawCorrect(x + 18, y + 32, 0xFF);
-    drawCorrect(x + 18, y + 36, 0xFF);
-    drawCorrect(x + 18, y + 40, 0xFF);
-    drawCorrect(x + 18, y + 44, 0xFF);
-    drawCorrect(x + 18, y + 48, 0xFF);
-    drawCorrect(x + 18, y + 52, 0xFF);
-    drawCorrect(x + 18, y + 56, 0xFF);
-    drawCorrect(x + 18, y + 60, 0xFF);
-    drawCorrect(x + 19, y + 20, 0x0F);
-    drawCorrect(x + 19, y + 24, 0x3C);
-    drawCorrect(x + 19, y + 28, 0xFF);
-    drawCorrect(x + 19, y + 32, 0xFF);
-    drawCorrect(x + 19, y + 36, 0xFF);
-    drawCorrect(x + 19, y + 40, 0xFF);
-    drawCorrect(x + 19, y + 44, 0xFF);
-    drawCorrect(x + 19, y + 48, 0xFF);
-    drawCorrect(x + 19, y + 52, 0xFF);
-    drawCorrect(x + 19, y + 56, 0xFF);
-    drawCorrect(x + 19, y + 60, 0xFF);
-    drawCorrect(x + 20, y + 16, 0xC0);
-    drawCorrect(x + 20, y + 20, 0x0F);
-    drawCorrect(x + 20, y + 24, 0x3F);
-    drawCorrect(x + 20, y + 28, 0xFF);
-    drawCorrect(x + 20, y + 32, 0xFF);
-    drawCorrect(x + 20, y + 36, 0xFF);
-    drawCorrect(x + 20, y + 40, 0xFF);
-    drawCorrect(x + 20, y + 44, 0xFF);
-    drawCorrect(x + 20, y + 48, 0xFF);
-    drawCorrect(x + 20, y + 52, 0xFF);
-    drawCorrect(x + 20, y + 56, 0xFF);
-    drawCorrect(x + 20, y + 60, 0xFF);
-    drawCorrect(x + 21, y + 16, 0xC0);
-    drawCorrect(x + 21, y + 20, 0xFF);
-    drawCorrect(x + 21, y + 24, 0xCF);
-    drawCorrect(x + 21, y + 28, 0xFF);
-    drawCorrect(x + 21, y + 32, 0xFF);
-    drawCorrect(x + 21, y + 36, 0xFF);
-    drawCorrect(x + 21, y + 40, 0xFF);
-    drawCorrect(x + 21, y + 44, 0xFF);
-    drawCorrect(x + 21, y + 48, 0xFF);
-    drawCorrect(x + 21, y + 52, 0xFF);
-    drawCorrect(x + 21, y + 56, 0xFF);
-    drawCorrect(x + 21, y + 60, 0xFF);
-    drawCorrect(x + 22, y + 16, 0xC0);
-    drawCorrect(x + 22, y + 20, 0xFF);
-    drawCorrect(x + 22, y + 24, 0xCF);
-    drawCorrect(x + 22, y + 28, 0xFF);
-    drawCorrect(x + 22, y + 32, 0xFF);
-    drawCorrect(x + 22, y + 36, 0xFF);
-    drawCorrect(x + 22, y + 40, 0xFF);
-    drawCorrect(x + 22, y + 44, 0xFF);
-    drawCorrect(x + 22, y + 48, 0xFF);
-    drawCorrect(x + 22, y + 52, 0xFF);
-    drawCorrect(x + 22, y + 56, 0xFF);
-    drawCorrect(x + 22, y + 60, 0xFF);
-    drawCorrect(x + 23, y + 16, 0xFC);
-    drawCorrect(x + 23, y + 20, 0xFF);
-    drawCorrect(x + 23, y + 24, 0xC3);
-    drawCorrect(x + 23, y + 28, 0xFF);
-    drawCorrect(x + 23, y + 32, 0xFF);
-    drawCorrect(x + 23, y + 36, 0xFF);
-    drawCorrect(x + 23, y + 40, 0xFF);
-    drawCorrect(x + 23, y + 44, 0xFF);
-    drawCorrect(x + 23, y + 48, 0x3F);
-    drawCorrect(x + 23, y + 56, 0xFF);
-    drawCorrect(x + 23, y + 60, 0xCF);
-    drawCorrect(x + 24, y + 16, 0xFC);
-    drawCorrect(x + 24, y + 20, 0xFF);
-    drawCorrect(x + 24, y + 24, 0xF3);
-    drawCorrect(x + 24, y + 28, 0xFF);
-    drawCorrect(x + 24, y + 32, 0xFF);
-    drawCorrect(x + 24, y + 36, 0xFF);
-    drawCorrect(x + 24, y + 40, 0xFF);
-    drawCorrect(x + 24, y + 44, 0xFF);
-    drawCorrect(x + 24, y + 48, 0x0F);
-    drawCorrect(x + 24, y + 56, 0xFC);
-    drawCorrect(x + 24, y + 60, 0xCF);
-    drawCorrect(x + 25, y + 16, 0xFC);
-    drawCorrect(x + 25, y + 20, 0xFF);
-    drawCorrect(x + 25, y + 24, 0xFC);
-    drawCorrect(x + 25, y + 28, 0xFF);
-    drawCorrect(x + 25, y + 32, 0xFF);
-    drawCorrect(x + 25, y + 36, 0xFF);
-    drawCorrect(x + 25, y + 40, 0xFF);
-    drawCorrect(x + 25, y + 44, 0x03);
-    drawCorrect(x + 25, y + 48, 0x3F);
-    drawCorrect(x + 25, y + 56, 0xF0);
-    drawCorrect(x + 25, y + 60, 0xCF);
-    drawCorrect(x + 26, y + 16, 0xFC);
-    drawCorrect(x + 26, y + 20, 0xF3);
-    drawCorrect(x + 26, y + 24, 0xFC);
-    drawCorrect(x + 26, y + 28, 0xFF);
-    drawCorrect(x + 26, y + 32, 0xFF);
-    drawCorrect(x + 26, y + 36, 0xFF);
-    drawCorrect(x + 26, y + 40, 0xFF);
-    drawCorrect(x + 26, y + 48, 0xF0);
-    drawCorrect(x + 26, y + 56, 0xC0);
-    drawCorrect(x + 26, y + 60, 0xFF);
-    drawCorrect(x + 27, y + 16, 0xFC);
-    drawCorrect(x + 27, y + 20, 0x33);
-    drawCorrect(x + 27, y + 24, 0xFF);
-    drawCorrect(x + 27, y + 28, 0xFF);
-    drawCorrect(x + 27, y + 32, 0xFF);
-    drawCorrect(x + 27, y + 36, 0xFF);
-    drawCorrect(x + 27, y + 40, 0xFF);
-    drawCorrect(x + 27, y + 56, 0xC0);
-    drawCorrect(x + 27, y + 60, 0x3F);
-    drawCorrect(x + 28, y + 16, 0xFC);
-    drawCorrect(x + 28, y + 20, 0x33);
-    drawCorrect(x + 28, y + 24, 0xFF);
-    drawCorrect(x + 28, y + 28, 0xFF);
-    drawCorrect(x + 28, y + 32, 0xFF);
-    drawCorrect(x + 28, y + 36, 0xFF);
-    drawCorrect(x + 28, y + 40, 0x3F);
-    drawCorrect(x + 28, y + 60, 0x3F);
-    drawCorrect(x + 29, y + 16, 0xF0);
-    drawCorrect(x + 29, y + 20, 0x03);
-    drawCorrect(x + 29, y + 24, 0xFF);
-    drawCorrect(x + 29, y + 28, 0xFF);
-    drawCorrect(x + 29, y + 32, 0xFF);
-    drawCorrect(x + 29, y + 36, 0xFF);
-    drawCorrect(x + 29, y + 40, 0x3F);
-    drawCorrect(x + 29, y + 60, 0x3F);
-    drawCorrect(x + 30, y + 16, 0xF0);
-    drawCorrect(x + 30, y + 20, 0xC3);
-    drawCorrect(x + 30, y + 24, 0xFF);
-    drawCorrect(x + 30, y + 28, 0xFF);
-    drawCorrect(x + 30, y + 32, 0xFF);
-    drawCorrect(x + 30, y + 36, 0xFF);
-    drawCorrect(x + 30, y + 40, 0xFF);
-    drawCorrect(x + 30, y + 60, 0x3F);
-    drawCorrect(x + 31, y + 16, 0xCC);
-    drawCorrect(x + 31, y + 20, 0xC3);
-    drawCorrect(x + 31, y + 24, 0xFF);
-    drawCorrect(x + 31, y + 28, 0xFF);
-    drawCorrect(x + 31, y + 32, 0xFF);
-    drawCorrect(x + 31, y + 36, 0xFF);
-    drawCorrect(x + 31, y + 40, 0xFF);
-    drawCorrect(x + 31, y + 60, 0x3E);
-    drawCorrect(x + 32, y + 16, 0xFC);
-    drawCorrect(x + 32, y + 20, 0xC3);
-    drawCorrect(x + 32, y + 24, 0xFF);
-    drawCorrect(x + 32, y + 28, 0xFF);
-    drawCorrect(x + 32, y + 32, 0xFF);
-    drawCorrect(x + 32, y + 36, 0xCF);
-    drawCorrect(x + 32, y + 40, 0xFF);
-    drawCorrect(x + 32, y + 60, 0xFC);
-    drawCorrect(x + 33, y + 16, 0xF0);
-    drawCorrect(x + 33, y + 20, 0xC0);
-    drawCorrect(x + 33, y + 24, 0xFF);
-    drawCorrect(x + 33, y + 28, 0xFF);
-    drawCorrect(x + 33, y + 32, 0xFF);
-    drawCorrect(x + 33, y + 36, 0xCF);
-    drawCorrect(x + 33, y + 40, 0xFF);
-    drawCorrect(x + 33, y + 60, 0xFC);
-    drawCorrect(x + 34, y + 16, 0xFF);
-    drawCorrect(x + 34, y + 20, 0xCF);
-    drawCorrect(x + 34, y + 24, 0xFF);
-    drawCorrect(x + 34, y + 28, 0xFF);
-    drawCorrect(x + 34, y + 32, 0xCF);
-    drawCorrect(x + 34, y + 36, 0xF3);
-    drawCorrect(x + 34, y + 40, 0xF3);
-    drawCorrect(x + 34, y + 60, 0xFC);
-    drawCorrect(x + 35, y + 16, 0xFC);
-    drawCorrect(x + 35, y + 20, 0xC3);
-    drawCorrect(x + 35, y + 24, 0xFF);
-    drawCorrect(x + 35, y + 28, 0xFF);
-    drawCorrect(x + 35, y + 32, 0xF3);
-    drawCorrect(x + 35, y + 36, 0x30);
-    drawCorrect(x + 35, y + 40, 0xFC);
-    drawCorrect(x + 35, y + 60, 0xF0);
-    drawCorrect(x + 36, y + 16, 0xF0);
-    drawCorrect(x + 36, y + 20, 0xC3);
-    drawCorrect(x + 36, y + 24, 0xFF);
-    drawCorrect(x + 36, y + 28, 0xFF);
-    drawCorrect(x + 36, y + 32, 0x33);
-    drawCorrect(x + 36, y + 40, 0xFF);
-    drawCorrect(x + 36, y + 44, 0x03);
-    drawCorrect(x + 36, y + 60, 0xF0);
-    drawCorrect(x + 37, y + 12, 0x30);
-    drawCorrect(x + 37, y + 16, 0xC0);
-    drawCorrect(x + 37, y + 20, 0xCF);
-    drawCorrect(x + 37, y + 24, 0xFF);
-    drawCorrect(x + 37, y + 28, 0xFF);
-    drawCorrect(x + 37, y + 32, 0xC0);
-    drawCorrect(x + 37, y + 36, 0xF3);
-    drawCorrect(x + 37, y + 40, 0xFF);
-    drawCorrect(x + 37, y + 44, 0x03);
-    drawCorrect(x + 37, y + 60, 0xC0);
-    drawCorrect(x + 38, y + 12, 0xC0);
-    drawCorrect(x + 38, y + 16, 0xC0);
-    drawCorrect(x + 38, y + 20, 0xCF);
-    drawCorrect(x + 38, y + 24, 0xFF);
-    drawCorrect(x + 38, y + 28, 0xFF);
-    drawCorrect(x + 38, y + 32, 0xFF);
-    drawCorrect(x + 38, y + 36, 0xFF);
-    drawCorrect(x + 38, y + 40, 0xFF);
-    drawCorrect(x + 38, y + 44, 0x0F);
-    drawCorrect(x + 38, y + 60, 0xC0);
-    drawCorrect(x + 39, y + 12, 0xC0);
-    drawCorrect(x + 39, y + 16, 0x03);
-    drawCorrect(x + 39, y + 20, 0xFF);
-    drawCorrect(x + 39, y + 24, 0xFF);
-    drawCorrect(x + 39, y + 28, 0xFF);
-    drawCorrect(x + 39, y + 32, 0xFF);
-    drawCorrect(x + 39, y + 36, 0xFF);
-    drawCorrect(x + 39, y + 40, 0xFF);
-    drawCorrect(x + 39, y + 44, 0x3F);
-    drawCorrect(x + 39, y + 60, 0x40);
-    drawCorrect(x + 40, y + 16, 0xFF);
-    drawCorrect(x + 40, y + 20, 0xFF);
-    drawCorrect(x + 40, y + 24, 0xFF);
-    drawCorrect(x + 40, y + 28, 0xFF);
-    drawCorrect(x + 40, y + 32, 0xFF);
-    drawCorrect(x + 40, y + 36, 0xFF);
-    drawCorrect(x + 40, y + 40, 0xFF);
-    drawCorrect(x + 40, y + 44, 0xFF);
-    drawCorrect(x + 40, y + 48, 0x03);
-    drawCorrect(x + 41, y + 4, 0x3F);
-    drawCorrect(x + 41, y + 16, 0xFC);
-    drawCorrect(x + 41, y + 20, 0xFF);
-    drawCorrect(x + 41, y + 24, 0xFF);
-    drawCorrect(x + 41, y + 28, 0xFF);
-    drawCorrect(x + 41, y + 32, 0xFF);
-    drawCorrect(x + 41, y + 36, 0xFF);
-    drawCorrect(x + 41, y + 40, 0xFF);
-    drawCorrect(x + 41, y + 44, 0xFF);
-    drawCorrect(x + 41, y + 48, 0x0F);
-    drawCorrect(x + 42, y + 4, 0xFF);
-    drawCorrect(x + 42, y + 8, 0x03);
-    drawCorrect(x + 42, y + 16, 0xF0);
-    drawCorrect(x + 42, y + 20, 0xFF);
-    drawCorrect(x + 42, y + 24, 0xFF);
-    drawCorrect(x + 42, y + 28, 0xFF);
-    drawCorrect(x + 42, y + 32, 0xFF);
-    drawCorrect(x + 42, y + 36, 0xFF);
-    drawCorrect(x + 42, y + 40, 0xFF);
-    drawCorrect(x + 42, y + 44, 0xFF);
-    drawCorrect(x + 42, y + 48, 0x3F);
-    drawCorrect(x + 43, y + 4, 0xF0);
-    drawCorrect(x + 43, y + 8, 0x3F);
-    drawCorrect(x + 43, y + 20, 0xFF);
-    drawCorrect(x + 43, y + 24, 0xFF);
-    drawCorrect(x + 43, y + 28, 0xFF);
-    drawCorrect(x + 43, y + 32, 0xFF);
-    drawCorrect(x + 43, y + 36, 0xFF);
-    drawCorrect(x + 43, y + 40, 0xFF);
-    drawCorrect(x + 43, y + 44, 0xFF);
-    drawCorrect(x + 43, y + 48, 0xFF);
-    drawCorrect(x + 43, y + 56, 0x80);
-    drawCorrect(x + 44, y + 8, 0xFF);
-    drawCorrect(x + 44, y + 12, 0x03);
-    drawCorrect(x + 44, y + 20, 0xFF);
-    drawCorrect(x + 44, y + 24, 0xFF);
-    drawCorrect(x + 44, y + 28, 0xFF);
-    drawCorrect(x + 44, y + 32, 0xFF);
-    drawCorrect(x + 44, y + 36, 0xFF);
-    drawCorrect(x + 44, y + 40, 0x80);
-    drawCorrect(x + 44, y + 44, 0x0A);
-    drawCorrect(x + 44, y + 48, 0xFF);
-    drawCorrect(x + 44, y + 52, 0x03);
-    drawCorrect(x + 44, y + 56, 0x80);
-    drawCorrect(x + 45, y + 8, 0xF0);
-    drawCorrect(x + 45, y + 12, 0x3F);
-    drawCorrect(x + 45, y + 20, 0xFC);
-    drawCorrect(x + 45, y + 24, 0xFF);
-    drawCorrect(x + 45, y + 28, 0xFF);
-    drawCorrect(x + 45, y + 32, 0xFF);
-    drawCorrect(x + 45, y + 36, 0x3F);
-    drawCorrect(x + 45, y + 44, 0x2A);
-    drawCorrect(x + 45, y + 48, 0xFC);
-    drawCorrect(x + 45, y + 52, 0x3F);
-    drawCorrect(x + 45, y + 56, 0xBC);
-    drawCorrect(x + 45, y + 60, 0x08);
-    drawCorrect(x + 46, y + 12, 0xFF);
-    drawCorrect(x + 46, y + 16, 0xFF);
-    drawCorrect(x + 46, y + 20, 0xFF);
-    drawCorrect(x + 46, y + 24, 0xFF);
-    drawCorrect(x + 46, y + 28, 0xFF);
-    drawCorrect(x + 46, y + 32, 0xFF);
-    drawCorrect(x + 46, y + 36, 0x3F);
-    drawCorrect(x + 46, y + 44, 0x28);
-    drawCorrect(x + 46, y + 48, 0xF0);
-    drawCorrect(x + 46, y + 52, 0xFF);
-    drawCorrect(x + 46, y + 56, 0x3F);
-    drawCorrect(x + 46, y + 60, 0x08);
-    drawCorrect(x + 47, y + 12, 0xFC);
-    drawCorrect(x + 47, y + 16, 0xFF);
-    drawCorrect(x + 47, y + 20, 0xFF);
-    drawCorrect(x + 47, y + 24, 0xFF);
-    drawCorrect(x + 47, y + 28, 0xFF);
-    drawCorrect(x + 47, y + 32, 0xFF);
-    drawCorrect(x + 47, y + 36, 0x3F);
-    drawCorrect(x + 47, y + 44, 0x28);
-    drawCorrect(x + 47, y + 48, 0xC0);
-    drawCorrect(x + 47, y + 52, 0xFF);
-    drawCorrect(x + 47, y + 56, 0xFF);
-    drawCorrect(x + 47, y + 60, 0x02);
-    drawCorrect(x + 48, y + 16, 0xC0);
-    drawCorrect(x + 48, y + 20, 0xFF);
-    drawCorrect(x + 48, y + 24, 0xFF);
-    drawCorrect(x + 48, y + 28, 0xFF);
-    drawCorrect(x + 48, y + 32, 0xFF);
-    drawCorrect(x + 48, y + 36, 0x3F);
-    drawCorrect(x + 48, y + 44, 0x20);
-    drawCorrect(x + 48, y + 52, 0xFF);
-    drawCorrect(x + 48, y + 56, 0xFF);
-    drawCorrect(x + 48, y + 60, 0x23);
-    drawCorrect(x + 49, y + 24, 0xFF);
-    drawCorrect(x + 49, y + 28, 0xFF);
-    drawCorrect(x + 49, y + 32, 0xF0);
-    drawCorrect(x + 49, y + 36, 0xFF);
-    drawCorrect(x + 49, y + 44, 0xA0);
-    drawCorrect(x + 49, y + 52, 0xFC);
-    drawCorrect(x + 49, y + 56, 0xFF);
-    drawCorrect(x + 49, y + 60, 0x28);
-    drawCorrect(x + 50, y + 20, 0xFC);
-    drawCorrect(x + 50, y + 24, 0xFF);
-    drawCorrect(x + 50, y + 28, 0xFF);
-    drawCorrect(x + 50, y + 32, 0xC0);
-    drawCorrect(x + 50, y + 36, 0xFF);
-    drawCorrect(x + 50, y + 44, 0xA0);
-    drawCorrect(x + 50, y + 48, 0x02);
-    drawCorrect(x + 50, y + 52, 0xF0);
-    drawCorrect(x + 50, y + 56, 0xFF);
-    drawCorrect(x + 50, y + 60, 0x02);
-    drawCorrect(x + 51, y + 16, 0xF0);
-    drawCorrect(x + 51, y + 20, 0xFF);
-    drawCorrect(x + 51, y + 24, 0xFF);
-    drawCorrect(x + 51, y + 28, 0xFF);
-    drawCorrect(x + 51, y + 32, 0xC3);
-    drawCorrect(x + 51, y + 36, 0xFF);
-    drawCorrect(x + 51, y + 44, 0x80);
-    drawCorrect(x + 51, y + 48, 0x02);
-    drawCorrect(x + 51, y + 52, 0xC0);
-    drawCorrect(x + 51, y + 56, 0xFF);
-    drawCorrect(x + 51, y + 60, 0x20);
-    drawCorrect(x + 52, y + 28, 0xC0);
-    drawCorrect(x + 52, y + 32, 0x0F);
-    drawCorrect(x + 52, y + 36, 0xFF);
-    drawCorrect(x + 52, y + 40, 0x03);
-    drawCorrect(x + 52, y + 48, 0x02);
-    drawCorrect(x + 52, y + 52, 0xF0);
-    drawCorrect(x + 52, y + 56, 0xFF);
-    drawCorrect(x + 52, y + 60, 0x0A);
-    drawCorrect(x + 53, y + 32, 0xFC);
-    drawCorrect(x + 53, y + 36, 0xFF);
-    drawCorrect(x + 53, y + 40, 0x03);
-    drawCorrect(x + 53, y + 48, 0x08);
-    drawCorrect(x + 53, y + 52, 0xF0);
-    drawCorrect(x + 53, y + 56, 0x3F);
-    drawCorrect(x + 54, y + 32, 0xF0);
-    drawCorrect(x + 54, y + 36, 0xFF);
-    drawCorrect(x + 54, y + 40, 0x0F);
-    drawCorrect(x + 54, y + 48, 0x20);
-    drawCorrect(x + 55, y + 32, 0xC0);
-    drawCorrect(x + 55, y + 36, 0xFF);
-    drawCorrect(x + 55, y + 40, 0x0F);
-    drawCorrect(x + 56, y + 36, 0xFF);
-    drawCorrect(x + 56, y + 40, 0x3F);
-    drawCorrect(x + 57, y + 36, 0xF0);
-    drawCorrect(x + 57, y + 40, 0x3F);
-    drawCorrect(x + 58, y + 36, 0xF0);
-    drawCorrect(x + 58, y + 40, 0x3F);
-    drawCorrect(x + 59, y + 36, 0xC0);
-    drawCorrect(x + 59, y + 40, 0xFF);
-    drawCorrect(x + 60, y + 36, 0xC0);
-    drawCorrect(x + 60, y + 40, 0xFF);
-    drawCorrect(x + 61, y + 40, 0xFF);
-    drawCorrect(x + 61, y + 44, 0x03);
-    drawCorrect(x + 62, y + 40, 0xFF);
-    drawCorrect(x + 62, y + 44, 0x03);
-    drawCorrect(x + 63, y + 40, 0xFF);
-    drawCorrect(x + 63, y + 44, 0xCF);
-    drawCorrect(x + 63, y + 48, 0x03);
-    drawCorrect(x + 64, y + 40, 0xFC);
-    drawCorrect(x + 64, y + 44, 0xFF);
-    drawCorrect(x + 65, y + 40, 0xFC);
-    drawCorrect(x + 65, y + 44, 0xFF);
-    drawCorrect(x + 66, y + 40, 0xFC);
-    drawCorrect(x + 66, y + 44, 0x3F);
-    drawCorrect(x + 67, y + 40, 0xFC);
-    drawCorrect(x + 67, y + 44, 0x0F);
-    drawCorrect(x + 68, y + 40, 0xF0);
+void printDragon(int8_t x, int8_t y) {
+    for (uint8_t i = 22; i <= 26 ; ++i) {
+        drawCorrect(x+i,y+20, 0xFF);
+    }
+    for (uint8_t i =40 ; i <= 45 ; ++i) {
+        for(uint8_t j = 20; j <= 36 ; j+=4){
+            drawCorrect(x+i,y+j,0xFF);
+        }
+    }
+    for (uint8_t i =28 ; i <= 39 ; ++i) {
+        for(uint8_t j = 24; j <= 28 ; j+=4){
+            drawCorrect(x+i,y+j,0xFF);
+        }
+    }
+    for (uint8_t i =14 ; i <= 28 ; ++i) {
+        for(uint8_t j = 32; j <= 40 ; j+=4){
+            drawCorrect(x+i,y+j,0xFF);
+        }
+    }
+    for (uint8_t i =10 ; i <= 23 ; ++i) {
+        for(uint8_t j = 44; j <= 60 ; j+=4){
+            drawCorrect(x+i,y+j,0xFF);
+        }
+    }
+    for (uint8_t i =46 ; i <= 52 ; ++i) {
+        for(uint8_t j = 24; j <= 28 ; j+=4){
+            drawCorrect(x+i,y+j,0xFF);
+        }
+    }
+    for (uint8_t i =29 ; i <= 32 ; ++i) {
+        for(uint8_t j = 32; j <= 36 ; j+=4){
+            drawCorrect(x+i,y+j,0xFF);
+        }
+    }
+    for (uint8_t i =32 ; i <= 35 ; ++i) {
+        drawCorrect(x+i,y+40,0xFF);
+    }
+    for (uint8_t i =37 ; i <= 44 ; ++i) {
+        drawCorrect(x+i,y+40,0xFF);
+    }
+    for (uint8_t i =20 ; i <= 27 ; ++i) {
+        drawCorrect(x+i,y+28,0xFF);
+    }
+    for (uint8_t i =60 ; i <= 64 ; ++i) {
+        drawCorrect(x+i,y+40,0xFF);
+    }
+    for (uint8_t i =50 ; i <= 57 ; ++i) {
+        drawCorrect(x+i,y+36,0xFF);
+    }
+    for (uint8_t i =57 ; i <= 59 ; ++i) {
+        drawCorrect(x+i,y+40,0x3F);
+    }
+    for (uint8_t i =46 ; i <= 49 ; ++i) {
+        drawCorrect(x+i,y+36,0x3F);
+    }
+    for (uint8_t i =24 ; i <= 29 ; ++i) {
+        drawCorrect(x+i,y+16,0xFC);
+    }
+    for (uint8_t i =47 ; i <= 52 ; ++i) {
+        drawCorrect(x+i,y+56,0xFF);
+    }
+    for (int i = 46; i <= 49 ; ++i) {
+        drawCorrect(x+i, y+32, 0xFF);
+    }
+    drawCorrect(x+1,y+32,0x0C);
+    drawCorrect(x+2,y+32,0x03);
+    drawCorrect(x+3,y+32,0x03);
+    drawCorrect(x+4,y+32,0x03);
+    drawCorrect(x+4,y+40,0x3C);
+    drawCorrect(x+5,y+28,0xC0);
+    drawCorrect(x+5,y+32,0x03);
+    drawCorrect(x+5,y+36,0xC0);
+    drawCorrect(x+5,y+40,0x0F);
+    drawCorrect(x+5,y+48,0x0F);
+    drawCorrect(x+5,y+52,0xFC);
+    drawCorrect(x+5,y+56,0xFF);
+    drawCorrect(x+6,y+28,0xC0);
+    drawCorrect(x+6,y+36,0xF0);
+    drawCorrect(x+6,y+40,0x03);
+    drawCorrect(x+6,y+44,0xFC);
+    drawCorrect(x+6,y+48,0xC0);
+    drawCorrect(x+6,y+52,0xFF);
+    drawCorrect(x+6,y+56,0xFF);
+    drawCorrect(x+6,y+60,0xFF);
+    drawCorrect(x+7,y+28,0xF0);
+    drawCorrect(x+7,y+36,0xFF);
+    drawCorrect(x+7,y+40,0xF0);
+    drawCorrect(x+7,y+44,0x0F);
+    drawCorrect(x+7,y+48,0xFC);
+    drawCorrect(x+7,y+52,0xFF);
+    drawCorrect(x+7,y+56,0xFF);
+    drawCorrect(x+7,y+60,0xFF);
+    drawCorrect(x+8,y+28,0xF0);
+    drawCorrect(x+8,y+32,0xC0);
+    drawCorrect(x+8,y+36,0x3F);
+    drawCorrect(x+8,y+40,0x3F);
+    drawCorrect(x+8,y+44,0xF0);
+    drawCorrect(x+8,y+48,0xFF);
+    drawCorrect(x+8,y+52,0xFF);
+    drawCorrect(x+8,y+56,0xFF);
+    drawCorrect(x+8,y+60,0xFF);
+    drawCorrect(x+9,y+28,0xF0);
+    drawCorrect(x+9,y+32,0xC0);
+    drawCorrect(x+9,y+36,0xFF);
+    drawCorrect(x+9,y+40,0x0F);
+    drawCorrect(x+9,y+44,0xFC);
+    drawCorrect(x+9,y+48,0xFF);
+    drawCorrect(x+9,y+52,0xFF);
+    drawCorrect(x+9,y+56,0xFF);
+    drawCorrect(x+9,y+60,0xFF);
+    drawCorrect(x+10,y+28,0xF0);
+    drawCorrect(x+10,y+32,0xF0);
+    drawCorrect(x+10,y+36,0xFF);
+    drawCorrect(x+10,y+40,0x30);
+    drawCorrect(x+11,y+28,0xF0);
+    drawCorrect(x+11,y+32,0xFC);
+    drawCorrect(x+11,y+36,0x3F);
+    drawCorrect(x+11,y+40,0xFC);
+    drawCorrect(x+12,y+28,0xFC);
+    drawCorrect(x+12,y+32,0xFC);
+    drawCorrect(x+12,y+36,0xCF);
+    drawCorrect(x+12,y+40,0xFF);
+    drawCorrect(x+13,y+28,0xFC);
+    drawCorrect(x+13,y+32,0xFF);
+    drawCorrect(x+13,y+36,0xF3);
+    drawCorrect(x+13,y+40,0xFF);
+    drawCorrect(x+14,y+28,0xFC);
+    drawCorrect(x+15,y+20,0x30);
+    drawCorrect(x+15,y+28,0xFF);
+    drawCorrect(x+16,y+20,0x30);
+    drawCorrect(x+16,y+28,0xFF);
+    drawCorrect(x+17,y+20,0x0C);
+    drawCorrect(x+17,y+24,0xC0);
+    drawCorrect(x+17,y+28,0xCF);
+    drawCorrect(x+18,y+20,0x0C);
+    drawCorrect(x+18,y+24,0xF0);
+    drawCorrect(x+18,y+28,0xF3);
+    drawCorrect(x+19,y+20,0x0F);
+    drawCorrect(x+19,y+24,0xF0);
+    drawCorrect(x+19,y+28,0xFC);
+    drawCorrect(x+20,y+20,0x0F);
+    drawCorrect(x+20,y+24,0x3C);
+    drawCorrect(x+21,y+16,0xC0);
+    drawCorrect(x+21,y+20,0x0F);
+    drawCorrect(x+21,y+24,0x3F);
+    drawCorrect(x+22,y+16,0xC0);
+    drawCorrect(x+22,y+24,0xCF);
+    drawCorrect(x+23,y+16,0xC0);
+    drawCorrect(x+23,y+24,0xCF);
+    drawCorrect(x+24,y+24,0xC3);
+    drawCorrect(x+24,y+44,0xFF);
+    drawCorrect(x+24,y+48,0x3F);
+    drawCorrect(x+24,y+56,0xFF);
+    drawCorrect(x+24,y+60,0xCF);
+    drawCorrect(x+25,y+24,0xF3);
+    drawCorrect(x+25,y+44,0xFF);
+    drawCorrect(x+25,y+48,0x0F);
+    drawCorrect(x+25,y+56,0xFC);
+    drawCorrect(x+25,y+60,0xCF);
+    drawCorrect(x+26,y+24,0xFC);
+    drawCorrect(x+26,y+44,0x03);
+    drawCorrect(x+26,y+48,0x3F);
+    drawCorrect(x+26,y+56,0xF0);
+    drawCorrect(x+26,y+60,0xCF);
+    drawCorrect(x+27,y+20,0xF3);
+    drawCorrect(x+27,y+24,0xFC);
+    drawCorrect(x+27,y+48,0xF0);
+    drawCorrect(x+27,y+56,0xC0);
+    drawCorrect(x+27,y+60,0xFF);
+    drawCorrect(x+28,y+20,0x33);
+    drawCorrect(x+28,y+56,0xC0);
+    drawCorrect(x+28,y+60,0x3F);
+    drawCorrect(x+29,y+20,0x33);
+    drawCorrect(x+29,y+40,0x3F);
+    drawCorrect(x+29,y+60,0x3F);
+    drawCorrect(x+30,y+16,0xF0);
+    drawCorrect(x+30,y+20,0x03);
+    drawCorrect(x+30,y+40,0x3F);
+    drawCorrect(x+30,y+60,0x3F);
+    drawCorrect(x+31,y+16,0xF0);
+    drawCorrect(x+31,y+20,0xC3);
+    drawCorrect(x+31,y+60,0x3F);
+    drawCorrect(x+32,y+16,0xCC);
+    drawCorrect(x+32,y+20,0xC3);
+    drawCorrect(x+32,y+60,0x3E);
+    drawCorrect(x+33,y+16,0xFC);
+    drawCorrect(x+33,y+20,0xC3);
+    drawCorrect(x+33,y+32,0xFF);
+    drawCorrect(x+33,y+36,0xCF);
+    drawCorrect(x+33,y+60,0xFC);
+    drawCorrect(x+34,y+16,0xF0);
+    drawCorrect(x+34,y+20,0xC0);
+    drawCorrect(x+34,y+32,0xFF);
+    drawCorrect(x+34,y+36,0xCF);
+    drawCorrect(x+34,y+60,0xFC);
+    drawCorrect(x+35,y+16,0xFF);
+    drawCorrect(x+35,y+20,0xCF);
+    drawCorrect(x+35,y+32,0xCF);
+    drawCorrect(x+35,y+36,0xF3);
+    drawCorrect(x+35,y+40,0xF3);
+    drawCorrect(x+35,y+60,0xFC);
+    drawCorrect(x+36,y+16,0xFC);
+    drawCorrect(x+36,y+20,0xC3);
+    drawCorrect(x+36,y+32,0xF3);
+    drawCorrect(x+36,y+36,0x30);
+    drawCorrect(x+36,y+40,0xFC);
+    drawCorrect(x+36,y+60,0xF0);
+    drawCorrect(x+37,y+16,0xF0);
+    drawCorrect(x+37,y+20,0xC3);
+    drawCorrect(x+37,y+32,0x33);
+    drawCorrect(x+37,y+44,0x03);
+    drawCorrect(x+37,y+60,0xF0);
+    drawCorrect(x+38,y+12,0x30);
+    drawCorrect(x+38,y+16,0xC0);
+    drawCorrect(x+38,y+20,0xCF);
+    drawCorrect(x+38,y+32,0xC0);
+    drawCorrect(x+38,y+36,0xF3);
+    drawCorrect(x+38,y+44,0x03);
+    drawCorrect(x+38,y+60,0xC0);
+    drawCorrect(x+39,y+12,0xC0);
+    drawCorrect(x+39,y+16,0xC0);
+    drawCorrect(x+39,y+20,0xCF);
+    drawCorrect(x+39,y+32,0xFF);
+    drawCorrect(x+39,y+36,0xFF);
+    drawCorrect(x+39,y+44,0x0F);
+    drawCorrect(x+39,y+60,0xC0);
+    drawCorrect(x+40,y+12,0xC0);
+    drawCorrect(x+40,y+16,0x03);
+    drawCorrect(x+40,y+44,0x3F);
+    drawCorrect(x+40,y+60,0x40);
+    drawCorrect(x+41,y+16,0xFF);
+    drawCorrect(x+41,y+44,0xFF);
+    drawCorrect(x+41,y+48,0x03);
+    drawCorrect(x+42,y+4,0x3F);
+    drawCorrect(x+42,y+16,0xFC);
+    drawCorrect(x+42,y+44,0xFF);
+    drawCorrect(x+42,y+48,0x0F);
+    drawCorrect(x+43,y+4,0xFF);
+    drawCorrect(x+43,y+8,0x03);
+    drawCorrect(x+43,y+16,0xF0);
+    drawCorrect(x+43,y+44,0xFF);
+    drawCorrect(x+43,y+48,0x3F);
+    drawCorrect(x+44,y+4,0xF0);
+    drawCorrect(x+44,y+8,0x3F);
+    drawCorrect(x+44,y+44,0xFF);
+    drawCorrect(x+44,y+48,0xFF);
+    drawCorrect(x+44,y+56,0x80);
+    drawCorrect(x+45,y+8,0xFF);
+    drawCorrect(x+45,y+12,0x03);
+    drawCorrect(x+45,y+40,0x80);
+    drawCorrect(x+45,y+44,0x0A);
+    drawCorrect(x+45,y+48,0xFF);
+    drawCorrect(x+45,y+52,0x03);
+    drawCorrect(x+45,y+56,0x80);
+    drawCorrect(x+46,y+8,0xF0);
+    drawCorrect(x+46,y+12,0x3F);
+    drawCorrect(x+46,y+20,0xFC);
+    drawCorrect(x+46,y+36,0x3F);
+    drawCorrect(x+46,y+44,0x2A);
+    drawCorrect(x+46,y+48,0xFC);
+    drawCorrect(x+46,y+52,0x3F);
+    drawCorrect(x+46,y+56,0xBC);
+    drawCorrect(x+46,y+60,0x08);
+    drawCorrect(x+47,y+12,0xFF);
+    drawCorrect(x+47,y+16,0xFF);
+    drawCorrect(x+47,y+20,0xFF);
+    drawCorrect(x+47,y+36,0x3F);
+    drawCorrect(x+47,y+44,0x28);
+    drawCorrect(x+47,y+48,0xF0);
+    drawCorrect(x+47,y+52,0xFF);
+    drawCorrect(x+47,y+56,0x3F);
+    drawCorrect(x+47,y+60,0x08);
+    drawCorrect(x+48,y+12,0xFC);
+    drawCorrect(x+48,y+16,0xFF);
+    drawCorrect(x+48,y+20,0xFF);
+    drawCorrect(x+48,y+36,0x3F);
+    drawCorrect(x+48,y+44,0x28);
+    drawCorrect(x+48,y+48,0xC0);
+    drawCorrect(x+48,y+52,0xFF);
+    drawCorrect(x+48,y+60,0x02);
+    drawCorrect(x+49,y+16,0xC0);
+    drawCorrect(x+49,y+20,0xFF);
+    drawCorrect(x+49,y+36,0x3F);
+    drawCorrect(x+49,y+44,0x20);
+    drawCorrect(x+49,y+52,0xFF);
+    drawCorrect(x+49,y+60,0x23);
+    drawCorrect(x+50,y+32,0xF0);
+    drawCorrect(x+50,y+44,0xA0);
+    drawCorrect(x+50,y+52,0xFC);
+    drawCorrect(x+50,y+60,0x28);
+    drawCorrect(x+51,y+20,0xFC);
+    drawCorrect(x+51,y+32,0xC0);
+    drawCorrect(x+51,y+44,0xA0);
+    drawCorrect(x+51,y+48,0x02);
+    drawCorrect(x+51,y+52,0xF0);
+    drawCorrect(x+51,y+60,0x02);
+    drawCorrect(x+52,y+16,0xF0);
+    drawCorrect(x+52,y+20,0xFF);
+    drawCorrect(x+52,y+32,0xC3);
+    drawCorrect(x+52,y+44,0x80);
+    drawCorrect(x+52,y+48,0x02);
+    drawCorrect(x+52,y+52,0xC0);
+    drawCorrect(x+52,y+60,0x20);
+    drawCorrect(x+53,y+28,0xC0);
+    drawCorrect(x+53,y+32,0x0F);
+    drawCorrect(x+53,y+40,0x03);
+    drawCorrect(x+53,y+48,0x02);
+    drawCorrect(x+53,y+52,0xF0);
+    drawCorrect(x+53,y+60,0x0A);
+    drawCorrect(x+54,y+32,0xFC);
+    drawCorrect(x+54,y+40,0x03);
+    drawCorrect(x+54,y+48,0x08);
+    drawCorrect(x+54,y+52,0xF0);
+    drawCorrect(x+54,y+56,0x3F);
+    drawCorrect(x+55,y+32,0xF0);
+    drawCorrect(x+55,y+40,0x0F);
+    drawCorrect(x+55,y+48,0x20);
+    drawCorrect(x+56,y+32,0xC0);
+    drawCorrect(x+56,y+40,0x0F);
+    drawCorrect(x+58,y+36,0xF0);
+    drawCorrect(x+59,y+36,0xF0);
+    drawCorrect(x+60,y+36,0xC0);
+    drawCorrect(x+61,y+36,0xC0);
+    drawCorrect(x+62,y+44,0x03);
+    drawCorrect(x+63,y+44,0x03);
+    drawCorrect(x+64,y+44,0xCF);
+    drawCorrect(x+64,y+48,0x03);
+    drawCorrect(x+65,y+40,0xFC);
+    drawCorrect(x+65,y+44,0xFF);
+    drawCorrect(x+66,y+40,0xFC);
+    drawCorrect(x+66,y+44,0xFF);
+    drawCorrect(x+67,y+40,0xFC);
+    drawCorrect(x+67,y+44,0x3F);
+    drawCorrect(x+68,y+40,0xFC);
+    drawCorrect(x+68,y+44,0x0F);
+    drawCorrect(x+69,y+40,0xF0);
 }
 void printTitel(uint8_t x, uint8_t y){
     drawCorrect(x+11,y+0,0x30);
     drawCorrect(x+12,y+0,0x30);
     drawCorrect(x+13,y+0,0xF0);
-    drawCorrect(x+13,y+4,0xFF);
-    drawCorrect(x+13,y+8,0xFF);
-    drawCorrect(x+13,y+12,0xFF);
-    drawCorrect(x+13,y+16,0x0F);
+    for(uint8_t j=13; j<=15; j++) {
+        for (uint8_t i = 4; i <= 12; i += 4) {
+            drawCorrect(x + j, y + i, 0xFF);
+        }
+    }
+    for(uint8_t i= 13; i <= 15; i+=4){
+        drawCorrect(x+i,y+16,0x0F);
+    }
     drawCorrect(x+14,y+0,0xF0);
-    drawCorrect(x+14,y+4,0xFF);
-    drawCorrect(x+14,y+8,0xFF);
-    drawCorrect(x+14,y+12,0xFF);
-    drawCorrect(x+14,y+16,0x0F);
     drawCorrect(x+15,y+0,0xF0);
-    drawCorrect(x+15,y+4,0xAA);
-    drawCorrect(x+15,y+8,0xAA);
-    drawCorrect(x+15,y+12,0xAA);
-    drawCorrect(x+15,y+16,0x0F);
-    drawCorrect(x+16,y+0,0x30);
-    drawCorrect(x+16,y+16,0x0C);
-    drawCorrect(x+17,y+0,0x30);
-    drawCorrect(x+17,y+16,0x0C);
-    drawCorrect(x+18,y+0,0x30);
-    drawCorrect(x+18,y+16,0x0C);
-    drawCorrect(x+19,y+0,0x30);
-    drawCorrect(x+19,y+16,0x0C);
+    for(uint8_t i=16; i <= 19; i++){
+        drawCorrect(x+i,y+0,0x30);
+    }
+    for(uint8_t i=16; i <= 19; i++){
+        drawCorrect(x+i,y+16,0x0C);
+    }
     drawCorrect(x+20,y+0,0x70);
     drawCorrect(x+20,y+16,0x0D);
     drawCorrect(x+21,y+0,0xE0);
@@ -1219,9 +1028,9 @@ void printTitel(uint8_t x, uint8_t y){
     drawCorrect(x+23,y+8,0xAA);
     drawCorrect(x+23,y+12,0xFF);
     drawCorrect(x+23,y+16,0x02);
-    drawCorrect(x+24,y+4,0xFF);
-    drawCorrect(x+24,y+8,0xFF);
-    drawCorrect(x+24,y+12,0xFF);
+    for(uint8_t i= 4; i <= 12; i+=4){
+        drawCorrect(x+24,y+i,0xFF);
+    }
     drawCorrect(x+25,y+4,0xF4);
     drawCorrect(x+25,y+8,0xFF);
     drawCorrect(x+25,y+12,0x1F);
@@ -1410,9 +1219,9 @@ void printTitel(uint8_t x, uint8_t y){
     drawCorrect(x+89,y+8,0xFF);
     drawCorrect(x+89,y+12,0x2F);
     drawCorrect(x+90,y+0,0xC0);
-    drawCorrect(x+90,y+4,0xFF);
-    drawCorrect(x+90,y+8,0xFF);
-    drawCorrect(x+90,y+12,0xFF);
+    for(uint8_t i= 4; i <= 12; i+=4){
+        drawCorrect(x+90,y+i,0xFF);
+    }
     drawCorrect(x+91,y+0,0xE0);
     drawCorrect(x+91,y+4,0x1B);
     drawCorrect(x+91,y+12,0xF4);
@@ -1585,7 +1394,28 @@ void printTitel(uint8_t x, uint8_t y){
 }
 void printScreen(){
 
-    printDragon(0, 40);
+    printTitel(0, 12);
+
+    int8_t lastX=0;
+
+    for (uint8_t i=0; i < 160 ; i+=3){
+        clearPlayer(i-83, 65);
+        //clearPlayer(i+19, 45);
+        //clearPlayer(i+19, 85);
+        //clearPlayer(i+31, 65);
+
+        printNormal(i + 80, 65);
+        //printKnight(i+20, 45);
+        //printSorcerer(i+20, 85);
+        //printRanger(i+32, 65);
+        clearDragon(i-3, 40);
+
+        printDragon(i, 40);
+    }
+
+
+    /* Version 1 unbewegt
+     * printDragon(0, 40);
 
     printNormal(98, 65);
     printKnight(118, 45);
@@ -1594,5 +1424,5 @@ void printScreen(){
 
     //DragonQuest
     printTitel(0, 13);
-
+    */
 }
