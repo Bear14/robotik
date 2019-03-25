@@ -439,68 +439,68 @@ void rePrintPlatform(struct platform toDraw, int16_t offsetX, int16_t speed) {
 
     }
 
-    drawCorrect(toDraw.x+offsetX+0,toDraw.y+0,0xFF);
-    drawCorrect(toDraw.x+offsetX+0,toDraw.y+4,0x56);
-    drawCorrect(toDraw.x+offsetX+1,toDraw.y+0,0xBF);
-    drawCorrect(toDraw.x+offsetX+1,toDraw.y+4,0x56);
-    drawCorrect(toDraw.x+offsetX+2,toDraw.y+0,0xAF);
-    drawCorrect(toDraw.x+offsetX+2,toDraw.y+4,0x55);
-    drawCorrect(toDraw.x+offsetX+3,toDraw.y+0,0x6F);
-    drawCorrect(toDraw.x+offsetX+3,toDraw.y+4,0x55);
-    drawCorrect(toDraw.x+offsetX+4,toDraw.y+0,0xAF);
-    drawCorrect(toDraw.x+offsetX+4,toDraw.y+4,0x55);
-    drawCorrect(toDraw.x+offsetX+5,toDraw.y+0,0xBF);
-    drawCorrect(toDraw.x+offsetX+5,toDraw.y+4,0x55);
-    drawCorrect(toDraw.x+offsetX+6,toDraw.y+0,0xBF);
-    drawCorrect(toDraw.x+offsetX+6,toDraw.y+4,0x56);
-    drawCorrect(toDraw.x+offsetX+7,toDraw.y+0,0xFF);
-    drawCorrect(toDraw.x+offsetX+7,toDraw.y+4,0x5A);
-    drawCorrect(toDraw.x+offsetX+8,toDraw.y+0,0xFF);
-    drawCorrect(toDraw.x+offsetX+8,toDraw.y+4,0x56);
-    drawCorrect(toDraw.x+offsetX+9,toDraw.y+0,0xBF);
-    drawCorrect(toDraw.x+offsetX+9,toDraw.y+4,0x56);
-    drawCorrect(toDraw.x+offsetX+10,toDraw.y+0,0xBF);
-    drawCorrect(toDraw.x+offsetX+10,toDraw.y+4,0x55);
-    drawCorrect(toDraw.x+offsetX+11,toDraw.y+0,0x6F);
-    drawCorrect(toDraw.x+offsetX+11,toDraw.y+4,0x55);
-    drawCorrect(toDraw.x+offsetX+12,toDraw.y+0,0x6F);
-    drawCorrect(toDraw.x+offsetX+12,toDraw.y+4,0x55);
-    drawCorrect(toDraw.x+offsetX+13,toDraw.y+0,0xAF);
-    drawCorrect(toDraw.x+offsetX+13,toDraw.y+4,0x55);
-    drawCorrect(toDraw.x+offsetX+14,toDraw.y+0,0xBF);
-    drawCorrect(toDraw.x+offsetX+14,toDraw.y+4,0x56);
+    drawCorrect(toDraw.x + offsetX + 0, toDraw.y + 0, 0xFF);
+    drawCorrect(toDraw.x + offsetX + 0, toDraw.y + 4, 0x56);
+    drawCorrect(toDraw.x + offsetX + 1, toDraw.y + 0, 0xBF);
+    drawCorrect(toDraw.x + offsetX + 1, toDraw.y + 4, 0x56);
+    drawCorrect(toDraw.x + offsetX + 2, toDraw.y + 0, 0xAF);
+    drawCorrect(toDraw.x + offsetX + 2, toDraw.y + 4, 0x55);
+    drawCorrect(toDraw.x + offsetX + 3, toDraw.y + 0, 0x6F);
+    drawCorrect(toDraw.x + offsetX + 3, toDraw.y + 4, 0x55);
+    drawCorrect(toDraw.x + offsetX + 4, toDraw.y + 0, 0xAF);
+    drawCorrect(toDraw.x + offsetX + 4, toDraw.y + 4, 0x55);
+    drawCorrect(toDraw.x + offsetX + 5, toDraw.y + 0, 0xBF);
+    drawCorrect(toDraw.x + offsetX + 5, toDraw.y + 4, 0x55);
+    drawCorrect(toDraw.x + offsetX + 6, toDraw.y + 0, 0xBF);
+    drawCorrect(toDraw.x + offsetX + 6, toDraw.y + 4, 0x56);
+    drawCorrect(toDraw.x + offsetX + 7, toDraw.y + 0, 0xFF);
+    drawCorrect(toDraw.x + offsetX + 7, toDraw.y + 4, 0x5A);
+    drawCorrect(toDraw.x + offsetX + 8, toDraw.y + 0, 0xFF);
+    drawCorrect(toDraw.x + offsetX + 8, toDraw.y + 4, 0x56);
+    drawCorrect(toDraw.x + offsetX + 9, toDraw.y + 0, 0xBF);
+    drawCorrect(toDraw.x + offsetX + 9, toDraw.y + 4, 0x56);
+    drawCorrect(toDraw.x + offsetX + 10, toDraw.y + 0, 0xBF);
+    drawCorrect(toDraw.x + offsetX + 10, toDraw.y + 4, 0x55);
+    drawCorrect(toDraw.x + offsetX + 11, toDraw.y + 0, 0x6F);
+    drawCorrect(toDraw.x + offsetX + 11, toDraw.y + 4, 0x55);
+    drawCorrect(toDraw.x + offsetX + 12, toDraw.y + 0, 0x6F);
+    drawCorrect(toDraw.x + offsetX + 12, toDraw.y + 4, 0x55);
+    drawCorrect(toDraw.x + offsetX + 13, toDraw.y + 0, 0xAF);
+    drawCorrect(toDraw.x + offsetX + 13, toDraw.y + 4, 0x55);
+    drawCorrect(toDraw.x + offsetX + 14, toDraw.y + 0, 0xBF);
+    drawCorrect(toDraw.x + offsetX + 14, toDraw.y + 4, 0x56);
 
 
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+0,toDraw.y+0,0xFF);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+0,toDraw.y+4,0x56);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+1,toDraw.y+0,0xBF);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+1,toDraw.y+4,0x56);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+2,toDraw.y+0,0xAF);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+2,toDraw.y+4,0x55);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+3,toDraw.y+0,0x6F);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+3,toDraw.y+4,0x55);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+4,toDraw.y+0,0xAF);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+4,toDraw.y+4,0x55);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+5,toDraw.y+0,0xBF);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+5,toDraw.y+4,0x55);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+6,toDraw.y+0,0xBF);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+6,toDraw.y+4,0x56);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+7,toDraw.y+0,0xFF);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+7,toDraw.y+4,0x5A);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+8,toDraw.y+0,0xFF);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+8,toDraw.y+4,0x56);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+9,toDraw.y+0,0xBF);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+9,toDraw.y+4,0x56);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+10,toDraw.y+0,0xBF);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+10,toDraw.y+4,0x55);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+11,toDraw.y+0,0x6F);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+11,toDraw.y+4,0x55);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+12,toDraw.y+0,0x6F);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+12,toDraw.y+4,0x55);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+13,toDraw.y+0,0xAF);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+13,toDraw.y+4,0x55);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+14,toDraw.y+0,0xBF);
-    drawCorrect(toDraw.x+offsetX+toDraw.length-15+14,toDraw.y+4,0x56);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 0, toDraw.y + 0, 0xFF);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 0, toDraw.y + 4, 0x56);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 1, toDraw.y + 0, 0xBF);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 1, toDraw.y + 4, 0x56);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 2, toDraw.y + 0, 0xAF);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 2, toDraw.y + 4, 0x55);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 3, toDraw.y + 0, 0x6F);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 3, toDraw.y + 4, 0x55);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 4, toDraw.y + 0, 0xAF);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 4, toDraw.y + 4, 0x55);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 5, toDraw.y + 0, 0xBF);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 5, toDraw.y + 4, 0x55);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 6, toDraw.y + 0, 0xBF);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 6, toDraw.y + 4, 0x56);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 7, toDraw.y + 0, 0xFF);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 7, toDraw.y + 4, 0x5A);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 8, toDraw.y + 0, 0xFF);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 8, toDraw.y + 4, 0x56);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 9, toDraw.y + 0, 0xBF);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 9, toDraw.y + 4, 0x56);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 10, toDraw.y + 0, 0xBF);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 10, toDraw.y + 4, 0x55);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 11, toDraw.y + 0, 0x6F);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 11, toDraw.y + 4, 0x55);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 12, toDraw.y + 0, 0x6F);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 12, toDraw.y + 4, 0x55);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 13, toDraw.y + 0, 0xAF);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 13, toDraw.y + 4, 0x55);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 14, toDraw.y + 0, 0xBF);
+    drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 14, toDraw.y + 4, 0x56);
 
 }
 
@@ -570,13 +570,58 @@ void printPowerUp(int16_t x, int16_t y, enum PowerUpType type, int16_t speed) {
             drawCorrect(x + 7, y + 4, 0x3F);
             break;
         case sorcerer:
-
+            drawCorrect(x + 0, y + 0, 0x54);
+            drawCorrect(x + 0, y + 4, 0x15);
+            drawCorrect(x + 1, y + 0, 0x5D);
+            drawCorrect(x + 1, y + 4, 0xFD);
+            drawCorrect(x + 2, y + 0, 0x77);
+            drawCorrect(x + 2, y + 4, 0xF7);
+            drawCorrect(x + 3, y + 0, 0x77);
+            drawCorrect(x + 3, y + 4, 0xDD);
+            drawCorrect(x + 4, y + 0, 0x77);
+            drawCorrect(x + 4, y + 4, 0xD5);
+            drawCorrect(x + 5, y + 0, 0x5D);
+            drawCorrect(x + 5, y + 4, 0xD5);
+            drawCorrect(x + 6, y + 0, 0xF7);
+            drawCorrect(x + 6, y + 4, 0xFF);
+            drawCorrect(x + 7, y + 0, 0x54);
+            drawCorrect(x + 7, y + 4, 0x15);
             break;
         case ranger:
-
+            drawCorrect(x + 0, y + 0, 0x74);
+            drawCorrect(x + 0, y + 4, 0x15);
+            drawCorrect(x + 1, y + 0, 0xDD);
+            drawCorrect(x + 1, y + 4, 0x55);
+            drawCorrect(x + 2, y + 0, 0xF5);
+            drawCorrect(x + 2, y + 4, 0xFF);
+            drawCorrect(x + 3, y + 0, 0x55);
+            drawCorrect(x + 3, y + 4, 0xD5);
+            drawCorrect(x + 4, y + 0, 0x55);
+            drawCorrect(x + 4, y + 4, 0xD5);
+            drawCorrect(x + 5, y + 0, 0x55);
+            drawCorrect(x + 5, y + 4, 0xD5);
+            drawCorrect(x + 6, y + 0, 0xFF);
+            drawCorrect(x + 6, y + 4, 0xFF);
+            drawCorrect(x + 7, y + 0, 0x54);
+            drawCorrect(x + 7, y + 4, 0x15);
             break;
         case slow:
-
+            drawCorrect(x + 0, y + 0, 0xFC);
+            drawCorrect(x + 0, y + 4, 0x3F);
+            drawCorrect(x + 1, y + 0, 0x57);
+            drawCorrect(x + 1, y + 4, 0xD5);
+            drawCorrect(x + 2, y + 0, 0x57);
+            drawCorrect(x + 2, y + 4, 0x77);
+            drawCorrect(x + 3, y + 0, 0xDD);
+            drawCorrect(x + 3, y + 4, 0x5D);
+            drawCorrect(x + 4, y + 0, 0x57);
+            drawCorrect(x + 4, y + 4, 0x57);
+            drawCorrect(x + 5, y + 0, 0x57);
+            drawCorrect(x + 5, y + 4, 0x55);
+            drawCorrect(x + 6, y + 0, 0xFD);
+            drawCorrect(x + 6, y + 4, 0x7F);
+            drawCorrect(x + 7, y + 0, 0x54);
+            drawCorrect(x + 7, y + 4, 0x15);
             break;
         case speedUp:
             drawCorrect(x + 0, y + 0, 0xF4);
@@ -659,6 +704,7 @@ void clearPowerUp(int16_t x, int16_t y) {
 }
 
 void printDragon() {
+    /*
     uint8_t x=0, y=0;
     drawCorrect(x+3,y+32,0x30);
     drawCorrect(x+4,y+32,0x0C);
@@ -1788,4 +1834,5 @@ void printDragon() {
     drawCorrect(x+154,y+24,0x0C);
     drawCorrect(x+154,y+28,0x90);
     drawCorrect(x+155,y+28,0x18);
+     */
 }

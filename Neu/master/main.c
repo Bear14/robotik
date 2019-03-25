@@ -39,8 +39,6 @@ typedef int bool;
 
 void init();
 
-// volatile int16_t lastOffsetX = 5; TODO: delete
-
 /*
  * Debounce
  */
@@ -60,7 +58,7 @@ volatile int8_t dashDist = DASH_LENGTH;
  */
 volatile int16_t offsetX = 5;
 volatile int16_t lastPlayerPosY = 1;
-volatile int16_t lastPlayerPosX = 0; // TODO: may be deleted
+volatile int16_t lastPlayerPosX = 0;
 
 /*
  * Position
@@ -344,7 +342,6 @@ void update() {
 
     lastPlayerPosY = playerPosY;
     lastPlayerPosX = playerPosX;
-    // lastOffsetX = offsetX; TODO: delete
 
     checkIfPlatformOutOfFrame(playerPosX, platWidth, gameSpeed);
 
@@ -413,7 +410,7 @@ void update() {
     }
 
     if (playerPosX % 100 == 0) {
-        score += 1;
+        score += gameSpeed;
         drawScore(score);
     }
     playerPosX += gameSpeed;
@@ -462,7 +459,8 @@ void getInput() {
                         gameState = set;
                     }
                     if (pfeilPosY == 55) {
-
+                        writeScore(0);
+                        drawScore(readScore());
                     }
                     if (pfeilPosY == 65) { //SCHWIRIGKEIT Menue2
                         clear();
@@ -729,7 +727,7 @@ int main(void) {
         }
 
 /*
- * Allow repress of buttons every 150 ms TODO: find nice value
+ * Allow repress of buttons every 150 ms
  */
         if (timePressed + 150 <= getMsTimer()) {
             buttonPressed = '0';
