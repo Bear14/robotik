@@ -134,6 +134,7 @@ void reset() {
         }
         if (gameSpeed < MAX_GAME_SPEED) {
             gameSpeed += 1;
+            drawSpeed(gameSpeed);
         }
     }
 }
@@ -273,12 +274,14 @@ void collisionWithPowerUp() {
                 case speedUp:
                     if (gameSpeed < MAX_GAME_SPEED) {
                         gameSpeed += 1;
+                        drawSpeed(gameSpeed);
                     }
                     powerUps[j].type = none;
                     break;
                 case slow:
                     if (gameSpeed <= 1) {
                         gameSpeed -= 1;
+                        drawSpeed(gameSpeed);
                     }
                     powerUps[j].type = none;
                     break;
@@ -507,7 +510,7 @@ void getInput() {
                         platWidth = 3;
                     }
                     if (pfeilPosY == 65) { //SCHWIRIGKEIT Menue2
-                        gameSpeed = 8;
+                        gameSpeed = 6;
                         platWidth = 1;
                     }
                     clear();
@@ -650,6 +653,7 @@ void setGame() {
         score = 0;
         lives = 3;
         gameSpeed = INITIAL_SPEED;
+        playerForm = _normal;
     }
 
     clear();
@@ -657,6 +661,7 @@ void setGame() {
     initPowerUps();
     drawLives(lives);
     drawScore(score);
+    drawSpeed(gameSpeed);
     offsetX = 5;
     drawPlatforms(offsetX);
     lastPlayerPosY = 1;

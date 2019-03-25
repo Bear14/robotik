@@ -43,4 +43,6 @@ void drawPowerUps(int16_t offsetX, int16_t speed);
 
 void drawScore(uint32_t score);
 
+void drawSpeed(int16_t speed);
+
 #endif //ROBOTIK_DRAW_H
