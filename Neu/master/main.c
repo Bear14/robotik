@@ -458,7 +458,7 @@ void getInput() {
                     if (pfeilPosY == 44) { // Neues Game
                         gameState = set;
                     }
-                    if (pfeilPosY == 54) {
+                    if (pfeilPosY == 54) { //Highscore zurücksetzen
                         writeScore(0);
                         drawScore(readScore());
                     }
@@ -500,7 +500,7 @@ void getInput() {
                     //uart_putc(90);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
-                    if (pfeilPosY == 44) { // Neues Game
+                    if (pfeilPosY == 44) {
                         gameSpeed = 2;
                         platWidth = 5;
                     }
@@ -508,15 +508,17 @@ void getInput() {
                         gameSpeed = 4;
                         platWidth = 3;
                     }
-                    if (pfeilPosY == 64) { //SCHWIRIGKEIT Menue2
+                    if (pfeilPosY == 64) {
                         gameSpeed = 6;
                         platWidth = 1;
                     }
+                    gameState = menu_1;
+
                     clear();
                     drawMenue1();
-                    gameState = menu_1;
                     pfeilPosY = 44;
                     drawPfeil(pfeilPosX, pfeilPosY);
+
                 }
                 break;
             case run:
@@ -569,11 +571,13 @@ void getInput() {
                     timePressed = getMsTimer();
                     //gameState = run;
                     gameState = menu_1;
+
                     clear();
                     drawMenue1();
-                    pfeilPosX = 65;
-                    pfeilPosY = 44;
+                    pfeilPosX = 60;
+                    pfeilPosY = 44; //Start Position
                     drawPfeil(pfeilPosX, pfeilPosY);
+
                 }
                 if (B_PAUSE) {
 
@@ -602,9 +606,10 @@ void getInput() {
                     gameState = menu_1;
                     clear();
                     drawMenue1();
-                    pfeilPosX = 65;
+                    pfeilPosX = 60;
                     pfeilPosY = 44;
                     drawPfeil(pfeilPosX, pfeilPosY);
+
                 }
                 if (B_PAUSE) {
 
@@ -653,10 +658,20 @@ void setGame() {
         if(readScore() <= score) {
             writeScore(score);
         }
+        gameState = menu_1;
         score = 0;
         lives = 3;
         gameSpeed = INITIAL_SPEED;
         playerForm = _normal;
+
+        gameState = menu_1;
+        clear();
+        drawMenue1();
+        pfeilPosX = 60;
+        pfeilPosY = 44;
+        drawPfeil(pfeilPosX, pfeilPosY);
+
+        return ;
     }
 
     clear();
@@ -696,11 +711,12 @@ int main(void) {
     _delay_ms(1000);
 
     clear();
-    gameState = menu_1;
-    pfeilPosX = 60;
-    pfeilPosY = 45;
     drawMenue1();
+    pfeilPosX=60;
+    pfeilPosY=44;
     drawPfeil(pfeilPosX, pfeilPosY);
+    gameState = menu_1;
+
 
     while (1) {
 /*
@@ -721,6 +737,12 @@ int main(void) {
 
                 update();
                 draw();
+
+            }
+            if (gameState == menu_1){
+
+            }
+            if (gameState == menu_2){
 
             }
 
