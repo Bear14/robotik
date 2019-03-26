@@ -122,6 +122,9 @@ uint8_t nextGlyph(char glyph, uint8_t x, uint8_t y) {
         case 'U':
             glyph_ende = 5;
             break;
+        case 'V':
+            glyph_ende = 5;
+            break;
         case 'W':
             glyph_ende = 5;
             break;
@@ -629,24 +632,26 @@ void drawSpeed(int16_t speed) {
 }
 
 void drawMenue1() {
+    clear();
     printTitel(0,0);
     printDragon(0,40);
 
-    drawString("HAUPTMENUE", 75, 24);
-    drawString("NEUES SPIEL", 75, 44);
-    drawString("RESET HIGHSCORE", 75, 54);
+    drawString("HAUPTMENUE", 73, 24);
+    drawString("NEUES SPIEL", 73, 44);
+    drawString("RESET HIGHSCORE", 73, 52);
     drawScore(readScore());
-    drawString("SCHWIRIGKEIT", 75, 64);
+    drawString("SCHWIRIGKEIT", 73, 60);
 }
 
 void drawMenue2() {
+    clear();
     printTitel(0,0);
     printDragon(0,40);
 
-    drawString("SCHWIRIGKEIT", 75, 24);
-    drawString("LEICHT", 75, 44);
-    drawString("NORMAL", 75, 54);
-    drawString("SCHWER", 75, 64);
+    drawString("SCHWIRIGKEIT", 73, 24);
+    drawString("LEICHT", 73, 44);
+    drawString("NORMAL", 73, 52);
+    drawString("SCHWER", 73, 60);
 }
 
 void drawPfeil(uint8_t x, uint8_t y) {
