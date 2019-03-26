@@ -98,6 +98,12 @@ enum gState gameState = set; //TODO: move to Init
 
 enum Form playerForm = _normal; //TODO: move to Init
 
+void _death() {
+    lives--;
+    gameState = set;
+}
+
+
 /*
  * To keep the player infinitely running we need to reset the position x integer before it overflows.
  * At every reset the difficulty is raised.
@@ -216,32 +222,17 @@ void collisionHandling() {
                                 platforms[i].length,
                                 PLATFORM_HEIGHT)) {
 
-            if (lastPlayerPosY < platforms[i].y) {
+            if (lastPlayerPosY + PLAYER_HEIGHT <= platforms[i].y) {
                 playerPosY = platforms[i].y - PLAYER_HEIGHT;
                 playerState = standing;
-            } else if (lastPlayerPosY > platforms[i].y) {
+            } else if (lastPlayerPosY >= platforms[i].y + PLATFORM_HEIGHT) {
                 playerPosY = platforms[i].y + PLATFORM_HEIGHT;
+                playerMovY = 0;
+            } else {
+                _death();
             }
-            struct platform plat = (struct platform) {platforms[i].x + offsetX + 5, platforms[i].y, 15};
         }
     }
-}
-
-/*
- * @params void
- * @return bool
- */
-bool dashCollision() {
-
-    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
-        if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, platforms[i].x, platforms[i].y,
-                                platforms[i].length, PLATFORM_HEIGHT)) {
-            return true;
-        }
-
-
-    }
-    return false;
 }
 
 /*
@@ -266,8 +257,7 @@ void collisionWithPowerUp() {
                     powerUps[j].type = none;
                     break;
                 case death:
-                    lives--;
-                    gameState = set;
+                    _death();
                     powerUps[j].type = none;
                     break;
                 case speedUp:
@@ -330,8 +320,7 @@ void collisionWithPowerUp() {
 void update() {
 
     if (playerPosY >= 110) {
-        lives--;
-        gameState = set;
+        _death();
     }
 
     reset();
@@ -382,13 +371,9 @@ void update() {
         dashLen -= gameSpeed;
         playerPosX += gameSpeed * 2;
         offsetX -= gameSpeed * 2;
-        if (dashCollision()) {
-            lives--;
-            gameState = set;
-        }
+        collisionHandling();
     }
     if (dashLen <= 0 && playerState == dashing) {
-
         if (!dropCollision()) {
             playerState = falling;
         }
