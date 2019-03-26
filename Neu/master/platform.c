@@ -37,9 +37,9 @@ void createPowerUp(struct platform base, int16_t random) { //random 0 - 1023
 
     enum PowerUpType pType = none;
 
-    switch (random % 100 + 1) {
+    switch (rand() % 100 + 1) {
         case 1 ... 2: // 2%
-            pType = knight;
+            pType = death;
             break;
         case 3 ... 8: // 6%
             pType = knight;

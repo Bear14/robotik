@@ -92,7 +92,7 @@ enum state {
 enum state playerState = falling; //TODO: move to Init;
 
 enum gState {
-    run, stop, set, menu_1, menu_2
+    run, stop, set, menu_1, menu_2, menu_3
 };
 enum gState gameState = set; //TODO: move to Init
 
@@ -223,6 +223,7 @@ void collisionHandling() {
             } else if (lastPlayerPosY > platforms[i].y) {
                 playerPosY = platforms[i].y + PLATFORM_HEIGHT;
             }
+            struct platform plat = (struct platform) {platforms[i].x+offsetX+5,platforms[i].y,15};
         }
     }
 }
@@ -432,7 +433,7 @@ void getInput() {
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     deletePfeil(pfeilPosX, pfeilPosY);
-                    if (pfeilPosY + 8 <= 60) {
+                    if (pfeilPosY + 8 <= 68) {
                         pfeilPosY += 8;
                     } else {
                         pfeilPosY = 44;
@@ -447,7 +448,7 @@ void getInput() {
                     if (pfeilPosY - 8 >= 44) {
                         pfeilPosY -= 8;
                     } else {
-                        pfeilPosY = 60;
+                        pfeilPosY = 68;
                     }
                     drawPfeil(pfeilPosX, pfeilPosY);
                 }
@@ -467,6 +468,11 @@ void getInput() {
                         gameState = menu_2;
                         pfeilPosY = 52;
                         drawPfeil(pfeilPosX, pfeilPosY);
+                    }
+                    if (pfeilPosY == 68){
+                        drawMenue3();
+                        gameState = menu_3;
+
                     }
                 }
                 break;
@@ -517,6 +523,14 @@ void getInput() {
                     pfeilPosY = 44;
                     drawPfeil(pfeilPosX, pfeilPosY);
 
+                }
+                break;
+            case menu_3:
+                if(B_A){
+                    gameState = menu_1;
+                    drawMenue1();
+                    pfeilPosY = 44;
+                    drawPfeil(pfeilPosX, pfeilPosY);
                 }
                 break;
             case run:
@@ -651,11 +665,7 @@ void setGame() {
     if (lives == 0) {
 
 
-        if(readScore() <= score) {
-            writeScore(score);
-        }
         gameState = menu_1;
-        score = 0;
         lives = 3;
         gameSpeed = INITIAL_SPEED;
         playerForm = _normal;
@@ -665,6 +675,13 @@ void setGame() {
         clear();
 
         drawString("GAME OVER", 52, 52);
+
+        if(score > readScore()){
+            drawString("NEW HIGHSCORE", 44,68);
+            writeScore(score);
+
+        }
+        score = 0;
         _delay_ms(2000);
 
         gameState = menu_1;

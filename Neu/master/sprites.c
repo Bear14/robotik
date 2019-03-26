@@ -612,6 +612,168 @@ void rePrintPlatform(struct platform toDraw, int16_t offsetX, int16_t speed) {
     drawCorrect(toDraw.x + offsetX + toDraw.length - 15 + 14, toDraw.y + 4, 0x56);
 */
 }
+void printPUlive(int16_t x, int16_t y){
+drawCorrect(x + 0, y + 0, 0x74);
+drawCorrect(x + 0, y + 4, 0x17);
+drawCorrect(x + 1, y + 0, 0xDD);
+drawCorrect(x + 1, y + 4, 0x55);
+drawCorrect(x + 2, y + 0, 0x57);
+drawCorrect(x + 2, y + 4, 0x55);
+drawCorrect(x + 3, y + 0, 0xD7);
+drawCorrect(x + 3, y + 4, 0x7F);
+drawCorrect(x + 4, y + 0, 0x7D);
+drawCorrect(x + 4, y + 4, 0x75);
+drawCorrect(x + 5, y + 0, 0x55);
+drawCorrect(x + 5, y + 4, 0x75);
+drawCorrect(x + 6, y + 0, 0xFD);
+drawCorrect(x + 6, y + 4, 0x7F);
+drawCorrect(x + 7, y + 0, 0x54);
+drawCorrect(x + 7, y + 4, 0x15);
+}
+void printPUdeath(int16_t x, int16_t y){
+drawCorrect(x + 0, y + 0, 0xFC);
+drawCorrect(x + 0, y + 4, 0x3F);
+drawCorrect(x + 1, y + 0, 0x7F);
+drawCorrect(x + 1, y + 4, 0xFF);
+drawCorrect(x + 2, y + 0, 0x7F);
+drawCorrect(x + 2, y + 4, 0xF5);
+drawCorrect(x + 3, y + 0, 0xFF);
+drawCorrect(x + 3, y + 4, 0xD7);
+drawCorrect(x + 4, y + 0, 0x57);
+drawCorrect(x + 4, y + 4, 0xDF);
+drawCorrect(x + 5, y + 0, 0x77);
+drawCorrect(x + 5, y + 4, 0xDF);
+drawCorrect(x + 6, y + 0, 0x57);
+drawCorrect(x + 6, y + 4, 0xD5);
+drawCorrect(x + 7, y + 0, 0xFC);
+drawCorrect(x + 7, y + 4, 0x3F);
+}
+void printPUknight(int16_t x, int16_t y){
+    drawCorrect(x + 0, y + 0, 0x74);
+    drawCorrect(x + 0, y + 4, 0x15);
+    drawCorrect(x + 1, y + 0, 0xDD);
+    drawCorrect(x + 1, y + 4, 0x55);
+    drawCorrect(x + 2, y + 0, 0xFD);
+    drawCorrect(x + 2, y + 4, 0x7F);
+    drawCorrect(x + 3, y + 0, 0x55);
+    drawCorrect(x + 3, y + 4, 0x75);
+    drawCorrect(x + 4, y + 0, 0x55);
+    drawCorrect(x + 4, y + 4, 0x5F);
+    drawCorrect(x + 5, y + 0, 0xD5);
+    drawCorrect(x + 5, y + 4, 0x55);
+    drawCorrect(x + 6, y + 0, 0x7D);
+    drawCorrect(x + 6, y + 4, 0x55);
+    drawCorrect(x + 7, y + 0, 0xFC);
+    drawCorrect(x + 7, y + 4, 0x3F);
+}
+void printPUsorcerer(int16_t x, int16_t y){
+    drawCorrect(x + 0, y + 0, 0x54);
+    drawCorrect(x + 0, y + 4, 0x15);
+    drawCorrect(x + 1, y + 0, 0x5D);
+    drawCorrect(x + 1, y + 4, 0xFD);
+    drawCorrect(x + 2, y + 0, 0x77);
+    drawCorrect(x + 2, y + 4, 0xF7);
+    drawCorrect(x + 3, y + 0, 0x77);
+    drawCorrect(x + 3, y + 4, 0xDD);
+    drawCorrect(x + 4, y + 0, 0x77);
+    drawCorrect(x + 4, y + 4, 0xD5);
+    drawCorrect(x + 5, y + 0, 0x5D);
+    drawCorrect(x + 5, y + 4, 0xD5);
+    drawCorrect(x + 6, y + 0, 0xF7);
+    drawCorrect(x + 6, y + 4, 0xFF);
+    drawCorrect(x + 7, y + 0, 0x54);
+    drawCorrect(x + 7, y + 4, 0x15);
+}
+void printPUranger(int16_t x, int16_t y){
+    drawCorrect(x + 0, y + 0, 0x74);
+    drawCorrect(x + 0, y + 4, 0x15);
+    drawCorrect(x + 1, y + 0, 0xDD);
+    drawCorrect(x + 1, y + 4, 0x55);
+    drawCorrect(x + 2, y + 0, 0xF5);
+    drawCorrect(x + 2, y + 4, 0xFF);
+    drawCorrect(x + 3, y + 0, 0x55);
+    drawCorrect(x + 3, y + 4, 0xD5);
+    drawCorrect(x + 4, y + 0, 0x55);
+    drawCorrect(x + 4, y + 4, 0xD5);
+    drawCorrect(x + 5, y + 0, 0x55);
+    drawCorrect(x + 5, y + 4, 0xD5);
+    drawCorrect(x + 6, y + 0, 0xFF);
+    drawCorrect(x + 6, y + 4, 0xFF);
+    drawCorrect(x + 7, y + 0, 0x54);
+    drawCorrect(x + 7, y + 4, 0x15);
+}
+void printPUslow(int16_t x, int16_t y){
+    drawCorrect(x + 0, y + 0, 0xFC);
+    drawCorrect(x + 0, y + 4, 0x3F);
+    drawCorrect(x + 1, y + 0, 0x57);
+    drawCorrect(x + 1, y + 4, 0xD5);
+    drawCorrect(x + 2, y + 0, 0x57);
+    drawCorrect(x + 2, y + 4, 0x77);
+    drawCorrect(x + 3, y + 0, 0xDD);
+    drawCorrect(x + 3, y + 4, 0x5D);
+    drawCorrect(x + 4, y + 0, 0x57);
+    drawCorrect(x + 4, y + 4, 0x57);
+    drawCorrect(x + 5, y + 0, 0x57);
+    drawCorrect(x + 5, y + 4, 0x55);
+    drawCorrect(x + 6, y + 0, 0xFD);
+    drawCorrect(x + 6, y + 4, 0x7F);
+    drawCorrect(x + 7, y + 0, 0x54);
+    drawCorrect(x + 7, y + 4, 0x15);
+}
+void printPUspeedUp(int16_t x, int16_t y){
+    drawCorrect(x + 0, y + 0, 0xF4);
+    drawCorrect(x + 0, y + 4, 0x37);
+    drawCorrect(x + 1, y + 0, 0xDD);
+    drawCorrect(x + 1, y + 4, 0xDD);
+    drawCorrect(x + 2, y + 0, 0x57);
+    drawCorrect(x + 2, y + 4, 0xF5);
+    drawCorrect(x + 3, y + 0, 0xFF);
+    drawCorrect(x + 3, y + 4, 0xF7);
+    drawCorrect(x + 4, y + 0, 0xFF);
+    drawCorrect(x + 4, y + 4, 0xF7);
+    drawCorrect(x + 5, y + 0, 0xFF);
+    drawCorrect(x + 5, y + 4, 0xDF);
+    drawCorrect(x + 6, y + 0, 0x57);
+    drawCorrect(x + 6, y + 4, 0xD5);
+    drawCorrect(x + 7, y + 0, 0xFC);
+    drawCorrect(x + 7, y + 4, 0x3F);
+}
+void printPUpointsUp(int16_t x, int16_t y){
+    drawCorrect(x + 0, y + 0, 0x54);
+    drawCorrect(x + 0, y + 4, 0x15);
+    drawCorrect(x + 1, y + 0, 0x75);
+    drawCorrect(x + 1, y + 4, 0x55);
+    drawCorrect(x + 2, y + 0, 0xDD);
+    drawCorrect(x + 2, y + 4, 0x55);
+    drawCorrect(x + 3, y + 0, 0xDD);
+    drawCorrect(x + 3, y + 4, 0x55);
+    drawCorrect(x + 4, y + 0, 0xDD);
+    drawCorrect(x + 4, y + 4, 0x75);
+    drawCorrect(x + 5, y + 0, 0xDD);
+    drawCorrect(x + 5, y + 4, 0xDD);
+    drawCorrect(x + 6, y + 0, 0x57);
+    drawCorrect(x + 6, y + 4, 0x7F);
+    drawCorrect(x + 7, y + 0, 0x54);
+    drawCorrect(x + 7, y + 4, 0x15);
+}
+void printPUpointsDown(int16_t x, int16_t y){
+    drawCorrect(x + 0, y + 0, 0xDC);
+    drawCorrect(x + 0, y + 4, 0x3F);
+    drawCorrect(x + 1, y + 0, 0x77);
+    drawCorrect(x + 1, y + 4, 0xFF);
+    drawCorrect(x + 2, y + 0, 0x5F);
+    drawCorrect(x + 2, y + 4, 0xD5);
+    drawCorrect(x + 3, y + 0, 0xFF);
+    drawCorrect(x + 3, y + 4, 0xDF);
+    drawCorrect(x + 4, y + 0, 0xFF);
+    drawCorrect(x + 4, y + 4, 0xDF);
+    drawCorrect(x + 5, y + 0, 0xFF);
+    drawCorrect(x + 5, y + 4, 0xDF);
+    drawCorrect(x + 6, y + 0, 0x55);
+    drawCorrect(x + 6, y + 4, 0xD5);
+    drawCorrect(x + 7, y + 0, 0xFC);
+    drawCorrect(x + 7, y + 4, 0x3F);
+}
 
 void printPowerUp(int16_t x, int16_t y, enum PowerUpType type, int16_t speed) {
 
@@ -625,166 +787,31 @@ void printPowerUp(int16_t x, int16_t y, enum PowerUpType type, int16_t speed) {
         case none:
             break;
         case live:
-            drawCorrect(x + 0, y + 0, 0x74);
-            drawCorrect(x + 0, y + 4, 0x17);
-            drawCorrect(x + 1, y + 0, 0xDD);
-            drawCorrect(x + 1, y + 4, 0x55);
-            drawCorrect(x + 2, y + 0, 0x57);
-            drawCorrect(x + 2, y + 4, 0x55);
-            drawCorrect(x + 3, y + 0, 0xD7);
-            drawCorrect(x + 3, y + 4, 0x7F);
-            drawCorrect(x + 4, y + 0, 0x7D);
-            drawCorrect(x + 4, y + 4, 0x75);
-            drawCorrect(x + 5, y + 0, 0x55);
-            drawCorrect(x + 5, y + 4, 0x75);
-            drawCorrect(x + 6, y + 0, 0xFD);
-            drawCorrect(x + 6, y + 4, 0x7F);
-            drawCorrect(x + 7, y + 0, 0x54);
-            drawCorrect(x + 7, y + 4, 0x15);
+            printPUlive(x, y);
             break;
         case death:
-            drawCorrect(x + 0, y + 0, 0xFC);
-            drawCorrect(x + 0, y + 4, 0x3F);
-            drawCorrect(x + 1, y + 0, 0x7F);
-            drawCorrect(x + 1, y + 4, 0xFF);
-            drawCorrect(x + 2, y + 0, 0x7F);
-            drawCorrect(x + 2, y + 4, 0xF5);
-            drawCorrect(x + 3, y + 0, 0xFF);
-            drawCorrect(x + 3, y + 4, 0xD7);
-            drawCorrect(x + 4, y + 0, 0x57);
-            drawCorrect(x + 4, y + 4, 0xDF);
-            drawCorrect(x + 5, y + 0, 0x77);
-            drawCorrect(x + 5, y + 4, 0xDF);
-            drawCorrect(x + 6, y + 0, 0x57);
-            drawCorrect(x + 6, y + 4, 0xD5);
-            drawCorrect(x + 7, y + 0, 0xFC);
-            drawCorrect(x + 7, y + 4, 0x3F);
+            printPUdeath(x, y);
             break;
         case knight:
-            drawCorrect(x + 0, y + 0, 0x74);
-            drawCorrect(x + 0, y + 4, 0x15);
-            drawCorrect(x + 1, y + 0, 0xDD);
-            drawCorrect(x + 1, y + 4, 0x55);
-            drawCorrect(x + 2, y + 0, 0xFD);
-            drawCorrect(x + 2, y + 4, 0x7F);
-            drawCorrect(x + 3, y + 0, 0x55);
-            drawCorrect(x + 3, y + 4, 0x75);
-            drawCorrect(x + 4, y + 0, 0x55);
-            drawCorrect(x + 4, y + 4, 0x5F);
-            drawCorrect(x + 5, y + 0, 0xD5);
-            drawCorrect(x + 5, y + 4, 0x55);
-            drawCorrect(x + 6, y + 0, 0x7D);
-            drawCorrect(x + 6, y + 4, 0x55);
-            drawCorrect(x + 7, y + 0, 0xFC);
-            drawCorrect(x + 7, y + 4, 0x3F);
+            printPUknight(x, y);
             break;
         case sorcerer:
-            drawCorrect(x + 0, y + 0, 0x54);
-            drawCorrect(x + 0, y + 4, 0x15);
-            drawCorrect(x + 1, y + 0, 0x5D);
-            drawCorrect(x + 1, y + 4, 0xFD);
-            drawCorrect(x + 2, y + 0, 0x77);
-            drawCorrect(x + 2, y + 4, 0xF7);
-            drawCorrect(x + 3, y + 0, 0x77);
-            drawCorrect(x + 3, y + 4, 0xDD);
-            drawCorrect(x + 4, y + 0, 0x77);
-            drawCorrect(x + 4, y + 4, 0xD5);
-            drawCorrect(x + 5, y + 0, 0x5D);
-            drawCorrect(x + 5, y + 4, 0xD5);
-            drawCorrect(x + 6, y + 0, 0xF7);
-            drawCorrect(x + 6, y + 4, 0xFF);
-            drawCorrect(x + 7, y + 0, 0x54);
-            drawCorrect(x + 7, y + 4, 0x15);
+            printPUsorcerer(x, y);
             break;
         case ranger:
-            drawCorrect(x + 0, y + 0, 0x74);
-            drawCorrect(x + 0, y + 4, 0x15);
-            drawCorrect(x + 1, y + 0, 0xDD);
-            drawCorrect(x + 1, y + 4, 0x55);
-            drawCorrect(x + 2, y + 0, 0xF5);
-            drawCorrect(x + 2, y + 4, 0xFF);
-            drawCorrect(x + 3, y + 0, 0x55);
-            drawCorrect(x + 3, y + 4, 0xD5);
-            drawCorrect(x + 4, y + 0, 0x55);
-            drawCorrect(x + 4, y + 4, 0xD5);
-            drawCorrect(x + 5, y + 0, 0x55);
-            drawCorrect(x + 5, y + 4, 0xD5);
-            drawCorrect(x + 6, y + 0, 0xFF);
-            drawCorrect(x + 6, y + 4, 0xFF);
-            drawCorrect(x + 7, y + 0, 0x54);
-            drawCorrect(x + 7, y + 4, 0x15);
+            printPUranger(x, y);
             break;
         case slow:
-            drawCorrect(x + 0, y + 0, 0xFC);
-            drawCorrect(x + 0, y + 4, 0x3F);
-            drawCorrect(x + 1, y + 0, 0x57);
-            drawCorrect(x + 1, y + 4, 0xD5);
-            drawCorrect(x + 2, y + 0, 0x57);
-            drawCorrect(x + 2, y + 4, 0x77);
-            drawCorrect(x + 3, y + 0, 0xDD);
-            drawCorrect(x + 3, y + 4, 0x5D);
-            drawCorrect(x + 4, y + 0, 0x57);
-            drawCorrect(x + 4, y + 4, 0x57);
-            drawCorrect(x + 5, y + 0, 0x57);
-            drawCorrect(x + 5, y + 4, 0x55);
-            drawCorrect(x + 6, y + 0, 0xFD);
-            drawCorrect(x + 6, y + 4, 0x7F);
-            drawCorrect(x + 7, y + 0, 0x54);
-            drawCorrect(x + 7, y + 4, 0x15);
+            printPUslow(x, y);
             break;
         case speedUp:
-            drawCorrect(x + 0, y + 0, 0xF4);
-            drawCorrect(x + 0, y + 4, 0x37);
-            drawCorrect(x + 1, y + 0, 0xDD);
-            drawCorrect(x + 1, y + 4, 0xDD);
-            drawCorrect(x + 2, y + 0, 0x57);
-            drawCorrect(x + 2, y + 4, 0xF5);
-            drawCorrect(x + 3, y + 0, 0xFF);
-            drawCorrect(x + 3, y + 4, 0xF7);
-            drawCorrect(x + 4, y + 0, 0xFF);
-            drawCorrect(x + 4, y + 4, 0xF7);
-            drawCorrect(x + 5, y + 0, 0xFF);
-            drawCorrect(x + 5, y + 4, 0xDF);
-            drawCorrect(x + 6, y + 0, 0x57);
-            drawCorrect(x + 6, y + 4, 0xD5);
-            drawCorrect(x + 7, y + 0, 0xFC);
-            drawCorrect(x + 7, y + 4, 0x3F);
+            printPUspeedUp(x, y);
             break;
         case pointsUp:
-            drawCorrect(x + 0, y + 0, 0x54);
-            drawCorrect(x + 0, y + 4, 0x15);
-            drawCorrect(x + 1, y + 0, 0x75);
-            drawCorrect(x + 1, y + 4, 0x55);
-            drawCorrect(x + 2, y + 0, 0xDD);
-            drawCorrect(x + 2, y + 4, 0x55);
-            drawCorrect(x + 3, y + 0, 0xDD);
-            drawCorrect(x + 3, y + 4, 0x55);
-            drawCorrect(x + 4, y + 0, 0xDD);
-            drawCorrect(x + 4, y + 4, 0x75);
-            drawCorrect(x + 5, y + 0, 0xDD);
-            drawCorrect(x + 5, y + 4, 0xDD);
-            drawCorrect(x + 6, y + 0, 0x57);
-            drawCorrect(x + 6, y + 4, 0x7F);
-            drawCorrect(x + 7, y + 0, 0x54);
-            drawCorrect(x + 7, y + 4, 0x15);
+            printPUpointsUp(x, y);
             break;
         case pointsDown:
-            drawCorrect(x + 0, y + 0, 0xDC);
-            drawCorrect(x + 0, y + 4, 0x3F);
-            drawCorrect(x + 1, y + 0, 0x77);
-            drawCorrect(x + 1, y + 4, 0xFF);
-            drawCorrect(x + 2, y + 0, 0x5F);
-            drawCorrect(x + 2, y + 4, 0xD5);
-            drawCorrect(x + 3, y + 0, 0xFF);
-            drawCorrect(x + 3, y + 4, 0xDF);
-            drawCorrect(x + 4, y + 0, 0xFF);
-            drawCorrect(x + 4, y + 4, 0xDF);
-            drawCorrect(x + 5, y + 0, 0xFF);
-            drawCorrect(x + 5, y + 4, 0xDF);
-            drawCorrect(x + 6, y + 0, 0x55);
-            drawCorrect(x + 6, y + 4, 0xD5);
-            drawCorrect(x + 7, y + 0, 0xFC);
-            drawCorrect(x + 7, y + 4, 0x3F);
+            printPUpointsDown(x, y);
             break;
 
     };
@@ -1147,16 +1174,20 @@ void printTitel(uint8_t x, uint8_t y){
     drawCorrect(x+11,y+0,0x30);
     drawCorrect(x+12,y+0,0x30);
     drawCorrect(x+13,y+0,0xF0);
-    for(uint8_t j=13; j<=15; j++) {
-        for (uint8_t i = 4; i <= 12; i += 4) {
-            drawCorrect(x + j, y + i, 0xFF);
-        }
+    for (uint8_t i = 4; i <= 12; i += 4) {
+        drawCorrect(x + 13, y + i, 0xFF);
     }
     for(uint8_t i= 13; i <= 15; i+=4){
         drawCorrect(x+i,y+16,0x0F);
     }
     drawCorrect(x+14,y+0,0xF0);
+    for (uint8_t i = 4; i <= 12; i += 4) {
+        drawCorrect(x + 14, y + i, 0xFF);
+    }
     drawCorrect(x+15,y+0,0xF0);
+    for (uint8_t i = 4; i <= 12; i += 4) {
+        drawCorrect(x + 15, y + i, 0xFF);
+    }
     for(uint8_t i=16; i <= 19; i++){
         drawCorrect(x+i,y+0,0x30);
     }
