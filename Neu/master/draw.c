@@ -631,18 +631,22 @@ void drawSpeed(int16_t speed) {
 void drawMenue1() {
     printTitel(0,0);
     printDragon(0,40);
+
     drawString("HAUPTMENUE", 75, 24);
     drawString("NEUES SPIEL", 75, 44);
     drawString("RESET HIGHSCORE", 75, 54);
     drawScore(readScore());
-    drawString("SCHWIRIGKEIT", 75, 65);
+    drawString("SCHWIRIGKEIT", 75, 64);
 }
 
 void drawMenue2() {
-    drawString("SCHWIRIGKEIT", 75, 25);
-    drawString("LEICHT", 75, 45);
-    drawString("NORMAL", 75, 55);
-    drawString("SCHWER", 75, 65);
+    printTitel(0,0);
+    printDragon(0,40);
+
+    drawString("SCHWIRIGKEIT", 75, 24);
+    drawString("LEICHT", 75, 44);
+    drawString("NORMAL", 75, 54);
+    drawString("SCHWER", 75, 64);
 }
 
 void drawPfeil(uint8_t x, uint8_t y) {
