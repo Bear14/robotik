@@ -55,58 +55,10 @@ uint8_t nextGlyph(char glyph, uint8_t x, uint8_t y) {
     uint8_t glyph_ende = 0;
 
     switch (glyph) {
-        case '0':
+        case '0' ... '9':
             glyph_ende = 4;
             break;
-        case '1':
-            glyph_ende = 4;
-            break;
-        case '2':
-            glyph_ende = 4;
-            break;
-        case '3':
-            glyph_ende = 4;
-            break;
-        case '4':
-            glyph_ende = 4;
-            break;
-        case '5':
-            glyph_ende = 4;
-            break;
-        case '6':
-            glyph_ende = 4;
-            break;
-        case '7':
-            glyph_ende = 4;
-            break;
-        case '8':
-            glyph_ende = 4;
-            break;
-        case '9':
-            glyph_ende = 4;
-            break;
-        case 'A':
-            glyph_ende = 5;
-            break;
-        case 'B':
-            glyph_ende = 5;
-            break;
-        case 'C':
-            glyph_ende = 5;
-            break;
-        case 'D':
-            glyph_ende = 5;
-            break;
-        case 'E':
-            glyph_ende = 5;
-            break;
-        case 'F':
-            glyph_ende = 5;
-            break;
-        case 'G':
-            glyph_ende = 5;
-            break;
-        case 'H':
+        case 'A' ... 'H':
             glyph_ende = 5;
             break;
         case 'I':
@@ -115,52 +67,7 @@ uint8_t nextGlyph(char glyph, uint8_t x, uint8_t y) {
         case 'J':
             glyph_ende = 4;
             break;
-        case 'K':
-            glyph_ende = 5;
-            break;
-        case 'L':
-            glyph_ende = 5;
-            break;
-        case 'M':
-            glyph_ende = 5;
-            break;
-        case 'N':
-            glyph_ende = 5;
-            break;
-        case 'O':
-            glyph_ende = 5;
-            break;
-        case 'P':
-            glyph_ende = 5;
-            break;
-        case 'R':
-            glyph_ende = 5;
-            break;
-        case 'Q':
-            glyph_ende = 5;
-            break;
-        case 'S':
-            glyph_ende = 5;
-            break;
-        case 'T':
-            glyph_ende = 5;
-            break;
-        case 'U':
-            glyph_ende = 5;
-            break;
-        case 'V':
-            glyph_ende = 5;
-            break;
-        case 'W':
-            glyph_ende = 5;
-            break;
-        case 'X':
-            glyph_ende = 5;
-            break;
-        case 'Y':
-            glyph_ende = 5;
-            break;
-        case 'Z':
+        case 'K' ... 'Z':
             glyph_ende = 5;
             break;
         case ' ':
