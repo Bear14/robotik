@@ -1572,5 +1572,5 @@ void printScreen(){
 
     //DragonQuest
     printTitel(0, 13);
-
+    */
 }
