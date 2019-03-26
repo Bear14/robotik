@@ -662,21 +662,23 @@ void drawMenue3(){
     printPUlive(80, 24);
     drawString("LIVE",90, 24 );
 
-    printPUknight(80, 36);
-    drawString("KNIGHT",90, 36 );
-    printKnight(140, 28);
+    printPUslow(80, 36);
+    drawString("SPEED DOWN",90, 36 );
 
-    printPUsorcerer(80, 48);
-    drawString("SORCERER",90, 48 );
+    printPUpointsUp(80, 48);
+    drawString("POINTS UP",90, 48 );
 
-    printPUranger(80, 60);
-    drawString("RANGER",90, 60 );
+    printPUknight(20, 64 );
+    drawString("KNIGHT",10, 74 );
+    printKnight(15, 88);
 
-    printPUslow(80, 72);
-    drawString("SPEED DOWN",90, 72 );
+    printPUsorcerer(70, 64);
+    drawString("SORCERER",56, 74 );
+    printSorcerer(65, 88);
 
-    printPUpointsUp(80, 84);
-    drawString("POINTS UP",90, 84 );
+    printPUranger(120, 64);
+    drawString("RANGER",110, 74 );
+    printRanger(115, 88);
 
 
     printPUdeath(5, 24);

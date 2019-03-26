@@ -452,7 +452,7 @@ void getInput() {
                     }
                     drawPfeil(pfeilPosX, pfeilPosY);
                 }
-                if (B_A) {
+                if (B_B) {
                     //uart_putc(90);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
@@ -501,7 +501,7 @@ void getInput() {
                     }
                     drawPfeil(pfeilPosX, pfeilPosY);
                 }
-                if (B_A) {
+                if (B_B) {
                     //uart_putc(90);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
@@ -526,7 +526,7 @@ void getInput() {
                 }
                 break;
             case menu_3:
-                if(B_A){
+                if(B_B){
                     gameState = menu_1;
                     drawMenue1();
                     pfeilPosY = 44;
@@ -583,6 +583,8 @@ void getInput() {
                     timePressed = getMsTimer();
                     //gameState = run;
                     gameState = menu_1;
+
+                    lives = 0;
 
                     drawMenue1();
                     pfeilPosX = 60;

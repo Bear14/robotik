@@ -15,7 +15,7 @@
 
 #define POWER_UP_SIZE 8
 
-#define POWER_UP_DROP_RATE 1
+#define POWER_UP_DROP_RATE 15
 
 enum PowerUpType {
     none, live, death, knight, sorcerer,ranger,slow,speedUp,pointsUp,pointsDown
