@@ -717,20 +717,12 @@ int main(void) {
  */
         if (getMsTimer() % 34 == 0) {
             if (gameState == set) {
-                /*
-                 * If Lifes = 0 --> scores = 0;
-                 *
-                 */
-
                 setGame();
-
             }
             getInput();
             if (gameState == run) {
-
                 update();
                 draw();
-
             }
             if (gameState == menu_1) {
 
