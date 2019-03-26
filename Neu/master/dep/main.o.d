@@ -9,7 +9,7 @@ obj/main.o: main.c /usr/lib/avr/include/avr/interrupt.h \
  /usr/lib/avr/include/util/delay.h \
  /usr/lib/avr/include/util/delay_basic.h /usr/lib/avr/include/math.h \
  uart.h /usr/lib/avr/include/avr/pgmspace.h adc.h timer.h buttons.h \
- display.h draw.h sprites.h platform.h save.h
+ display.h draw.h platform.h sprites.h save.h
 
 /usr/lib/avr/include/avr/interrupt.h:
 
@@ -59,8 +59,8 @@ display.h:
 
 draw.h:
 
-sprites.h:
-
 platform.h:
+
+sprites.h:
 
 save.h:
