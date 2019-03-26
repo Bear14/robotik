@@ -1541,7 +1541,7 @@ void printTitel(uint8_t x, uint8_t y){
     drawCorrect(x+147,y+12,0x50);
 }
 void printScreen(){
-
+    /*
     printTitel(0, 12);
 
     int8_t lastX=0;
@@ -1560,10 +1560,10 @@ void printScreen(){
 
         printDragon(i, 40);
     }
+    */
 
-
-    /* Version 1 unbewegt
-     * printDragon(0, 40);
+    //Version 1 unbewegt
+    printDragon(0, 40);
 
     printNormal(98, 65);
     printKnight(118, 45);
@@ -1572,5 +1572,5 @@ void printScreen(){
 
     //DragonQuest
     printTitel(0, 13);
-    */
+
 }
