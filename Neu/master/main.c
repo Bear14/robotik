@@ -96,7 +96,6 @@ enum gState {
 };
 enum gState gameState = set; //TODO: move to Init
 
-
 enum Form playerForm = _normal; //TODO: move to Init
 
 /*
@@ -223,7 +222,7 @@ void collisionHandling() {
             } else if (lastPlayerPosY > platforms[i].y) {
                 playerPosY = platforms[i].y + PLATFORM_HEIGHT;
             }
-            struct platform plat = (struct platform) {platforms[i].x+offsetX+5,platforms[i].y,15};
+            struct platform plat = (struct platform) {platforms[i].x + offsetX + 5, platforms[i].y, 15};
         }
     }
 }
@@ -317,14 +316,10 @@ void collisionWithPowerUp() {
             clearPowerUp(powerUps[j].x + offsetX, powerUps[j].y);
             powerUps[j].x = -100;
             powerUps[j].y = -100;
-            printPlayer(5, playerPosY, lastPlayerPosY, '1', playerForm);
+            drawPlayer(5, playerPosY, lastPlayerPosY, '1', playerForm);
 
         }
-
-
     }
-
-
 }
 
 
@@ -432,25 +427,25 @@ void getInput() {
                     //uart_putc(60);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
-                    deletePfeil(pfeilPosX, pfeilPosY);
+                    clearArrow(pfeilPosX, pfeilPosY);
                     if (pfeilPosY + 8 <= 68) {
                         pfeilPosY += 8;
                     } else {
                         pfeilPosY = 44;
                     }
-                    drawPfeil(pfeilPosX, pfeilPosY);
+                    printArrow(pfeilPosX, pfeilPosY);
                 }
                 if (B_UP) {
                     //uart_putc(50);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
-                    deletePfeil(pfeilPosX, pfeilPosY);
+                    clearArrow(pfeilPosX, pfeilPosY);
                     if (pfeilPosY - 8 >= 44) {
                         pfeilPosY -= 8;
                     } else {
                         pfeilPosY = 68;
                     }
-                    drawPfeil(pfeilPosX, pfeilPosY);
+                    printArrow(pfeilPosX, pfeilPosY);
                 }
                 if (B_B) {
                     //uart_putc(90);
@@ -467,9 +462,9 @@ void getInput() {
                         drawMenue2();
                         gameState = menu_2;
                         pfeilPosY = 52;
-                        drawPfeil(pfeilPosX, pfeilPosY);
+                        printArrow(pfeilPosX, pfeilPosY);
                     }
-                    if (pfeilPosY == 68){
+                    if (pfeilPosY == 68) {
                         drawMenue3();
                         gameState = menu_3;
 
@@ -481,25 +476,25 @@ void getInput() {
                     //uart_putc(60);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
-                    deletePfeil(pfeilPosX, pfeilPosY);
+                    clearArrow(pfeilPosX, pfeilPosY);
                     if (pfeilPosY + 8 <= 60) {
                         pfeilPosY += 8;
                     } else {
                         pfeilPosY = 44;
                     }
-                    drawPfeil(pfeilPosX, pfeilPosY);
+                    printArrow(pfeilPosX, pfeilPosY);
                 }
                 if (B_UP) {
                     //uart_putc(50);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
-                    deletePfeil(pfeilPosX, pfeilPosY);
+                    clearArrow(pfeilPosX, pfeilPosY);
                     if (pfeilPosY - 8 >= 44) {
                         pfeilPosY -= 8;
                     } else {
                         pfeilPosY = 60;
                     }
-                    drawPfeil(pfeilPosX, pfeilPosY);
+                    printArrow(pfeilPosX, pfeilPosY);
                 }
                 if (B_B) {
                     //uart_putc(90);
@@ -521,16 +516,16 @@ void getInput() {
 
                     drawMenue1();
                     pfeilPosY = 44;
-                    drawPfeil(pfeilPosX, pfeilPosY);
+                    printArrow(pfeilPosX, pfeilPosY);
 
                 }
                 break;
             case menu_3:
-                if(B_B){
+                if (B_B) {
                     gameState = menu_1;
                     drawMenue1();
                     pfeilPosY = 44;
-                    drawPfeil(pfeilPosX, pfeilPosY);
+                    printArrow(pfeilPosX, pfeilPosY);
                 }
                 break;
             case run:
@@ -589,7 +584,7 @@ void getInput() {
                     drawMenue1();
                     pfeilPosX = 60;
                     pfeilPosY = 44; //Start Position
-                    drawPfeil(pfeilPosX, pfeilPosY);
+                    printArrow(pfeilPosX, pfeilPosY);
 
                 }
                 if (B_PAUSE) {
@@ -599,15 +594,7 @@ void getInput() {
                     timePressed = getMsTimer();
 
                     gameState = stop;
-                    drawCorrect(0, 96, 0xFF);
-                    drawCorrect(0, 100, 0xFF);
-                    drawCorrect(1, 96, 0xFF);
-                    drawCorrect(1, 100, 0xFF);
-
-                    drawCorrect(3, 96, 0xFF);
-                    drawCorrect(3, 100, 0xFF);
-                    drawCorrect(4, 96, 0xFF);
-                    drawCorrect(4, 100, 0xFF);
+                    printPause();
                 }
                 break;
             default:
@@ -620,7 +607,7 @@ void getInput() {
                     drawMenue1();
                     pfeilPosX = 60;
                     pfeilPosY = 44;
-                    drawPfeil(pfeilPosX, pfeilPosY);
+                    printArrow(pfeilPosX, pfeilPosY);
 
                 }
                 if (B_PAUSE) {
@@ -632,15 +619,7 @@ void getInput() {
                         gameState = stop;
                     } else {
                         gameState = run;
-                        drawCorrect(0, 96, 0);
-                        drawCorrect(0, 100, 0);
-                        drawCorrect(1, 96, 0);
-                        drawCorrect(1, 100, 0);
-
-                        drawCorrect(3, 96, 0);
-                        drawCorrect(3, 100, 0);
-                        drawCorrect(4, 96, 0);
-                        drawCorrect(4, 100, 0);
+                        clearPause();
                     }
                 }
                 break;
@@ -656,72 +635,69 @@ void draw() {
 
     drawPowerUps(offsetX, playerPosX - lastPlayerPosX);
     reDrawPlatforms(offsetX, playerPosX - lastPlayerPosX);
-    printPlayer(5, playerPosY, lastPlayerPosY, '0', playerForm);
+    drawPlayer(5, playerPosY, lastPlayerPosY, '0', playerForm);
+}
+
+void resetGame() {
+    gameState = menu_1;
+    lives = 3;
+    gameSpeed = INITIAL_SPEED;
+    playerForm = _normal;
+
+
+    clear();
+
+    drawString("GAME OVER", 52, 52);
+
+    if (score > readScore()) {
+        drawString("NEW HIGHSCORE", 44, 68);
+        writeScore(score);
+
+    }
+    score = 0;
+    _delay_ms(2000);
+
+    gameState = menu_1;
+    drawMenue1();
+    pfeilPosX = 60;
+    pfeilPosY = 44;
+    printArrow(pfeilPosX, pfeilPosY);
+
+
 }
 
 /*
  * @params void
  * @return void
  */
+
 void setGame() {
     if (lives == 0) {
 
+        resetGame();
 
-        gameState = menu_1;
-        lives = 3;
-        gameSpeed = INITIAL_SPEED;
-        playerForm = _normal;
-
-
+    } else {
 
         clear();
+        platformInit();
+        initPowerUps();
+        drawLives(lives);
+        drawScore(score);
+        drawSpeed(gameSpeed);
+        offsetX = 5;
+        drawPlatforms(offsetX);
+        lastPlayerPosY = 1;
+        drawPlayer(5, 0, lastPlayerPosY, '0', playerForm);
 
-        drawString("GAME OVER", 52, 52);
+        // PauseZeichen
+        printPause();
 
-        if(score > readScore()){
-            drawString("NEW HIGHSCORE", 44,68);
-            writeScore(score);
-
-        }
-        score = 0;
-        _delay_ms(2000);
-
-        gameState = menu_1;
-        drawMenue1();
-        pfeilPosX = 60;
-        pfeilPosY = 44;
-        drawPfeil(pfeilPosX, pfeilPosY);
-
-        return ;
+        playerPosX = 0;
+        playerPosY = 0;
+        playerMovY = 0;
+        playerState = falling;
+        gameState = stop;
     }
-
-    clear();
-    platformInit();
-    initPowerUps();
-    drawLives(lives);
-    drawScore(score);
-    drawSpeed(gameSpeed);
-    offsetX = 5;
-    drawPlatforms(offsetX);
-    lastPlayerPosY = 1;
-    printPlayer(5, 0, lastPlayerPosY, '0', playerForm);
-
-    // PauseZeichen
-    drawCorrect(0, 96, 0xFF);
-    drawCorrect(0, 100, 0xFF);
-    drawCorrect(1, 96, 0xFF);
-    drawCorrect(1, 100, 0xFF);
-
-    drawCorrect(3, 96, 0xFF);
-    drawCorrect(3, 100, 0xFF);
-    drawCorrect(4, 96, 0xFF);
-    drawCorrect(4, 100, 0xFF);
-
-    playerPosX = 0;
-    playerPosY = 0;
-    playerMovY = 0;
-    playerState = falling;
-    gameState = stop;
 }
 
 /*
@@ -739,14 +715,14 @@ int main(void) {
     uart_putc(10);
     _delay_ms(1000);
 
-    printScreen();
+    drawScreen();
     _delay_ms(1000);
 
     clear();
     drawMenue1();
-    pfeilPosX=60;
-    pfeilPosY=44;
-    drawPfeil(pfeilPosX, pfeilPosY);
+    pfeilPosX = 60;
+    pfeilPosY = 44;
+    printArrow(pfeilPosX, pfeilPosY);
     gameState = menu_1;
 
 
@@ -771,10 +747,10 @@ int main(void) {
                 draw();
 
             }
-            if (gameState == menu_1){
+            if (gameState == menu_1) {
 
             }
-            if (gameState == menu_2){
+            if (gameState == menu_2) {
 
             }
 
