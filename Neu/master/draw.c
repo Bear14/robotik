@@ -10,17 +10,43 @@
 #include <stdio.h>
 #include "save.h"
 
+struct pageToDraw old = (struct pageToDraw) {0, 0, 0};
+
+void drawPlayer(int16_t x, int16_t y, int16_t lastY, char forceRedraw, enum Form form) {
+
+    if (y != lastY || forceRedraw == '1') {
+
+        clearPlayer(x, lastY);
+
+        switch (form) {
+            case _normal:
+                printNormal(x, y);
+                break;
+            case _sorcerer:
+                printSorcerer(x, y);
+                break;
+            case _ranger:
+                printRanger(x, y);
+                break;
+            case _knight:
+                printKnight(x, y);
+                break;
+        };
+
+    }
+}
+
 void drawString(char text[], uint8_t x, uint8_t y) {
     char *pointer = text;
     uint8_t nex_x = 0, nex_y = 0;
 
     for (; *pointer != '\0'; pointer++) {
         if (nex_x + x >= 155) { // wenn der Dildrand überläufen würde
-            drawGlyph('-', x + nex_x, y + nex_y);
+            printGlyph('-', x + nex_x, y + nex_y);
             nex_y += 9;
             nex_x = 0;
         }
-        drawGlyph(*pointer, x + nex_x, y + nex_y);
+        printGlyph(*pointer, x + nex_x, y + nex_y);
         nex_x += nextGlyph(*pointer, x + nex_x, y + nex_y) + 1;
     }
 }
@@ -149,393 +175,65 @@ uint8_t nextGlyph(char glyph, uint8_t x, uint8_t y) {
     return glyph_ende;
 }
 
-void drawGlyph(char glyph, uint8_t x, uint8_t y) {
-    switch (glyph) {
-        case '0':
-            drawCorrect(x + 0, y + 0, 0xF0);
-            drawCorrect(x + 0, y + 4, 0x3F);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0xCC);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xC3);
-            drawCorrect(x + 3, y + 0, 0xF0);
-            drawCorrect(x + 3, y + 4, 0x3F);
-            break;
-        case '1':
-            drawCorrect(x + 0, y + 0, 0x30);
-            drawCorrect(x + 0, y + 4, 0xC0);
-            drawCorrect(x + 1, y + 0, 0xFC);
-            drawCorrect(x + 1, y + 4, 0xFF);
-            drawCorrect(x + 2, y + 0, 0x00);
-            drawCorrect(x + 2, y + 4, 0xC0);
-            drawCorrect(x + 3, y + 0, 0);
-            drawCorrect(x + 3, y + 4, 0);
 
-            break;
-        case '2':
-            drawCorrect(x + 0, y + 0, 0x30);
-            drawCorrect(x + 0, y + 4, 0xF0);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0xCC);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xC3);
-            drawCorrect(x + 3, y + 0, 0xF0);
-            drawCorrect(x + 3, y + 4, 0xC0);
-            break;
-        case '3':
-            drawCorrect(x + 0, y + 0, 0x30);
-            drawCorrect(x + 0, y + 4, 0x30);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0xC0);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xC3);
-            drawCorrect(x + 3, y + 0, 0xF0);
-            drawCorrect(x + 3, y + 4, 0x3C);
-            break;
-        case '4':
-            drawCorrect(x + 0, y + 0, 0xC0);
-            drawCorrect(x + 0, y + 4, 0x0F);
-            drawCorrect(x + 1, y + 0, 0x30);
-            drawCorrect(x + 1, y + 4, 0x0C);
-            drawCorrect(x + 2, y + 0, 0xFC);
-            drawCorrect(x + 2, y + 4, 0xFF);
-            drawCorrect(x + 3, y + 4, 0x0C);
-            drawCorrect(x + 3, y + 0, 0);
-            break;
-        case '5':
-            drawCorrect(x + 0, y + 0, 0xFC);
-            drawCorrect(x + 0, y + 4, 0xC3);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0xC3);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xC3);
-            drawCorrect(x + 3, y + 0, 0x0C);
-            drawCorrect(x + 3, y + 4, 0xFF);
-            break;
-        case '6':
-            drawCorrect(x + 0, y + 0, 0xC0);
-            drawCorrect(x + 0, y + 4, 0x3F);
-            drawCorrect(x + 1, y + 0, 0x30);
-            drawCorrect(x + 1, y + 4, 0xC3);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xC3);
-            drawCorrect(x + 3, y + 0, 0x0C);
-            drawCorrect(x + 3, y + 4, 0x3C);
-            break;
-        case '7':
-            drawCorrect(x + 0, y + 0, 0x3C);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0xFC);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0x03);
-            drawCorrect(x + 3, y + 0, 0xFC);
-            drawCorrect(x + 0, y + 4, 0);
-            drawCorrect(x + 3, y + 4, 0);
-            break;
-        case '8':
-            drawCorrect(x + 0, y + 0, 0xF0);
-            drawCorrect(x + 0, y + 4, 0x3C);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0xC3);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xC3);
-            drawCorrect(x + 3, y + 0, 0xF0);
-            drawCorrect(x + 3, y + 4, 0x3C);
-            break;
-        case '9':
-            drawCorrect(x + 0, y + 0, 0xF0);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0xC3);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xC3);
-            drawCorrect(x + 3, y + 0, 0xF0);
-            drawCorrect(x + 3, y + 4, 0x3F);
-            drawCorrect(x + 0, y + 4, 0);
-            break;
-        case 'A':
-            drawCorrect(x + 0, y + 0, 0xF0);
-            drawCorrect(x + 0, y + 4, 0xFF);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0x03);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0x03);
-            drawCorrect(x + 3, y + 0, 0x0C);
-            drawCorrect(x + 3, y + 4, 0x03);
-            drawCorrect(x + 4, y + 0, 0xF0);
-            drawCorrect(x + 4, y + 4, 0xFF);
-            break;
-        case 'B':
-            drawCorrect(x + 0, y + 0, 0xFC);
-            drawCorrect(x + 0, y + 4, 0xFF);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0xC3);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xC3);
-            drawCorrect(x + 3, y + 0, 0x0C);
-            drawCorrect(x + 3, y + 4, 0xC3);
-            drawCorrect(x + 4, y + 0, 0xF0);
-            drawCorrect(x + 4, y + 4, 0x3C);
-            break;
-        case 'C':
-            drawCorrect(x + 0, y + 0, 0xF0);
-            drawCorrect(x + 0, y + 4, 0x3F);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0xC0);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xC0);
-            drawCorrect(x + 3, y + 0, 0x0C);
-            drawCorrect(x + 3, y + 4, 0xC0);
-            drawCorrect(x + 4, y + 0, 0x30);
-            drawCorrect(x + 4, y + 4, 0x30);
-            break;
-        case 'D':
-            drawCorrect(x + 0, y + 0, 0xFC);
-            drawCorrect(x + 0, y + 4, 0xFF);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0xC0);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xC0);
-            drawCorrect(x + 3, y + 0, 0x0C);
-            drawCorrect(x + 3, y + 4, 0xC0);
-            drawCorrect(x + 4, y + 0, 0xF0);
-            drawCorrect(x + 4, y + 4, 0x3F);
-            break;
-        case 'E':
-            drawCorrect(x + 0, y + 0, 0xFC);
-            drawCorrect(x + 0, y + 4, 0xFF);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0xC3);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xC3);
-            drawCorrect(x + 3, y + 0, 0x0C);
-            drawCorrect(x + 3, y + 4, 0xC3);
-            drawCorrect(x + 4, y + 0, 0x0C);
-            drawCorrect(x + 4, y + 4, 0xC0);
-            break;
-        case 'F':
-            drawCorrect(x + 0, y + 0, 0xFC);
-            drawCorrect(x + 0, y + 4, 0xFF);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0x03);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0x03);
-            drawCorrect(x + 3, y + 0, 0x0C);
-            drawCorrect(x + 3, y + 4, 0x03);
-            drawCorrect(x + 4, y + 0, 0x0C);
-            break;
-        case 'G':
-            drawCorrect(x + 0, y + 0, 0xF0);
-            drawCorrect(x + 0, y + 4, 0x3F);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0xC0);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xC3);
-            drawCorrect(x + 3, y + 0, 0x0C);
-            drawCorrect(x + 3, y + 4, 0xC3);
-            drawCorrect(x + 4, y + 0, 0x30);
-            drawCorrect(x + 4, y + 4, 0x3C);
-            break;
-        case 'H':
-            drawCorrect(x + 0, y + 0, 0xFC);
-            drawCorrect(x + 0, y + 4, 0xFF);
-            drawCorrect(x + 1, y + 4, 0x03);
-            drawCorrect(x + 2, y + 4, 0x03);
-            drawCorrect(x + 3, y + 4, 0x03);
-            drawCorrect(x + 4, y + 0, 0xFC);
-            drawCorrect(x + 4, y + 4, 0xFF);
-            break;
-        case 'I':
-            drawCorrect(x + 0, y + 0, 0x0C);
-            drawCorrect(x + 0, y + 4, 0xC0);
-            drawCorrect(x + 1, y + 0, 0xFC);
-            drawCorrect(x + 1, y + 4, 0xFF);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xC0);
-            break;
-        case 'J':
-            drawCorrect(x + 0, y + 0, 0x0C);
-            drawCorrect(x + 0, y + 4, 0x30);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0xC0);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xC0);
-            drawCorrect(x + 3, y + 0, 0xFC);
-            drawCorrect(x + 3, y + 4, 0x3F);
-            break;
-        case 'K':
-            drawCorrect(x + 0, y + 0, 0xFC);
-            drawCorrect(x + 0, y + 4, 0xFF);
-            drawCorrect(x + 1, y + 0, 0x00);
-            drawCorrect(x + 1, y + 4, 0x03);
-            drawCorrect(x + 2, y + 0, 0xC0);
-            drawCorrect(x + 2, y + 4, 0x0C);
-            drawCorrect(x + 3, y + 0, 0x3C);
-            drawCorrect(x + 3, y + 4, 0xF0);
-            break;
-        case 'L':
-            drawCorrect(x + 0, y + 0, 0xFC);
-            drawCorrect(x + 0, y + 4, 0xFF);
-            drawCorrect(x + 1, y + 4, 0xC0);
-            drawCorrect(x + 2, y + 4, 0xC0);
-            drawCorrect(x + 3, y + 4, 0xC0);
-            drawCorrect(x + 4, y + 4, 0xC0);
-            break;
-        case 'M':
-            drawCorrect(x + 0, y + 0, 0xFC);
-            drawCorrect(x + 0, y + 4, 0xFF);
-            drawCorrect(x + 1, y + 0, 0x30);
-            drawCorrect(x + 2, y + 0, 0xC0);
-            drawCorrect(x + 3, y + 0, 0x30);
-            drawCorrect(x + 4, y + 0, 0xFC);
-            drawCorrect(x + 4, y + 4, 0xFF);
-            break;
-        case 'N':
-            drawCorrect(x + 0, y + 0, 0xFC);
-            drawCorrect(x + 0, y + 4, 0xFF);
-            drawCorrect(x + 1, y + 0, 0x30);
-            drawCorrect(x + 2, y + 0, 0xC0);
-            drawCorrect(x + 3, y + 4, 0x03);
-            drawCorrect(x + 4, y + 0, 0xFC);
-            drawCorrect(x + 4, y + 4, 0xFF);
-            break;
-        case 'O':
-            drawCorrect(x + 0, y + 0, 0xF0);
-            drawCorrect(x + 0, y + 4, 0x3F);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0xC0);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xC0);
-            drawCorrect(x + 3, y + 0, 0x0C);
-            drawCorrect(x + 3, y + 4, 0xC0);
-            drawCorrect(x + 4, y + 0, 0xF0);
-            drawCorrect(x + 4, y + 4, 0x3F);
-            break;
-        case 'P':
-            drawCorrect(x + 0, y + 0, 0xFC);
-            drawCorrect(x + 0, y + 4, 0xFF);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0x03);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0x03);
-            drawCorrect(x + 3, y + 0, 0x0C);
-            drawCorrect(x + 3, y + 4, 0x03);
-            drawCorrect(x + 4, y + 0, 0xF0);
-            break;
-        case 'Q':
-            drawCorrect(x + 0, y + 0, 0xF0);
-            drawCorrect(x + 0, y + 4, 0x3F);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0xC0);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xCC);
-            drawCorrect(x + 3, y + 0, 0x0C);
-            drawCorrect(x + 3, y + 4, 0x30);
-            drawCorrect(x + 4, y + 0, 0xF0);
-            drawCorrect(x + 4, y + 4, 0xCF);
-            break;
-        case 'R':
-            drawCorrect(x + 0, y + 0, 0xF0);
-            drawCorrect(x + 0, y + 4, 0xFF);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0x03);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0x0F);
-            drawCorrect(x + 3, y + 0, 0x0C);
-            drawCorrect(x + 3, y + 4, 0x33);
-            drawCorrect(x + 4, y + 0, 0xF0);
-            drawCorrect(x + 4, y + 4, 0xC0);
-            break;
-        case 'S':
-            drawCorrect(x + 0, y + 0, 0xF0);
-            drawCorrect(x + 0, y + 4, 0xC0);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0xC3);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xC3);
-            drawCorrect(x + 3, y + 0, 0x0C);
-            drawCorrect(x + 3, y + 4, 0xC3);
-            drawCorrect(x + 4, y + 0, 0x0C);
-            drawCorrect(x + 4, y + 4, 0x3C);
-            break;
-        case 'T':
-            drawCorrect(x + 0, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 0, 0xFC);
-            drawCorrect(x + 2, y + 4, 0xFF);
-            drawCorrect(x + 3, y + 0, 0x0C);
-            drawCorrect(x + 4, y + 0, 0x0C);
-            break;
-        case 'U':
-            drawCorrect(x + 0, y + 0, 0xFC);
-            drawCorrect(x + 0, y + 4, 0x3F);
-            drawCorrect(x + 1, y + 4, 0xC0);
-            drawCorrect(x + 2, y + 4, 0xC0);
-            drawCorrect(x + 3, y + 4, 0xC0);
-            drawCorrect(x + 4, y + 0, 0xFC);
-            drawCorrect(x + 4, y + 4, 0x3F);
-            break;
-        case 'V':
-            drawCorrect(x + 0, y + 0, 0xFC);
-            drawCorrect(x + 1, y + 4, 0x0F);
-            drawCorrect(x + 2, y + 4, 0xF0);
-            drawCorrect(x + 3, y + 4, 0x0F);
-            drawCorrect(x + 4, y + 0, 0xFC);
-            break;
-        case 'W':
-            drawCorrect(x + 0, y + 0, 0xFC);
-            drawCorrect(x + 0, y + 4, 0xFF);
-            drawCorrect(x + 1, y + 4, 0x30);
-            drawCorrect(x + 2, y + 4, 0x0C);
-            drawCorrect(x + 3, y + 4, 0x30);
-            drawCorrect(x + 4, y + 0, 0xFC);
-            drawCorrect(x + 4, y + 4, 0xFF);
-            break;
-        case 'X':
-            drawCorrect(x + 0, y + 0, 0x3C);
-            drawCorrect(x + 0, y + 4, 0xF0);
-            drawCorrect(x + 1, y + 0, 0xC0);
-            drawCorrect(x + 1, y + 4, 0x0C);
-            drawCorrect(x + 2, y + 4, 0x03);
-            drawCorrect(x + 3, y + 0, 0xC0);
-            drawCorrect(x + 3, y + 4, 0x0C);
-            drawCorrect(x + 4, y + 0, 0x3C);
-            drawCorrect(x + 4, y + 4, 0xF0);
-            break;
-        case 'Y':
-            drawCorrect(x + 0, y + 0, 0x3C);
-            drawCorrect(x + 1, y + 0, 0xC0);
-            drawCorrect(x + 2, y + 4, 0xFF);
-            drawCorrect(x + 3, y + 0, 0xC0);
-            drawCorrect(x + 4, y + 0, 0x3C);
-            break;
-        case 'Z':
-            drawCorrect(x + 0, y + 0, 0x0C);
-            drawCorrect(x + 0, y + 4, 0xF0);
-            drawCorrect(x + 1, y + 0, 0x0C);
-            drawCorrect(x + 1, y + 4, 0xCC);
-            drawCorrect(x + 2, y + 0, 0x0C);
-            drawCorrect(x + 2, y + 4, 0xC3);
-            drawCorrect(x + 3, y + 0, 0xCC);
-            drawCorrect(x + 3, y + 4, 0xC0);
-            drawCorrect(x + 4, y + 0, 0x3C);
-            drawCorrect(x + 4, y + 4, 0xC0);
-            break;
-        case ' ':
-            break;
-        case '-':
-            drawCorrect(x + 0, y + 4, 0x03);
-            drawCorrect(x + 1, y + 4, 0x03);
-            drawCorrect(x + 2, y + 4, 0x03);
-            break;
-        default:
-            break;
+void drawPowerUp(int16_t x, int16_t y, enum PowerUpType type, int16_t speed) {
+
+    for (int i = 0; i < speed; i++) {
+        drawCorrect(x + 8 + i, y, 0);
+        drawCorrect(x + 8 + i, y + 4, 0);
+
 
     }
+    switch (type) {
+        case none:
+            break;
+        case live:
+            printPUlive(x, y);
+            break;
+        case death:
+            printPUdeath(x, y);
+            break;
+        case knight:
+            printPUknight(x, y);
+            break;
+        case sorcerer:
+            printPUsorcerer(x, y);
+            break;
+        case ranger:
+            printPUranger(x, y);
+            break;
+        case slow:
+            printPUslow(x, y);
+            break;
+        case speedUp:
+            printPUspeedUp(x, y);
+            break;
+        case pointsUp:
+            printPUpointsUp(x, y);
+            break;
+        case pointsDown:
+            printPUpointsDown(x, y);
+            break;
+
+    };
 
 
 }
 
-struct pageToDraw old = (struct pageToDraw) {0, 0, 0};
+void drawScreen() {
+
+    //Version 1 unbewegt
+    printDragon(0, 40);
+
+    printNormal(98, 65);
+    printKnight(118, 45);
+    printSorcerer(118, 85);
+    printRanger(130, 65);
+
+    //DragonQuest
+    printTitel(0, 13);
+
+}
 
 // the only shit we need
 void drawCorrect(int16_t x, int16_t y, uint8_t h) {
@@ -633,8 +331,8 @@ void drawSpeed(int16_t speed) {
 
 void drawMenue1() {
     clear();
-    printTitel(0,0);
-    printDragon(0,40);
+    printTitel(0, 0);
+    printDragon(0, 40);
 
     drawString("HAUPTMENUE", 73, 24);
     drawString("NEUES SPIEL", 73, 44);
@@ -646,8 +344,8 @@ void drawMenue1() {
 
 void drawMenue2() {
     clear();
-    printTitel(0,0);
-    printDragon(0,40);
+    printTitel(0, 0);
+    printDragon(0, 40);
 
     drawString("SCHWIERIGKEIT", 73, 24);
     drawString("LEICHT", 73, 44);
@@ -655,124 +353,75 @@ void drawMenue2() {
     drawString("SCHWER", 73, 60);
 }
 
-void drawMenue3(){
+void drawMenue3() {
     clear();
-    printTitel(0,0);
+    printTitel(0, 0);
 
     printPUlive(80, 24);
-    drawString("LIVE",90, 24 );
+    drawString("LIVE", 90, 24);
 
     printPUslow(80, 36);
-    drawString("SPEED DOWN",90, 36 );
+    drawString("SPEED DOWN", 90, 36);
 
     printPUpointsUp(80, 48);
-    drawString("POINTS UP",90, 48 );
+    drawString("POINTS UP", 90, 48);
 
-    printPUknight(20, 64 );
-    drawString("KNIGHT",10, 74 );
+    printPUknight(20, 64);
+    drawString("KNIGHT", 10, 74);
     printKnight(15, 88);
 
     printPUsorcerer(70, 64);
-    drawString("SORCERER",56, 74 );
+    drawString("SORCERER", 56, 74);
     printSorcerer(65, 88);
 
     printPUranger(120, 64);
-    drawString("RANGER",110, 74 );
+    drawString("RANGER", 110, 74);
     printRanger(115, 88);
 
 
     printPUdeath(5, 24);
-    drawString("INST DEATH",15, 24 );
+    drawString("INST DEATH", 15, 24);
 
     printPUspeedUp(5, 36);
-    drawString("SPEED UP",15, 36 );
+    drawString("SPEED UP", 15, 36);
 
     printPUpointsDown(5, 48);
-    drawString("POINTS DOWN",15, 48 );
-
-
-
+    drawString("POINTS DOWN", 15, 48);
 }
 
-void drawPfeil(uint8_t x, uint8_t y) {
-    drawCorrect(x + 0, y + 0, 0xC0);
-    drawCorrect(x + 0, y + 4, 0x0C);
-    drawCorrect(x + 1, y + 0, 0xC0);
-    drawCorrect(x + 1, y + 4, 0x0C);
-    drawCorrect(x + 2, y + 0, 0xC0);
-    drawCorrect(x + 2, y + 4, 0x0C);
-    drawCorrect(x + 3, y + 0, 0xC0);
-    drawCorrect(x + 3, y + 4, 0x0C);
-    drawCorrect(x + 4, y + 0, 0xC0);
-    drawCorrect(x + 4, y + 4, 0x0C);
-    drawCorrect(x + 5, y + 0, 0x0C);
-    drawCorrect(x + 5, y + 4, 0xC0);
-    drawCorrect(x + 6, y + 0, 0x3C);
-    drawCorrect(x + 6, y + 4, 0xF0);
-    drawCorrect(x + 7, y + 0, 0xF0);
-    drawCorrect(x + 7, y + 4, 0x3C);
-    drawCorrect(x + 8, y + 0, 0xC0);
-    drawCorrect(x + 8, y + 4, 0x0F);
-    drawCorrect(x + 9, y + 4, 0x03);
-
-}
-
-void deletePfeil(uint8_t x, uint8_t y) {
-    drawCorrect(x + 0, y + 0, 0x00);
-    drawCorrect(x + 0, y + 4, 0x00);
-    drawCorrect(x + 1, y + 0, 0x00);
-    drawCorrect(x + 1, y + 4, 0x00);
-    drawCorrect(x + 2, y + 0, 0x00);
-    drawCorrect(x + 2, y + 4, 0x00);
-    drawCorrect(x + 3, y + 0, 0x00);
-    drawCorrect(x + 3, y + 4, 0x00);
-    drawCorrect(x + 4, y + 0, 0x00);
-    drawCorrect(x + 4, y + 4, 0x00);
-    drawCorrect(x + 5, y + 0, 0x00);
-    drawCorrect(x + 5, y + 4, 0x00);
-    drawCorrect(x + 6, y + 0, 0x00);
-    drawCorrect(x + 6, y + 4, 0x00);
-    drawCorrect(x + 7, y + 0, 0x00);
-    drawCorrect(x + 7, y + 4, 0x00);
-    drawCorrect(x + 8, y + 0, 0x00);
-    drawCorrect(x + 8, y + 4, 0x00);
-    drawCorrect(x + 9, y + 4, 0x00);
-}
 
 void drawLives(uint8_t live) {
     for (int i = 0; i < live; i++) {
 
         printHeart(65 + i * 8, 96);
-
     }
-
-
 }
 
 void drawPlatforms(int16_t offsetX) {
 
 
-    for(uint8_t i = 0;i < PLATFORM_COUNT; i++){
+    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
 
 
         printPlatform(platforms[i]);
     }
 }
-void reDrawPlatforms(int16_t offsetX,int16_t speed) {
+
+void reDrawPlatforms(int16_t offsetX, int16_t speed) {
 
 
-    for(uint8_t i = 0;i < PLATFORM_COUNT; i++){
+    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
 
 
-        rePrintPlatform(platforms[i],offsetX,speed);
+        rePrintPlatform(platforms[i], offsetX, speed);
     }
 }
 
 void drawPowerUps(int16_t offsetX, int16_t speed) {
 
-    for(uint8_t i = 0;i < POWER_UP_COUNT; i++){
+    for (uint8_t i = 0; i < POWER_UP_COUNT; i++) {
 
-        printPowerUp(powerUps[i].x + offsetX,powerUps[i].y,powerUps[i].type,speed);
+        drawPowerUp(powerUps[i].x + offsetX, powerUps[i].y, powerUps[i].type, speed);
 
     }
 }

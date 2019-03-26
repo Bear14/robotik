@@ -23,7 +23,6 @@ enum PowerUpType {
 
 enum Form {
     _normal, _knight, _sorcerer, _ranger
-
 };
 
 struct PowerUp {
