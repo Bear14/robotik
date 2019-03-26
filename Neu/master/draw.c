@@ -122,6 +122,9 @@ uint8_t nextGlyph(char glyph, uint8_t x, uint8_t y) {
         case 'U':
             glyph_ende = 5;
             break;
+        case 'V':
+            glyph_ende = 5;
+            break;
         case 'W':
             glyph_ende = 5;
             break;
@@ -362,7 +365,7 @@ void drawGlyph(char glyph, uint8_t x, uint8_t y) {
         case 'K':
             drawCorrect(x + 0, y + 0, 0xFC);
             drawCorrect(x + 0, y + 4, 0xFF);
-            drawCorrect(x + 1, y + 0, 0x03);
+            drawCorrect(x + 1, y + 0, 0x00);
             drawCorrect(x + 1, y + 4, 0x03);
             drawCorrect(x + 2, y + 0, 0xC0);
             drawCorrect(x + 2, y + 4, 0x0C);
@@ -629,20 +632,66 @@ void drawSpeed(int16_t speed) {
 }
 
 void drawMenue1() {
+    clear();
     printTitel(0,0);
     printDragon(0,40);
-    drawString("HAUPTMENUE", 75, 24);
-    drawString("NEUES SPIEL", 75, 44);
-    drawString("RESET HIGHSCORE", 75, 54);
+
+    drawString("HAUPTMENUE", 73, 24);
+    drawString("NEUES SPIEL", 73, 44);
+    drawString("RESET HIGHSCORE", 73, 52);
     drawScore(readScore());
-    drawString("SCHWIRIGKEIT", 75, 65);
+    drawString("SCHWIERIGKEIT", 73, 60);
+    drawString("POWER UPS", 73, 68);
 }
 
 void drawMenue2() {
-    drawString("SCHWIRIGKEIT", 75, 25);
-    drawString("LEICHT", 75, 45);
-    drawString("NORMAL", 75, 55);
-    drawString("SCHWER", 75, 65);
+    clear();
+    printTitel(0,0);
+    printDragon(0,40);
+
+    drawString("SCHWIERIGKEIT", 73, 24);
+    drawString("LEICHT", 73, 44);
+    drawString("NORMAL", 73, 52);
+    drawString("SCHWER", 73, 60);
+}
+
+void drawMenue3(){
+    clear();
+    printTitel(0,0);
+
+    printPUlive(80, 24);
+    drawString("LIVE",90, 24 );
+
+    printPUslow(80, 36);
+    drawString("SPEED DOWN",90, 36 );
+
+    printPUpointsUp(80, 48);
+    drawString("POINTS UP",90, 48 );
+
+    printPUknight(20, 64 );
+    drawString("KNIGHT",10, 74 );
+    printKnight(15, 88);
+
+    printPUsorcerer(70, 64);
+    drawString("SORCERER",56, 74 );
+    printSorcerer(65, 88);
+
+    printPUranger(120, 64);
+    drawString("RANGER",110, 74 );
+    printRanger(115, 88);
+
+
+    printPUdeath(5, 24);
+    drawString("INST DEATH",15, 24 );
+
+    printPUspeedUp(5, 36);
+    drawString("SPEED UP",15, 36 );
+
+    printPUpointsDown(5, 48);
+    drawString("POINTS DOWN",15, 48 );
+
+
+
 }
 
 void drawPfeil(uint8_t x, uint8_t y) {

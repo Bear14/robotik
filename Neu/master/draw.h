@@ -25,6 +25,8 @@ void drawMenue1();
 
 void drawMenue2();
 
+void drawMenue3();
+
 void drawPfeil(uint8_t x, uint8_t y);
 
 void deletePfeil(uint8_t x, uint8_t y);
