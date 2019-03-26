@@ -432,10 +432,10 @@ void getInput() {
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     deletePfeil(pfeilPosX, pfeilPosY);
-                    if (pfeilPosY + 10 <= 65) {
+                    if (pfeilPosY + 10 <= 64) {
                         pfeilPosY += 10;
                     } else {
-                        pfeilPosY = 45;
+                        pfeilPosY = 44;
                     }
                     drawPfeil(pfeilPosX, pfeilPosY);
                 }
@@ -444,10 +444,10 @@ void getInput() {
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     deletePfeil(pfeilPosX, pfeilPosY);
-                    if (pfeilPosY - 10 >= 45) {
+                    if (pfeilPosY - 10 >= 44) {
                         pfeilPosY -= 10;
                     } else {
-                        pfeilPosY = 65;
+                        pfeilPosY = 64;
                     }
                     drawPfeil(pfeilPosX, pfeilPosY);
                 }
@@ -455,18 +455,18 @@ void getInput() {
                     //uart_putc(90);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
-                    if (pfeilPosY == 45) { // Neues Game
+                    if (pfeilPosY == 44) { // Neues Game
                         gameState = set;
                     }
-                    if (pfeilPosY == 55) {
+                    if (pfeilPosY == 54) {
                         writeScore(0);
                         drawScore(readScore());
                     }
-                    if (pfeilPosY == 65) { //SCHWIRIGKEIT Menue2
+                    if (pfeilPosY == 64) { //SCHWIRIGKEIT Menue2
                         clear();
                         drawMenue2();
                         gameState = menu_2;
-                        pfeilPosY = 55;
+                        pfeilPosY = 54;
                         drawPfeil(pfeilPosX, pfeilPosY);
                     }
                 }
@@ -500,22 +500,22 @@ void getInput() {
                     //uart_putc(90);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
-                    if (pfeilPosY == 45) { // Neues Game
+                    if (pfeilPosY == 44) { // Neues Game
                         gameSpeed = 2;
                         platWidth = 5;
                     }
-                    if (pfeilPosY == 55) {
+                    if (pfeilPosY == 54) {
                         gameSpeed = 4;
                         platWidth = 3;
                     }
-                    if (pfeilPosY == 65) { //SCHWIRIGKEIT Menue2
+                    if (pfeilPosY == 64) { //SCHWIRIGKEIT Menue2
                         gameSpeed = 6;
                         platWidth = 1;
                     }
                     clear();
                     drawMenue1();
                     gameState = menu_1;
-                    pfeilPosY = 45;
+                    pfeilPosY = 44;
                     drawPfeil(pfeilPosX, pfeilPosY);
                 }
                 break;
@@ -571,8 +571,8 @@ void getInput() {
                     gameState = menu_1;
                     clear();
                     drawMenue1();
-                    pfeilPosX = 45;
-                    pfeilPosY = 45;
+                    pfeilPosX = 65;
+                    pfeilPosY = 44;
                     drawPfeil(pfeilPosX, pfeilPosY);
                 }
                 if (B_PAUSE) {
@@ -602,8 +602,8 @@ void getInput() {
                     gameState = menu_1;
                     clear();
                     drawMenue1();
-                    pfeilPosX = 45;
-                    pfeilPosY = 45;
+                    pfeilPosX = 65;
+                    pfeilPosY = 44;
                     drawPfeil(pfeilPosX, pfeilPosY);
                 }
                 if (B_PAUSE) {
