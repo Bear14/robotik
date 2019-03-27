@@ -13,13 +13,15 @@
  */
 void clearPlayer(int16_t x, int16_t y);
 
-void printNormal(uint8_t x, uint8_t y);
+void printNormal(uint8_t x, uint8_t y,uint8_t frameCounter);
 
-void printSorcerer(uint8_t x, uint8_t y);
+void printSorcerer(uint8_t x, uint8_t y,uint8_t frameCounter);
 
-void printRanger(uint8_t x, uint8_t y);
+void printRanger(uint8_t x, uint8_t y,uint8_t frameCounter);
 
-void printKnight(uint8_t x, uint8_t y);
+void printKnight(uint8_t x, uint8_t y,uint8_t frameCounter);
+
+void printDash(uint8_t x, uint8_t y);
 
 void printHeart(int16_t x, int16_t y);
 
@@ -51,9 +53,7 @@ void printPUpointsDown(int16_t x, int16_t y);
 
 void clearPowerUp(int16_t x, int16_t y);
 
-void printPause();
-
-void clearPause();
+void printPause(uint8_t hex);
 
 void printArrow(uint8_t x, uint8_t y);
 

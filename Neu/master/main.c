@@ -32,10 +32,10 @@ typedef int bool;
 #define GRAVITY 1
 #define JUMP_HEIGHT -8
 #define INITIAL_SPEED 4
-#define DASH_LENGTH 12
+#define DASH_LENGTH 20
 #define MAX_GAME_SPEED 8
 #define PLAYER_HEIGHT 16
-#define STEPS_BEFORE_RESET 3000
+#define STEPS_BEFORE_RESET 5000
 
 void init();
 
@@ -76,7 +76,7 @@ volatile uint8_t pfeilPosY = 35;
 /*
  * Score and difficulty
  */
-volatile int8_t platWidth = 5;
+volatile int8_t platWidth = 4;
 volatile int16_t gameSpeed = INITIAL_SPEED;
 volatile uint32_t score = 0;
 volatile uint32_t lastScore = 0;
@@ -97,6 +97,12 @@ enum gState {
 enum gState gameState = set; //TODO: move to Init
 
 enum Form playerForm = _normal; //TODO: move to Init
+
+void _death() {
+    lives--;
+    gameState = set;
+}
+
 
 /*
  * To keep the player infinitely running we need to reset the position x integer before it overflows.
@@ -216,32 +222,17 @@ void collisionHandling() {
                                 platforms[i].length,
                                 PLATFORM_HEIGHT)) {
 
-            if (lastPlayerPosY < platforms[i].y) {
+            if (lastPlayerPosY + PLAYER_HEIGHT <= platforms[i].y) {
                 playerPosY = platforms[i].y - PLAYER_HEIGHT;
                 playerState = standing;
-            } else if (lastPlayerPosY > platforms[i].y) {
+            } else if (lastPlayerPosY >= platforms[i].y + PLATFORM_HEIGHT) {
                 playerPosY = platforms[i].y + PLATFORM_HEIGHT;
+                playerMovY = 0;
+            } else {
+                _death();
             }
-            struct platform plat = (struct platform) {platforms[i].x + offsetX + 5, platforms[i].y, 15};
         }
     }
-}
-
-/*
- * @params void
- * @return bool
- */
-bool dashCollision() {
-
-    for (uint8_t i = 0; i < PLATFORM_COUNT; i++) {
-        if (collisionRectangles(playerPosX, playerPosY, PLAYER_HEIGHT, PLAYER_HEIGHT, platforms[i].x, platforms[i].y,
-                                platforms[i].length, PLATFORM_HEIGHT)) {
-            return true;
-        }
-
-
-    }
-    return false;
 }
 
 /*
@@ -263,31 +254,25 @@ void collisionWithPowerUp() {
                         lives++;
                         drawLives(lives);
                     }
-                    powerUps[j].type = none;
                     break;
                 case death:
-                    lives--;
-                    gameState = set;
-                    powerUps[j].type = none;
+                    _death();
                     break;
                 case speedUp:
                     if (gameSpeed < MAX_GAME_SPEED) {
                         gameSpeed += 1;
                         drawSpeed(gameSpeed);
                     }
-                    powerUps[j].type = none;
                     break;
                 case slow:
                     if (gameSpeed <= 1) {
                         gameSpeed -= 1;
                         drawSpeed(gameSpeed);
                     }
-                    powerUps[j].type = none;
                     break;
                 case pointsUp:
                     score += gameSpeed * 50;
                     drawScore(score);
-                    powerUps[j].type = none;
                     break;
                 case pointsDown:
                     if (score <= gameSpeed * 20) {
@@ -296,27 +281,26 @@ void collisionWithPowerUp() {
                         score -= gameSpeed * 20;
                     }
                     drawScore(score);
-                    powerUps[j].type = none;
                     break;
                 case knight:
                     playerForm = _knight;
-                    powerUps[j].type = none;
                     break;
                 case sorcerer:
                     playerForm = _sorcerer;
-                    powerUps[j].type = none;
                     break;
                 case ranger:
                     playerForm = _ranger;
-                    powerUps[j].type = none;
                     break;
 
             }
+            powerUps[j].type = none;
+
 
             clearPowerUp(powerUps[j].x + offsetX, powerUps[j].y);
             powerUps[j].x = -100;
             powerUps[j].y = -100;
-            drawPlayer(5, playerPosY, lastPlayerPosY, '1', playerForm);
+
+            //drawPlayer(5, playerPosY, lastPlayerPosY, '1', playerForm);
 
         }
     }
@@ -330,8 +314,7 @@ void collisionWithPowerUp() {
 void update() {
 
     if (playerPosY >= 110) {
-        lives--;
-        gameState = set;
+        _death();
     }
 
     reset();
@@ -382,13 +365,9 @@ void update() {
         dashLen -= gameSpeed;
         playerPosX += gameSpeed * 2;
         offsetX -= gameSpeed * 2;
-        if (dashCollision()) {
-            lives--;
-            gameState = set;
-        }
+        collisionHandling();
     }
     if (dashLen <= 0 && playerState == dashing) {
-
         if (!dropCollision()) {
             playerState = falling;
         }
@@ -502,15 +481,15 @@ void getInput() {
                     timePressed = getMsTimer();
                     if (pfeilPosY == 44) {
                         gameSpeed = 2;
-                        platWidth = 5;
+                        platWidth = 4;
                     }
                     if (pfeilPosY == 52) {
                         gameSpeed = 4;
-                        platWidth = 3;
+                        platWidth = 2;
                     }
                     if (pfeilPosY == 60) {
                         gameSpeed = 6;
-                        platWidth = 1;
+                        platWidth = 0;
                     }
                     gameState = menu_1;
 
@@ -594,7 +573,7 @@ void getInput() {
                     timePressed = getMsTimer();
 
                     gameState = stop;
-                    printPause();
+                    printPause(0xFF);
                 }
                 break;
             default:
@@ -619,7 +598,7 @@ void getInput() {
                         gameState = stop;
                     } else {
                         gameState = run;
-                        clearPause();
+                        printPause(0);
                     }
                 }
                 break;
@@ -635,13 +614,19 @@ void draw() {
 
     drawPowerUps(offsetX, playerPosX - lastPlayerPosX);
     reDrawPlatforms(offsetX, playerPosX - lastPlayerPosX);
-    drawPlayer(5, playerPosY, lastPlayerPosY, '0', playerForm);
+    if (playerState != dashing) {
+        drawPlayer(5, playerPosY, lastPlayerPosY, '0', playerForm);
+    } else{
+        drawPlayer(5,playerPosY,lastPlayerPosY,'1',_dash);
+    }
+
 }
 
 void resetGame() {
     gameState = menu_1;
     lives = 3;
     gameSpeed = INITIAL_SPEED;
+    platWidth = 2;
     playerForm = _normal;
 
 
@@ -690,7 +675,7 @@ void setGame() {
         drawPlayer(5, 0, lastPlayerPosY, '0', playerForm);
 
         // PauseZeichen
-        printPause();
+        printPause(0xFF);
 
         playerPosX = 0;
         playerPosY = 0;
@@ -732,20 +717,12 @@ int main(void) {
  */
         if (getMsTimer() % 34 == 0) {
             if (gameState == set) {
-                /*
-                 * If Lifes = 0 --> scores = 0;
-                 *
-                 */
-
                 setGame();
-
             }
             getInput();
             if (gameState == run) {
-
                 update();
                 draw();
-
             }
             if (gameState == menu_1) {
 

@@ -22,7 +22,7 @@ enum PowerUpType {
 };
 
 enum Form {
-    _normal, _knight, _sorcerer, _ranger
+    _normal, _knight, _sorcerer, _ranger, _dash
 };
 
 struct PowerUp {
