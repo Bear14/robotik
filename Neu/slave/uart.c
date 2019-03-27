@@ -11,7 +11,7 @@
 // USART-Init
 void uartInit()
 {
-	UCSR0B |= (1 << TXEN0 )|(1 << RXEN0 );	// UART Senden und empfangen einschalten
+	UCSR0B |= (1 << TXEN0 )|(1 << RXEN0 ) | (1 << RXCIE0);	// UART Senden und empfangen einschalten
 	UBRR0 = UBRR_VAL;				//Baudrate einstellen, die im Header-File definiert wurde
 }
 
