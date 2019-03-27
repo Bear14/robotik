@@ -693,13 +693,6 @@ int main(void) {
     //Initialisierung ausfuehren
 
     init();
-
-    uart_putc(80);
-    _delay_ms(1000);
-
-    uart_putc(10);
-    _delay_ms(1000);
-
     drawScreen();
     _delay_ms(1000);
 

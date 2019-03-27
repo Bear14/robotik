@@ -147,7 +147,7 @@ void drawScreen() {
     printRanger(130, 65,0);
 
     //DragonQuest
-    printTitel(0, 13);
+    printTitel(0, 0);
 
 }
 
