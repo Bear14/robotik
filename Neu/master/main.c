@@ -99,6 +99,7 @@ enum gState gameState = set; //TODO: move to Init
 enum Form playerForm = _normal; //TODO: move to Init
 
 void _death() {
+    uart_putc(4);
     lives--;
     gameState = set;
 }
@@ -225,9 +226,11 @@ void collisionHandling() {
             if (lastPlayerPosY + PLAYER_HEIGHT <= platforms[i].y) {
                 playerPosY = platforms[i].y - PLAYER_HEIGHT;
                 playerState = standing;
+                uart_putc(3);
             } else if (lastPlayerPosY >= platforms[i].y + PLATFORM_HEIGHT) {
                 playerPosY = platforms[i].y + PLATFORM_HEIGHT;
                 playerMovY = 0;
+                uart_putc(3);
             } else {
                 _death();
             }
@@ -250,6 +253,7 @@ void collisionWithPowerUp() {
                 case none:
                     break;
                 case live:
+                    uart_putc(5);
                     if (lives < 5) {
                         lives++;
                         drawLives(lives);
@@ -259,22 +263,26 @@ void collisionWithPowerUp() {
                     _death();
                     break;
                 case speedUp:
+                    uart_putc(6);
                     if (gameSpeed < MAX_GAME_SPEED) {
                         gameSpeed += 1;
                         drawSpeed(gameSpeed);
                     }
                     break;
                 case slow:
+                    uart_putc(5);
                     if (gameSpeed <= 1) {
                         gameSpeed -= 1;
                         drawSpeed(gameSpeed);
                     }
                     break;
                 case pointsUp:
+                    uart_putc(5);
                     score += gameSpeed * 50;
                     drawScore(score);
                     break;
                 case pointsDown:
+                    uart_putc(6);
                     if (score <= gameSpeed * 20) {
                         score = 0;
                     } else {
@@ -283,12 +291,15 @@ void collisionWithPowerUp() {
                     drawScore(score);
                     break;
                 case knight:
+                    uart_putc(5);
                     playerForm = _knight;
                     break;
                 case sorcerer:
+                    uart_putc(5);
                     playerForm = _sorcerer;
                     break;
                 case ranger:
+                    uart_putc(5);
                     playerForm = _ranger;
                     break;
 
@@ -403,7 +414,7 @@ void getInput() {
         switch (gameState) {
             case menu_1:
                 if (B_DOWN) {
-                    //uart_putc(60);
+                    uart_putc(2);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     clearArrow(pfeilPosX, pfeilPosY);
@@ -415,7 +426,7 @@ void getInput() {
                     printArrow(pfeilPosX, pfeilPosY);
                 }
                 if (B_UP) {
-                    //uart_putc(50);
+                    uart_putc(1);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     clearArrow(pfeilPosX, pfeilPosY);
@@ -427,13 +438,14 @@ void getInput() {
                     printArrow(pfeilPosX, pfeilPosY);
                 }
                 if (B_B) {
-                    //uart_putc(90);
+                    uart_putc(3);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     if (pfeilPosY == 44) { // Neues Game
                         gameState = set;
                     }
                     if (pfeilPosY == 52) { //Highscore zurücksetzen
+                        uart_putc(6);
                         writeScore(0);
                         drawScore(readScore());
                     }
@@ -452,7 +464,7 @@ void getInput() {
                 break;
             case menu_2:
                 if (B_DOWN) {
-                    //uart_putc(60);
+                    uart_putc(2);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     clearArrow(pfeilPosX, pfeilPosY);
@@ -464,7 +476,7 @@ void getInput() {
                     printArrow(pfeilPosX, pfeilPosY);
                 }
                 if (B_UP) {
-                    //uart_putc(50);
+                    uart_putc(1);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     clearArrow(pfeilPosX, pfeilPosY);
@@ -476,7 +488,7 @@ void getInput() {
                     printArrow(pfeilPosX, pfeilPosY);
                 }
                 if (B_B) {
-                    //uart_putc(90);
+                    uart_putc(3);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     if (pfeilPosY == 44) {
@@ -501,6 +513,7 @@ void getInput() {
                 break;
             case menu_3:
                 if (B_B) {
+                    uart_putc(3);
                     gameState = menu_1;
                     drawMenue1();
                     pfeilPosY = 44;
@@ -509,13 +522,13 @@ void getInput() {
                 break;
             case run:
                 if (B_A) {
-                    //uart_putc(90);
+                    uart_putc(1);
                     buttonPressed = '1';
                     jump();
                     timePressed = getMsTimer();
                 }
                 if (B_B) {
-                    //uart_putc(100);
+                    uart_putc(2);
                     buttonPressed = '1';
                     dash();
                     timePressed = getMsTimer();
@@ -532,10 +545,9 @@ void getInput() {
                 break;
             default:
                 if (B_SELECT) {
-                    //uart_putc(20);
+                    uart_putc(8);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
-                    //gameState = run;
                     gameState = menu_1;
                     score = 0;
                     drawMenue1();
@@ -545,8 +557,6 @@ void getInput() {
 
                 }
                 if (B_PAUSE) {
-
-                    //uart_putc(30);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     if (gameState == run) {
@@ -586,10 +596,11 @@ void resetGame() {
 
 
     clear();
-
+    uart_putc(7);
     drawString("GAME OVER", 52, 52);
 
     if (score > readScore()) {
+        uart_putc(8);
         drawString("NEW HIGHSCORE", 44, 68);
         writeScore(score);
 
