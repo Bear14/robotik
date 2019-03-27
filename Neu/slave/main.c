@@ -11,19 +11,21 @@
 #include "pwm.h"
 #include "timer.h"
 #include "servo.h"
-#include "note.h"
+#include "mynote.h"
 
 struct note {
     uint16_t frequenz;
     uint16_t lenght;
 };
 
+const uint8_t winSize = 6;
 const struct note win[] = {{E5S},
                            {G5S},
                            {A5S},
                            {C6S},
                            {A5S},
                            {C6V}};
+const uint8_t allNotesSize = 22;
 const struct note allNotes[] = {{C2S},
                                 {C3S},
                                 {G3S},
@@ -46,6 +48,9 @@ const struct note allNotes[] = {{C2S},
                                 {C6S},
                                 {DIS6S},
                                 {E6S}};
+
+const uint8_t testSize = 1;
+const struct note test[] ={{C4V}};
 
 void init();
 
@@ -74,6 +79,7 @@ void playNote(struct note ton) {
 
 void playMusik(const struct note musik[]) {
 
+
     for (uint16_t j = 0; j < 21; ++j) {
         playNote(musik[j]);
     }
@@ -81,13 +87,17 @@ void playMusik(const struct note musik[]) {
 
 void playPWM(const struct note musik[],uint8_t length) {
     uint16_t pwm = 0;
+    DDRB |= (1 << 1);// Sound-Ausgang einschalten
+
     for (uint32_t i = 0; i < length; ++i) {
-        pwm = 62500 / (musik[i].frequenz + 2);
+        pwm = 62500 / (musik[i].frequenz * 2);
         setPWM(pwm);
         for (int16_t j = 0; j < musik[i].lenght; ++j) {
             _delay_ms(1);
         }
     }
+    DDRB &= (0 << 1);  //Sound-Ausgang ausschalten
+
 }
 
 int main(void) {
@@ -101,13 +111,21 @@ int main(void) {
     uint8_t d = 0;
 
     //uint16_t counter = 0;
-    struct note a={E5A};
+    while (1){
+
+        playPWM(test, testSize);
+
+        //playPWM(allNotes, allNotesSize);
+
+        //_delay_ms(1000);
+
+        //playNote(a);
+    }
+
+    uint16_t counter=0;
 
     while (1) {
-        playPWM(allNotes);
-        //playNote(a);
 
-        /*
         if (d == 0) {
             PORTB |= (1 << 1);
         } else {
@@ -123,7 +141,7 @@ int main(void) {
             }
 
 
-        }*/
+        }
         if (uart_data_waiting())
             d = uart_getc();
 
