@@ -508,37 +508,6 @@ void getInput() {
                 }
                 break;
             case run:
-                if (B_UP) {
-                    //uart_putc(50);
-                    buttonPressed = '1';
-                    timePressed = getMsTimer();
-                    playerPosY -= gameSpeed;
-                    //offsetY += gameSpeed;
-
-                }
-                if (B_DOWN) {
-                    //uart_putc(60);
-                    buttonPressed = '1';
-                    timePressed = getMsTimer();
-                    playerPosY += gameSpeed;
-                    //offsetY -= gameSpeed;
-                }
-                if (B_RIGHT) {
-                    //uart_putc(70);
-                    buttonPressed = '1';
-                    timePressed = getMsTimer();
-                    playerPosX += gameSpeed;
-                    offsetX -= gameSpeed;
-
-                }
-                if (B_LEFT) {
-                    //uart_putc(80);
-                    buttonPressed = '1';
-                    timePressed = getMsTimer();
-                    playerPosX -= gameSpeed;
-                    offsetX += gameSpeed;
-                }
-
                 if (B_A) {
                     //uart_putc(90);
                     buttonPressed = '1';
@@ -550,22 +519,6 @@ void getInput() {
                     buttonPressed = '1';
                     dash();
                     timePressed = getMsTimer();
-                }
-                if (B_SELECT) {
-                    //uart_putc(20);
-                    buttonPressed = '1';
-                    timePressed = getMsTimer();
-                    /*
-                    //gameState = run;
-                    gameState = menu_1;
-
-                    lives = 0;
-
-                    drawMenue1();
-                    pfeilPosX = 60;
-                    pfeilPosY = 44; //Start Position
-                    printArrow(pfeilPosX, pfeilPosY);
-*/
                 }
                 if (B_PAUSE) {
 
