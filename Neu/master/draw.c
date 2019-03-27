@@ -12,31 +12,37 @@
 
 struct pageToDraw old = (struct pageToDraw) {0, 0, 0};
 
+volatile uint8_t frameCounter = 0;
+
 void drawPlayer(int16_t x, int16_t y, int16_t lastY, char forceRedraw, enum Form form) {
 
-    if (y != lastY || forceRedraw == '1') {
+    //if (y != lastY || forceRedraw == '1') {
 
         clearPlayer(x, lastY);
 
         switch (form) {
             case _normal:
-                printNormal(x, y);
+                printNormal(x, y,frameCounter);
                 break;
             case _sorcerer:
-                printSorcerer(x, y);
+                printSorcerer(x, y,frameCounter);
                 break;
             case _ranger:
-                printRanger(x, y);
+                printRanger(x, y,frameCounter);
                 break;
             case _knight:
-                printKnight(x, y);
+                printKnight(x, y,frameCounter);
                 break;
             case _dash:
                 printDash(x,y);
                 break;
         };
-
-    }
+        if(frameCounter > 12){
+            frameCounter = 0;
+        }else {
+            frameCounter++;
+        }
+   // }
 }
 
 void drawString(char text[], uint8_t x, uint8_t y) {
@@ -135,10 +141,10 @@ void drawScreen() {
     //Version 1 unbewegt
     printDragon(0, 40);
 
-    printNormal(98, 65);
-    printKnight(118, 45);
-    printSorcerer(118, 85);
-    printRanger(130, 65);
+    printNormal(98, 65,0);
+    printKnight(118, 45,0);
+    printSorcerer(118, 85,0);
+    printRanger(130, 65,0);
 
     //DragonQuest
     printTitel(0, 13);
@@ -278,15 +284,15 @@ void drawMenue3() {
 
     printPUknight(20, 64);
     drawString("KNIGHT", 10, 74);
-    printKnight(15, 88);
+    printKnight(15, 88,0);
 
     printPUsorcerer(70, 64);
     drawString("SORCERER", 56, 74);
-    printSorcerer(65, 88);
+    printSorcerer(65, 88,0);
 
     printPUranger(120, 64);
     drawString("RANGER", 110, 74);
-    printRanger(115, 88);
+    printRanger(115, 88,0);
 
 
     printPUdeath(5, 24);

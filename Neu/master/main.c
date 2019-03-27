@@ -32,7 +32,7 @@ typedef int bool;
 #define GRAVITY 1
 #define JUMP_HEIGHT -8
 #define INITIAL_SPEED 4
-#define DASH_LENGTH 12
+#define DASH_LENGTH 20
 #define MAX_GAME_SPEED 8
 #define PLAYER_HEIGHT 16
 #define STEPS_BEFORE_RESET 5000

@@ -13,13 +13,13 @@
  */
 void clearPlayer(int16_t x, int16_t y);
 
-void printNormal(uint8_t x, uint8_t y);
+void printNormal(uint8_t x, uint8_t y,uint8_t frameCounter);
 
-void printSorcerer(uint8_t x, uint8_t y);
+void printSorcerer(uint8_t x, uint8_t y,uint8_t frameCounter);
 
-void printRanger(uint8_t x, uint8_t y);
+void printRanger(uint8_t x, uint8_t y,uint8_t frameCounter);
 
-void printKnight(uint8_t x, uint8_t y);
+void printKnight(uint8_t x, uint8_t y,uint8_t frameCounter);
 
 void printDash(uint8_t x, uint8_t y);
 
