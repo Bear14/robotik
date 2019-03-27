@@ -88,6 +88,63 @@ void drawPlaceHolder(int16_t x, int16_t y) {
 
 }
 
+void printDash(uint8_t x, uint8_t y) {
+    drawCorrect(x + 0, y + 4, 0x30);
+    drawCorrect(x + 1, y + 4, 0x33);
+    drawCorrect(x + 1, y + 8, 0x30);
+    drawCorrect(x + 1, y + 12, 0x30);
+    drawCorrect(x + 2, y + 4, 0x33);
+    drawCorrect(x + 2, y + 8, 0x30);
+    drawCorrect(x + 2, y + 12, 0x30);
+    drawCorrect(x + 3, y + 0, 0x30);
+    drawCorrect(x + 3, y + 4, 0x33);
+    drawCorrect(x + 3, y + 8, 0x33);
+    drawCorrect(x + 3, y + 12, 0x30);
+    drawCorrect(x + 4, y + 0, 0x33);
+    drawCorrect(x + 4, y + 4, 0x30);
+    drawCorrect(x + 4, y + 8, 0x33);
+    drawCorrect(x + 4, y + 12, 0x33);
+    drawCorrect(x + 5, y + 0, 0x33);
+    drawCorrect(x + 5, y + 4, 0x30);
+    drawCorrect(x + 5, y + 8, 0x33);
+    drawCorrect(x + 5, y + 12, 0x33);
+    drawCorrect(x + 6, y + 0, 0x30);
+    drawCorrect(x + 6, y + 4, 0x30);
+    drawCorrect(x + 6, y + 8, 0x03);
+    drawCorrect(x + 6, y + 12, 0x33);
+    drawCorrect(x + 7, y + 0, 0x30);
+    drawCorrect(x + 7, y + 4, 0x33);
+    drawCorrect(x + 7, y + 8, 0x03);
+    drawCorrect(x + 7, y + 12, 0x03);
+    drawCorrect(x + 8, y + 0, 0x30);
+    drawCorrect(x + 8, y + 4, 0x33);
+    drawCorrect(x + 8, y + 8, 0x03);
+    drawCorrect(x + 8, y + 12, 0x03);
+    drawCorrect(x + 9, y + 0, 0x30);
+    drawCorrect(x + 9, y + 4, 0x33);
+    drawCorrect(x + 9, y + 8, 0x03);
+    drawCorrect(x + 9, y + 12, 0x03);
+    drawCorrect(x + 10, y + 0, 0x33);
+    drawCorrect(x + 10, y + 4, 0x33);
+    drawCorrect(x + 10, y + 8, 0x03);
+    drawCorrect(x + 10, y + 12, 0x03);
+    drawCorrect(x + 11, y + 0, 0x33);
+    drawCorrect(x + 11, y + 4, 0x03);
+    drawCorrect(x + 11, y + 8, 0x33);
+    drawCorrect(x + 11, y + 12, 0x33);
+    drawCorrect(x + 12, y + 0, 0x33);
+    drawCorrect(x + 12, y + 4, 0x03);
+    drawCorrect(x + 12, y + 8, 0x33);
+    drawCorrect(x + 12, y + 12, 0x30);
+    drawCorrect(x + 13, y + 0, 0x33);
+    drawCorrect(x + 13, y + 4, 0x03);
+    drawCorrect(x + 13, y + 8, 0x03);
+    drawCorrect(x + 13, y + 12, 0x30);
+    drawCorrect(x + 14, y + 4, 0x03);
+    drawCorrect(x + 14, y + 8, 0x03);
+    drawCorrect(x + 15, y + 4, 0x03);
+}
+
 void printNormal(uint8_t x, uint8_t y) {
     drawCorrect(x + 0, y + 4, 0x40);
     drawCorrect(x + 0, y + 8, 0x01);
@@ -1099,9 +1156,10 @@ void clearDragon(int8_t x, int8_t y) {
 }
 
 void printDragon(int8_t x, int8_t y) {
+
     for (uint8_t i = 22; i <= 26; ++i) {
         drawCorrect(x + i, y + 20, 0xFF);
-    }
+    }/*
     for (uint8_t i = 40; i <= 45; ++i) {
         for (uint8_t j = 20; j <= 36; j += 4) {
             drawCorrect(x + i, y + j, 0xFF);
@@ -1433,7 +1491,7 @@ void printDragon(int8_t x, int8_t y) {
     drawCorrect(x + 67, y + 44, 0x3F);
     drawCorrect(x + 68, y + 40, 0xFC);
     drawCorrect(x + 68, y + 44, 0x0F);
-    drawCorrect(x + 69, y + 40, 0xF0);
+    drawCorrect(x + 69, y + 40, 0xF0);*/
 }
 
 void printTitel(uint8_t x, uint8_t y) {
@@ -1459,7 +1517,7 @@ void printTitel(uint8_t x, uint8_t y) {
     }
     for (uint8_t i = 16; i <= 19; i++) {
         drawCorrect(x + i, y + 16, 0x0C);
-    }
+    }/*
     drawCorrect(x + 20, y + 0, 0x70);
     drawCorrect(x + 20, y + 16, 0x0D);
     drawCorrect(x + 21, y + 0, 0xE0);
@@ -1836,4 +1894,5 @@ void printTitel(uint8_t x, uint8_t y) {
     drawCorrect(x + 146, y + 12, 0xE0);
     drawCorrect(x + 146, y + 16, 0x0B);
     drawCorrect(x + 147, y + 12, 0x50);
+    */
 }

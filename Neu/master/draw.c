@@ -31,6 +31,9 @@ void drawPlayer(int16_t x, int16_t y, int16_t lastY, char forceRedraw, enum Form
             case _knight:
                 printKnight(x, y);
                 break;
+            case _dash:
+                printDash(x,y);
+                break;
         };
 
     }

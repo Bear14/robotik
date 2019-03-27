@@ -21,6 +21,8 @@ void printRanger(uint8_t x, uint8_t y);
 
 void printKnight(uint8_t x, uint8_t y);
 
+void printDash(uint8_t x, uint8_t y);
+
 void printHeart(int16_t x, int16_t y);
 
 

@@ -35,7 +35,7 @@ typedef int bool;
 #define DASH_LENGTH 12
 #define MAX_GAME_SPEED 8
 #define PLAYER_HEIGHT 16
-#define STEPS_BEFORE_RESET 3000
+#define STEPS_BEFORE_RESET 5000
 
 void init();
 
@@ -76,7 +76,7 @@ volatile uint8_t pfeilPosY = 35;
 /*
  * Score and difficulty
  */
-volatile int8_t platWidth = 5;
+volatile int8_t platWidth = 4;
 volatile int16_t gameSpeed = INITIAL_SPEED;
 volatile uint32_t score = 0;
 volatile uint32_t lastScore = 0;
@@ -487,15 +487,15 @@ void getInput() {
                     timePressed = getMsTimer();
                     if (pfeilPosY == 44) {
                         gameSpeed = 2;
-                        platWidth = 5;
+                        platWidth = 4;
                     }
                     if (pfeilPosY == 52) {
                         gameSpeed = 4;
-                        platWidth = 3;
+                        platWidth = 2;
                     }
                     if (pfeilPosY == 60) {
                         gameSpeed = 6;
-                        platWidth = 1;
+                        platWidth = 0;
                     }
                     gameState = menu_1;
 
@@ -620,13 +620,19 @@ void draw() {
 
     drawPowerUps(offsetX, playerPosX - lastPlayerPosX);
     reDrawPlatforms(offsetX, playerPosX - lastPlayerPosX);
-    drawPlayer(5, playerPosY, lastPlayerPosY, '0', playerForm);
+    if (playerState != dashing) {
+        drawPlayer(5, playerPosY, lastPlayerPosY, '0', playerForm);
+    } else{
+        drawPlayer(5,playerPosY,lastPlayerPosY,'1',_dash);
+    }
+
 }
 
 void resetGame() {
     gameState = menu_1;
     lives = 3;
     gameSpeed = INITIAL_SPEED;
+    platWidth = 2;
     playerForm = _normal;
 
 
