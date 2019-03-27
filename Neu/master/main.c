@@ -414,7 +414,7 @@ void getInput() {
         switch (gameState) {
             case menu_1:
                 if (B_DOWN) {
-                    uart_putc(2);
+                    uart_putc(1);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     clearArrow(pfeilPosX, pfeilPosY);
@@ -438,7 +438,7 @@ void getInput() {
                     printArrow(pfeilPosX, pfeilPosY);
                 }
                 if (B_B) {
-                    uart_putc(3);
+                    uart_putc(4);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     if (pfeilPosY == 44) { // Neues Game
@@ -464,7 +464,7 @@ void getInput() {
                 break;
             case menu_2:
                 if (B_DOWN) {
-                    uart_putc(2);
+                    uart_putc(1);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     clearArrow(pfeilPosX, pfeilPosY);
@@ -488,7 +488,7 @@ void getInput() {
                     printArrow(pfeilPosX, pfeilPosY);
                 }
                 if (B_B) {
-                    uart_putc(3);
+                    uart_putc(4);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     if (pfeilPosY == 44) {
@@ -513,7 +513,7 @@ void getInput() {
                 break;
             case menu_3:
                 if (B_B) {
-                    uart_putc(3);
+                    uart_putc(4);
                     gameState = menu_1;
                     drawMenue1();
                     pfeilPosY = 44;
@@ -581,8 +581,8 @@ void draw() {
     reDrawPlatforms(offsetX, playerPosX - lastPlayerPosX);
     if (playerState != dashing) {
         drawPlayer(5, playerPosY, lastPlayerPosY, '0', playerForm);
-    } else{
-        drawPlayer(5,playerPosY,lastPlayerPosY,'1',_dash);
+    } else {
+        drawPlayer(5, playerPosY, lastPlayerPosY, '1', _dash);
     }
 
 }
@@ -596,7 +596,7 @@ void resetGame() {
 
 
     clear();
-    uart_putc(7);
+
     drawString("GAME OVER", 52, 52);
 
     if (score > readScore()) {
@@ -604,7 +604,7 @@ void resetGame() {
         drawString("NEW HIGHSCORE", 44, 68);
         writeScore(score);
 
-    }
+    } else { uart_putc(7); }
     score = 0;
     _delay_ms(2000);
 
@@ -623,7 +623,7 @@ void resetGame() {
  */
 
 void setGame() {
-    if (lives == 0) {
+    if (lives == 0 || lives > 6) {
 
         resetGame();
 
