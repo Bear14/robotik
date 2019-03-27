@@ -103,9 +103,9 @@ uint8_t getIndexMinX() {
 }
 
 void platformInit() {
-    platforms[0] = (struct platform) {0, 52, 90};
-    platforms[1] = (struct platform) {100, 20, 60};
-    platforms[2] = (struct platform) {200, 80, 90};
+    platforms[0] = (struct platform) {0, 52, 60};
+    platforms[1] = (struct platform) {70, 52, 60};
+    platforms[2] = (struct platform) {140, 52, 60};
 };
 
 struct platform createNewPlatform(struct platform last, uint8_t platWidth, int16_t speed) {
