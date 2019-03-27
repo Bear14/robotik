@@ -25,7 +25,7 @@ const struct note win[] = {{E5S},
                            {C6S},
                            {A5S},
                            {C6V}};
-const uint8_t allNotesSize = 22;
+const uint8_t allNotesSize = 18;
 const struct note allNotes[] = {{C2S},
                                 {C3S},
                                 {G3S},
@@ -33,20 +33,16 @@ const struct note allNotes[] = {{C2S},
                                 {D4S},
                                 {E4S},
                                 {F4S},
-                                {FIS4S},
                                 {G4S},
-                                {GIS4S},
                                 {A4S},
-                                {H4S},
+                                {B4S},
                                 {C5S},
-                                {DES5S},
                                 {E5S},
                                 {F5S},
                                 {G5S},
                                 {A5S},
-                                {H5S},
+                                {B5S},
                                 {C6S},
-                                {DIS6S},
                                 {E6S}};
 
 const uint8_t testSize = 1;
