@@ -15,7 +15,7 @@
 
 struct note {
     uint16_t frequenz;
-    uint16_t lenght;
+    uint16_t lenght ;
 };
 
 const uint8_t winSize = 6;
@@ -45,8 +45,8 @@ const struct note allNotes[] = {{C2S},
                                 {C6S},
                                 {E6S}};
 
-const uint8_t testSize = 1;
-const struct note test[] ={{C4V}};
+const uint8_t testSize = 10;
+const struct note test[] ={{C4,10}, {E3, 10},{C4,10}, {E3, 10},{C4,10}, {E3, 10},{C4,10}, {E3, 10},{C4,10}, {E3, 10}};
 
 void init();
 
@@ -107,7 +107,7 @@ int main(void) {
     uint8_t d = 0;
 
     //uint16_t counter = 0;
-    while (1){
+    while (1) {
 
         playPWM(test, testSize);
 
@@ -115,7 +115,22 @@ int main(void) {
 
         //_delay_ms(1000);
 
+        switch (d) {
+            case '1' :
+                playPWM(test, testSize);
+                break;
+            case '2':
+                break;
+            case '3':
+                break;
+            default:
+                break;
+
+
+        }
         //playNote(a);
+        if (uart_data_waiting())
+            d = uart_getc();
     }
 
     uint16_t counter=0;
@@ -138,6 +153,7 @@ int main(void) {
 
 
         }
+
         if (uart_data_waiting())
             d = uart_getc();
 
