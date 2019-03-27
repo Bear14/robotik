@@ -555,6 +555,7 @@ void getInput() {
                     //uart_putc(20);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
+                    /*
                     //gameState = run;
                     gameState = menu_1;
 
@@ -564,7 +565,7 @@ void getInput() {
                     pfeilPosX = 60;
                     pfeilPosY = 44; //Start Position
                     printArrow(pfeilPosX, pfeilPosY);
-
+*/
                 }
                 if (B_PAUSE) {
 
@@ -583,6 +584,7 @@ void getInput() {
                     timePressed = getMsTimer();
                     //gameState = run;
                     gameState = menu_1;
+                    score = 0;
                     drawMenue1();
                     pfeilPosX = 60;
                     pfeilPosY = 44;
