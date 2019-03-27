@@ -226,11 +226,11 @@ void collisionHandling() {
             if (lastPlayerPosY + PLAYER_HEIGHT <= platforms[i].y) {
                 playerPosY = platforms[i].y - PLAYER_HEIGHT;
                 playerState = standing;
-                uart_putc(3);
+
             } else if (lastPlayerPosY >= platforms[i].y + PLATFORM_HEIGHT) {
                 playerPosY = platforms[i].y + PLATFORM_HEIGHT;
                 playerMovY = 0;
-                uart_putc(3);
+
             } else {
                 _death();
             }
@@ -443,6 +443,7 @@ void getInput() {
                     timePressed = getMsTimer();
                     if (pfeilPosY == 44) { // Neues Game
                         gameState = set;
+                        uart_putc(0);
                     }
                     if (pfeilPosY == 52) { //Highscore zurücksetzen
                         uart_putc(6);
@@ -548,6 +549,7 @@ void getInput() {
                     uart_putc(8);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
+                    uart_putc(3);
                     gameState = menu_1;
                     score = 0;
                     drawMenue1();
@@ -626,6 +628,7 @@ void setGame() {
     if (lives == 0 || lives > 6) {
 
         resetGame();
+        uart_putc(3);
 
     } else {
 
@@ -663,6 +666,7 @@ int main(void) {
     _delay_ms(1000);
 
     clear();
+    uart_putc(3);
     drawMenue1();
     pfeilPosX = 60;
     pfeilPosY = 44;

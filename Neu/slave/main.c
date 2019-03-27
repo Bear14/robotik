@@ -13,7 +13,7 @@
 #include "timer.h"
 #include "servo.h"
 #include "mynote.h"
-
+volatile musikOn =0;
 volatile uint8_t d = 0;
 struct note {
     uint16_t frequenz;
@@ -106,24 +106,19 @@ const struct note highscore[6] = {{C5, 2},
                                   {C6, 3},
                                   {A5, 4}
 };
-const uint8_t musikeSize = 18;
-const struct note musik[18] = {{E3, 5},
-                               {G3, 5},
-                               {D4, 3},
-                               {C4, 3},
-                               {E3, 5},
-                               {C4, 5},
-                               {A3, 5},
-                               {C4, 5},
-                               {D4, 5},
-                               {E4, 5},
-                               {E3, 5},
-                               {G3, 5},
-                               {D4, 4},
-                               {C4, 4},
-                               {E3, 5},
-                               {A3, 5},
-                               {E4, 5}};
+const uint8_t musikeSize = 12;
+const struct note musik[12] = {{E3, 8},
+                               {G3, 8},
+                               {D3, 16},
+                               {C3, 16},
+                               {G3, 16},
+                               {E3, 8},
+                               {D3, 8},
+                               {G3, 16},
+                               {E3, 8},
+                               {G3, 8},
+                               {E3, 8},
+                               {D3, 8}};
 
 void init();
 
@@ -159,6 +154,24 @@ void playMusik(const struct note musik[]) {
     }
 }*/
 
+void playMusik(const struct note effect[], uint8_t length) {
+    uint16_t pwm = 0;
+
+    for (uint32_t i = 0; i < length; ++i) {
+        pwm = 65000 / (effect[i].frequenz * 2);
+        setPWM(pwm);
+
+        if(musikOn ==0){
+            break;
+        }
+
+        for (int16_t j = 0; j < effect[i].lenght; ++j) {
+            _delay_ms(50);
+        }
+    }
+    setPWM(0);
+
+}
 
 void playEffect(const struct note effect[], uint8_t length) {
     uint16_t pwm = 0;
@@ -170,6 +183,7 @@ void playEffect(const struct note effect[], uint8_t length) {
             _delay_ms(50);
         }
     }
+    setPWM(0);
 
 }
 
@@ -178,43 +192,44 @@ ISR ( USART_RX_vect ) {
         d = uart_getc();
 
         switch (d) {
+            case 0:
+                musikOn =0;
+
+                break;
             case 1 :
                 playEffect(jump, jumpSize);
-            d = 0;
-            //playEffect(test, testSize);
-            break;
+                d = 0;
+                break;
             case 2:
                 playEffect(dash, dashSize);
-            d = 0;
-            break;
-            case 3:
-
                 d = 0;
-            break;
+                break;
+            case 3:   //musik
+                musikOn = 1;
+                break;
             case 4:
                 playEffect(colle, colleSize);
-            d = 0;
-            break;
+                d = 0;
+                break;
             case 5:
                 playEffect(powerUp, powerUpSize);
-            d = 0;
-            break;
+                d = 0;
+                break;
             case 6:
                 playEffect(powerDown, powerDownSize);
-            d = 0;
-            break;
+                d = 0;
+                break;
             case 7:
                 playEffect(gameOver, gameOverSize);
-            d = 0;
-            break;
+                d = 0;
+                break;
             case 8:
                 playEffect(highscore, highscoreSize);
-            d = 0;
-            break;
+                d = 0;
+                break;
             default:
                 break;
         }
-        //DDRB &= (0 << 1);  //Sound-Ausgang ausschalten
 
 }
 
@@ -226,12 +241,16 @@ int main(void) {
     // DDRB |= (1 << 1); //in Init PWM()
     //PORTB |= (1 << 1);
 
-    uint8_t d = 0;
+    setPWM(0);
 
     //uint16_t counter = 0;
     while (1) {
 
-        playEffect(musik, musikeSize);
+        if(musikOn){
+            playMusik(musik, musikeSize);
+
+        }
+
         //playPWM(allNotes, allNotesSize);
 
         //_delay_ms(1000);
