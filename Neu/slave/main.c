@@ -1,4 +1,4 @@
-/* 
+/*
  *	Basis
  *	2009 Benjamin Reh und Joachim Schleicher
  */
@@ -18,7 +18,12 @@ struct note {
     uint16_t lenght;
 };
 
-const struct note win[] = {{E5S},{G5S},{A5S},{C6S},{A5S},{C6V}};
+const struct note win[] = {{E5S},
+                           {G5S},
+                           {A5S},
+                           {C6S},
+                           {A5S},
+                           {C6V}};
 const struct note allNotes[] = {{C2S},
                                 {C3S},
                                 {G3S},
@@ -51,7 +56,7 @@ void playNote(struct note ton) {
     while (scale) {
 
         for (uint8_t i = 0; i < scale; i++) {
-            _delay_us(7);
+            _delay_us(10);
         }
 
         PORTB ^= (1 << 1);
@@ -69,8 +74,19 @@ void playNote(struct note ton) {
 
 void playMusik(const struct note musik[]) {
 
-    for (uint16_t j = 0; j < 6; ++j) {
+    for (uint16_t j = 0; j < 21; ++j) {
         playNote(musik[j]);
+    }
+}
+
+void playPWM(const struct note musik[],uint8_t length) {
+    uint16_t pwm = 0;
+    for (uint32_t i = 0; i < length; ++i) {
+        pwm = 62500 / (musik[i].frequenz + 2);
+        setPWM(pwm);
+        for (int16_t j = 0; j < musik[i].lenght; ++j) {
+            _delay_ms(1);
+        }
     }
 }
 
@@ -79,18 +95,18 @@ int main(void) {
 
     init();
 
-    DDRB |= (1 << 1); //in Init PWM()
-    PORTB |= (1 << 1);
+   // DDRB |= (1 << 1); //in Init PWM()
+    //PORTB |= (1 << 1);
 
     uint8_t d = 0;
 
     //uint16_t counter = 0;
-
-
+    struct note a={E5A};
 
     while (1) {
-        playNote((struct note){E6V});
-        //playNote((struct note){E5V});
+        playPWM(allNotes);
+        //playNote(a);
+
         /*
         if (d == 0) {
             PORTB |= (1 << 1);
@@ -120,7 +136,7 @@ int main(void) {
 void init() {
     uartInit();   // serielle Ausgabe an PC
     ADCInit(0);   // Analoge Werte einlesen
-    //PWMInit();    // Pulsweite auf B1 ausgeben
+    PWMInit();    // Pulsweite auf B1 ausgeben
     timerInit();  // "Systemzeit" initialisieren
     //servoInit();  // Servoansteuerung initialisieren
 }
