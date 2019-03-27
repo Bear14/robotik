@@ -1,4 +1,4 @@
-#define tempo 10000 // in Milisekunden
+#define tempo 1000 // in Milisekunden
 
 //pause
 #define PAUSES 100, 10000 / tempo
