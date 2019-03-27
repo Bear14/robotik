@@ -53,9 +53,7 @@ void printPUpointsDown(int16_t x, int16_t y);
 
 void clearPowerUp(int16_t x, int16_t y);
 
-void printPause();
-
-void clearPause();
+void printPause(uint8_t hex);
 
 void printArrow(uint8_t x, uint8_t y);
 

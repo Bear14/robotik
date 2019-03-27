@@ -254,30 +254,25 @@ void collisionWithPowerUp() {
                         lives++;
                         drawLives(lives);
                     }
-                    powerUps[j].type = none;
                     break;
                 case death:
                     _death();
-                    powerUps[j].type = none;
                     break;
                 case speedUp:
                     if (gameSpeed < MAX_GAME_SPEED) {
                         gameSpeed += 1;
                         drawSpeed(gameSpeed);
                     }
-                    powerUps[j].type = none;
                     break;
                 case slow:
                     if (gameSpeed <= 1) {
                         gameSpeed -= 1;
                         drawSpeed(gameSpeed);
                     }
-                    powerUps[j].type = none;
                     break;
                 case pointsUp:
                     score += gameSpeed * 50;
                     drawScore(score);
-                    powerUps[j].type = none;
                     break;
                 case pointsDown:
                     if (score <= gameSpeed * 20) {
@@ -286,27 +281,26 @@ void collisionWithPowerUp() {
                         score -= gameSpeed * 20;
                     }
                     drawScore(score);
-                    powerUps[j].type = none;
                     break;
                 case knight:
                     playerForm = _knight;
-                    powerUps[j].type = none;
                     break;
                 case sorcerer:
                     playerForm = _sorcerer;
-                    powerUps[j].type = none;
                     break;
                 case ranger:
                     playerForm = _ranger;
-                    powerUps[j].type = none;
                     break;
 
             }
+            powerUps[j].type = none;
+
 
             clearPowerUp(powerUps[j].x + offsetX, powerUps[j].y);
             powerUps[j].x = -100;
             powerUps[j].y = -100;
-            drawPlayer(5, playerPosY, lastPlayerPosY, '1', playerForm);
+
+            //drawPlayer(5, playerPosY, lastPlayerPosY, '1', playerForm);
 
         }
     }
@@ -579,7 +573,7 @@ void getInput() {
                     timePressed = getMsTimer();
 
                     gameState = stop;
-                    printPause();
+                    printPause(0xFF);
                 }
                 break;
             default:
@@ -604,7 +598,7 @@ void getInput() {
                         gameState = stop;
                     } else {
                         gameState = run;
-                        clearPause();
+                        printPause(0);
                     }
                 }
                 break;
@@ -681,7 +675,7 @@ void setGame() {
         drawPlayer(5, 0, lastPlayerPosY, '0', playerForm);
 
         // PauseZeichen
-        printPause();
+        printPause(0xFF);
 
         playerPosX = 0;
         playerPosY = 0;

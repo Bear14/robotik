@@ -73,20 +73,22 @@ uint8_t nextGlyph(char glyph, uint8_t x, uint8_t y) {
         case 'I':
             glyph_ende = 3;
             break;
+            /*
         case 'J':
             glyph_ende = 4;
-            break;
+            break;*/
         case 'K' ... 'Z':
             glyph_ende = 5;
             break;
         case ' ':
             glyph_ende = 3;
             break;
+            /*
         case '-':
             glyph_ende = 3;
             break;
         default:
-            break;
+            break;*/
     }
     return glyph_ende;
 }
@@ -97,8 +99,6 @@ void drawPowerUp(int16_t x, int16_t y, enum PowerUpType type, int16_t speed) {
     for (int i = 0; i < speed; i++) {
         drawCorrect(x + 8 + i, y, 0);
         drawCorrect(x + 8 + i, y + 4, 0);
-
-
     }
     switch (type) {
         case none:

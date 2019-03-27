@@ -467,65 +467,19 @@ void printPlatform(struct platform toDraw) {
         drawCorrect(toDraw.x + i + 14, toDraw.y + 0, 0x7F);
         drawCorrect(toDraw.x + i + 14, toDraw.y + 4, 0x55);
 
-/*
-        drawCorrect(toDraw.x + 0 + i, toDraw.y + 0, 0xFF);
-        drawCorrect(toDraw.x + 0 + i, toDraw.y + 4, 0x56);
-        drawCorrect(toDraw.x + 1 + i, toDraw.y + 0, 0xBF);
-        drawCorrect(toDraw.x + 1 + i, toDraw.y + 4, 0x56);
-        drawCorrect(toDraw.x + 2 + i, toDraw.y + 0, 0xAF);
-        drawCorrect(toDraw.x + 2 + i, toDraw.y + 4, 0x55);
-        drawCorrect(toDraw.x + 3 + i, toDraw.y + 0, 0x6F);
-        drawCorrect(toDraw.x + 3 + i, toDraw.y + 4, 0x55);
-        drawCorrect(toDraw.x + 4 + i, toDraw.y + 0, 0xAF);
-        drawCorrect(toDraw.x + 4 + i, toDraw.y + 4, 0x55);
-        drawCorrect(toDraw.x + 5 + i, toDraw.y + 0, 0xBF);
-        drawCorrect(toDraw.x + 5 + i, toDraw.y + 4, 0x55);
-        drawCorrect(toDraw.x + 6 + i, toDraw.y + 0, 0xBF);
-        drawCorrect(toDraw.x + 6 + i, toDraw.y + 4, 0x56);
-        drawCorrect(toDraw.x + 7 + i, toDraw.y + 0, 0xFF);
-        drawCorrect(toDraw.x + 7 + i, toDraw.y + 4, 0x5A);
-        drawCorrect(toDraw.x + 8 + i, toDraw.y + 0, 0xFF);
-        drawCorrect(toDraw.x + 8 + i, toDraw.y + 4, 0x56);
-        drawCorrect(toDraw.x + 9 + i, toDraw.y + 0, 0xBF);
-        drawCorrect(toDraw.x + 9 + i, toDraw.y + 4, 0x56);
-        drawCorrect(toDraw.x + 10 + i, toDraw.y + 0, 0xBF);
-        drawCorrect(toDraw.x + 10 + i, toDraw.y + 4, 0x55);
-        drawCorrect(toDraw.x + 11 + i, toDraw.y + 0, 0x6F);
-        drawCorrect(toDraw.x + 11 + i, toDraw.y + 4, 0x55);
-        drawCorrect(toDraw.x + 12 + i, toDraw.y + 0, 0x6F);
-        drawCorrect(toDraw.x + 12 + i, toDraw.y + 4, 0x55);
-        drawCorrect(toDraw.x + 13 + i, toDraw.y + 0, 0xAF);
-        drawCorrect(toDraw.x + 13 + i, toDraw.y + 4, 0x55);
-        drawCorrect(toDraw.x + 14 + i, toDraw.y + 0, 0xBF);
-        drawCorrect(toDraw.x + 14 + i, toDraw.y + 4, 0x56);
-*/
-
     }
 
 }
+void printPause(uint8_t hex) {
+    drawCorrect(0, 96, hex);
+    drawCorrect(0, 100, hex);
+    drawCorrect(1, 96, hex);
+    drawCorrect(1, 100, hex);
 
-void clearPause() {
-    drawCorrect(0, 96, 0);
-    drawCorrect(0, 100, 0);
-    drawCorrect(1, 96, 0);
-    drawCorrect(1, 100, 0);
-
-    drawCorrect(3, 96, 0);
-    drawCorrect(3, 100, 0);
-    drawCorrect(4, 96, 0);
-    drawCorrect(4, 100, 0);
-}
-
-void printPause() {
-    drawCorrect(0, 96, 0xFF);
-    drawCorrect(0, 100, 0xFF);
-    drawCorrect(1, 96, 0xFF);
-    drawCorrect(1, 100, 0xFF);
-
-    drawCorrect(3, 96, 0xFF);
-    drawCorrect(3, 100, 0xFF);
-    drawCorrect(4, 96, 0xFF);
-    drawCorrect(4, 100, 0xFF);
+    drawCorrect(3, 96, hex);
+    drawCorrect(3, 100, hex);
+    drawCorrect(4, 96, hex);
+    drawCorrect(4, 100, hex);
 }
 
 
@@ -990,7 +944,7 @@ void printGlyph(char glyph, uint8_t x, uint8_t y) {
             drawCorrect(x + 3, y + 4, 0xC3);
             drawCorrect(x + 4, y + 0, 0x0C);
             drawCorrect(x + 4, y + 4, 0xC0);
-            break;
+            break;/*
         case 'F':
             drawCorrect(x + 0, y + 0, 0xFC);
             drawCorrect(x + 0, y + 4, 0xFF);
@@ -1001,7 +955,7 @@ void printGlyph(char glyph, uint8_t x, uint8_t y) {
             drawCorrect(x + 3, y + 0, 0x0C);
             drawCorrect(x + 3, y + 4, 0x03);
             drawCorrect(x + 4, y + 0, 0x0C);
-            break;
+            break;*/
         case 'G':
             drawCorrect(x + 0, y + 0, 0xF0);
             drawCorrect(x + 0, y + 4, 0x3F);
@@ -1031,6 +985,7 @@ void printGlyph(char glyph, uint8_t x, uint8_t y) {
             drawCorrect(x + 2, y + 0, 0x0C);
             drawCorrect(x + 2, y + 4, 0xC0);
             break;
+            /*
         case 'J':
             drawCorrect(x + 0, y + 0, 0x0C);
             drawCorrect(x + 0, y + 4, 0x30);
@@ -1041,6 +996,7 @@ void printGlyph(char glyph, uint8_t x, uint8_t y) {
             drawCorrect(x + 3, y + 0, 0xFC);
             drawCorrect(x + 3, y + 4, 0x3F);
             break;
+             */
         case 'K':
             drawCorrect(x + 0, y + 0, 0xFC);
             drawCorrect(x + 0, y + 4, 0xFF);
@@ -1099,7 +1055,7 @@ void printGlyph(char glyph, uint8_t x, uint8_t y) {
             drawCorrect(x + 3, y + 0, 0x0C);
             drawCorrect(x + 3, y + 4, 0x03);
             drawCorrect(x + 4, y + 0, 0xF0);
-            break;
+            break;/*
         case 'Q':
             drawCorrect(x + 0, y + 0, 0xF0);
             drawCorrect(x + 0, y + 4, 0x3F);
@@ -1112,6 +1068,7 @@ void printGlyph(char glyph, uint8_t x, uint8_t y) {
             drawCorrect(x + 4, y + 0, 0xF0);
             drawCorrect(x + 4, y + 4, 0xCF);
             break;
+            */
         case 'R':
             drawCorrect(x + 0, y + 0, 0xF0);
             drawCorrect(x + 0, y + 4, 0xFF);
@@ -1180,6 +1137,7 @@ void printGlyph(char glyph, uint8_t x, uint8_t y) {
             drawCorrect(x + 4, y + 0, 0x3C);
             drawCorrect(x + 4, y + 4, 0xF0);
             break;
+            /*
         case 'Y':
             drawCorrect(x + 0, y + 0, 0x3C);
             drawCorrect(x + 1, y + 0, 0xC0);
@@ -1198,32 +1156,25 @@ void printGlyph(char glyph, uint8_t x, uint8_t y) {
             drawCorrect(x + 3, y + 4, 0xC0);
             drawCorrect(x + 4, y + 0, 0x3C);
             drawCorrect(x + 4, y + 4, 0xC0);
-            break;
+            break;*/
         case ' ':
             break;
+        /*
         case '-':
             drawCorrect(x + 0, y + 4, 0x03);
             drawCorrect(x + 1, y + 4, 0x03);
             drawCorrect(x + 2, y + 4, 0x03);
             break;
+            */
         default:
             break;
     }
 }
-
-void clearDragon(int8_t x, int8_t y) {
-    for (uint8_t i = 0; i <= 60; i += 4) {
-        for (uint8_t j = 0; j <= 159; j++) {
-            drawCorrect(x + j, y + i, 0x00);
-        }
-    }
-}
-
 void printDragon(int8_t x, int8_t y) {
 
     for (uint8_t i = 22; i <= 26; ++i) {
         drawCorrect(x + i, y + 20, 0xFF);
-    }/*
+    }
     for (uint8_t i = 40; i <= 45; ++i) {
         for (uint8_t j = 20; j <= 36; j += 4) {
             drawCorrect(x + i, y + j, 0xFF);
@@ -1555,7 +1506,7 @@ void printDragon(int8_t x, int8_t y) {
     drawCorrect(x + 67, y + 44, 0x3F);
     drawCorrect(x + 68, y + 40, 0xFC);
     drawCorrect(x + 68, y + 44, 0x0F);
-    drawCorrect(x + 69, y + 40, 0xF0);*/
+    drawCorrect(x + 69, y + 40, 0xF0);
 }
 
 void printTitel(uint8_t x, uint8_t y) {
@@ -1581,7 +1532,7 @@ void printTitel(uint8_t x, uint8_t y) {
     }
     for (uint8_t i = 16; i <= 19; i++) {
         drawCorrect(x + i, y + 16, 0x0C);
-    }/*
+    }
     drawCorrect(x + 20, y + 0, 0x70);
     drawCorrect(x + 20, y + 16, 0x0D);
     drawCorrect(x + 21, y + 0, 0xE0);
@@ -1958,5 +1909,4 @@ void printTitel(uint8_t x, uint8_t y) {
     drawCorrect(x + 146, y + 12, 0xE0);
     drawCorrect(x + 146, y + 16, 0x0B);
     drawCorrect(x + 147, y + 12, 0x50);
-    */
 }
