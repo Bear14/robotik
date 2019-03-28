@@ -226,11 +226,11 @@ void collisionHandling() {
             if (lastPlayerPosY + PLAYER_HEIGHT <= platforms[i].y) {
                 playerPosY = platforms[i].y - PLAYER_HEIGHT;
                 playerState = standing;
-                uart_putc(3);
+
             } else if (lastPlayerPosY >= platforms[i].y + PLATFORM_HEIGHT) {
                 playerPosY = platforms[i].y + PLATFORM_HEIGHT;
                 playerMovY = 0;
-                uart_putc(3);
+
             } else {
                 _death();
             }
@@ -414,7 +414,7 @@ void getInput() {
         switch (gameState) {
             case menu_1:
                 if (B_DOWN) {
-                    uart_putc(2);
+                    uart_putc(1);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     clearArrow(pfeilPosX, pfeilPosY);
@@ -438,11 +438,12 @@ void getInput() {
                     printArrow(pfeilPosX, pfeilPosY);
                 }
                 if (B_B) {
-                    uart_putc(3);
+                    uart_putc(4);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     if (pfeilPosY == 44) { // Neues Game
                         gameState = set;
+                        uart_putc(0);
                     }
                     if (pfeilPosY == 52) { //Highscore zurücksetzen
                         uart_putc(6);
@@ -464,7 +465,7 @@ void getInput() {
                 break;
             case menu_2:
                 if (B_DOWN) {
-                    uart_putc(2);
+                    uart_putc(1);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     clearArrow(pfeilPosX, pfeilPosY);
@@ -488,7 +489,7 @@ void getInput() {
                     printArrow(pfeilPosX, pfeilPosY);
                 }
                 if (B_B) {
-                    uart_putc(3);
+                    uart_putc(4);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
                     if (pfeilPosY == 44) {
@@ -513,7 +514,7 @@ void getInput() {
                 break;
             case menu_3:
                 if (B_B) {
-                    uart_putc(3);
+                    uart_putc(4);
                     gameState = menu_1;
                     drawMenue1();
                     pfeilPosY = 44;
@@ -548,6 +549,7 @@ void getInput() {
                     uart_putc(8);
                     buttonPressed = '1';
                     timePressed = getMsTimer();
+                    uart_putc(3);
                     gameState = menu_1;
                     score = 0;
                     drawMenue1();
@@ -581,8 +583,8 @@ void draw() {
     reDrawPlatforms(offsetX, playerPosX - lastPlayerPosX);
     if (playerState != dashing) {
         drawPlayer(5, playerPosY, lastPlayerPosY, '0', playerForm);
-    } else{
-        drawPlayer(5,playerPosY,lastPlayerPosY,'1',_dash);
+    } else {
+        drawPlayer(5, playerPosY, lastPlayerPosY, '1', _dash);
     }
 
 }
@@ -596,7 +598,7 @@ void resetGame() {
 
 
     clear();
-    uart_putc(7);
+
     drawString("GAME OVER", 52, 52);
 
     if (score > readScore()) {
@@ -604,7 +606,7 @@ void resetGame() {
         drawString("NEW HIGHSCORE", 44, 68);
         writeScore(score);
 
-    }
+    } else { uart_putc(7); }
     score = 0;
     _delay_ms(2000);
 
@@ -623,9 +625,10 @@ void resetGame() {
  */
 
 void setGame() {
-    if (lives == 0) {
+    if (lives == 0 || lives > 6) {
 
         resetGame();
+        uart_putc(3);
 
     } else {
 
@@ -663,6 +666,7 @@ int main(void) {
     _delay_ms(1000);
 
     clear();
+    uart_putc(3);
     drawMenue1();
     pfeilPosX = 60;
     pfeilPosY = 44;

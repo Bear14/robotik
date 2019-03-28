@@ -8,6 +8,8 @@
 #define PAUSEG 100, 10000 / tempo * 16
 
 //noten frequenz / 1000000
+#define C1  33
+#define A1  55
 #define C2  65.7
 #define D2  73.75
 #define E2  82.78
