@@ -84,6 +84,10 @@
 .formatImage{
     width: 80%;
     height:auto;
-    padding-left: 10%;
-    padding-right: 10%;
+    max-width: 50%;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 1%;
+    border: black solid 1px;
+    background-color: rgba(255, 255, 255, 0.51);
 }
