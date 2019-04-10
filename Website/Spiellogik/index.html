@@ -8,7 +8,8 @@
 <body class="Body">
 
 
-<div class="titleContainer"><img class="dragonIcon" src="../Images/dragon.png"><img class="titleImg" src="../Images/title1.png"></div>
+<div class="titleContainer"><img class="dragonIcon" src="../Images/dragon.png"><img class="titleImg"
+                                                                                    src="../Images/title1.png"></div>
 
 <div class="ImgContainer"><img class="headImg" src="../Images/header.png"></div>
 
@@ -19,8 +20,277 @@
         <li><a class="NavigationPanel" href="../Team/index.html">Team</a></li>
         <li><a class="NavigationPanel" href="../Grundfunktionen/index.html">Grundfunktionen</a></li>
         <li><a class="NavigationPanel" href="../Spiellogik/index.html">Spiellogik</a>
-        </li><li><a class="NavigationPanel" href="../Code/index.html">Code</a></li>
+        </li>
+        <li><a class="NavigationPanel" href="../Code/index.html">Code</a></li>
     </ul>
+</div>
+
+<h1 class="formatHeader">Spiellogik</h1>
+
+<h2 class="formatHeader">Spiel-Objekte</h2>
+<img class="formatImage" src="../Images/spielObjekte.png">
+
+
+<div class="textContainer"> Unser Spielfeld ist ein karthesische koordinaten system mit 16 bit integern als x und y werte
+
+    es sind also alle positonen zwischen -min16bitInt und max16bit integer möglichen.
+
+    das koordinaten system besitzt außerdem eine gespiegelt y achse.
+
+    inerhalb diese systems gibt es dann noch den bildausschnitt der sich von 0 - 159 x und 0 - 104 y aufspannt.
+
+    warum das logische spielfeld soviel größer ist als benötigt erläutern wir später im punkt sitescroller.
+
+
+
+</div>
+
+<div class="formatImage">"game":{<br>
+    "gameSpeed": "int",<br>
+    "gravity": "int",<br>
+    "platWidth": "int",<br>
+    "score": "int",<br>
+    "lives": "int",<br>
+    "gameState": "enum",<br>
+    "player": "Player",<br>
+    "platforms[3]": "Platform[]",<br>
+    "powerUps[2]": "PowerUp[]"<br>
+    }<br></div>
+<div class="textContainer">Unser Spiel setzt sich aus mehreren Objekten zusammen.
+    Das erste Objekt ist das Spiel ansich. Es hat die Eigenschaften Spielgeschwindigkeit, Schwerkraft,
+    Spielzustand, maximale Plattengröße, Punktestand und leben.
+
+</div>
+
+<img class="formatImage" src="../Images/gameState.svg">
+
+<div class="textContainer">Die Spielzustandsmachine besteht aus 3 Zuständen.
+    Einem run-Zustand indem sich das Spielgeschehen abspielt, einem stop-Zustand indem das Spiel angehalten ist der
+    Ausgelöst wird sobald man die Pause taste drückt,
+    und einem set-Zustand der sobald man stirbt sich darum kümmert das das Spiel neu gestarted wird oder aber beendet
+    sollte man alle seine Leben verloren haben.<br><br></div>
+<div class="textContainer">
+    Das nächste Object das wir für unser Spiel benötigen ist der Spieler selbst. Er ist in Rechteck und hat damit
+    logischerweise die eigneschaften x,y,höhe und breite. Damit wir in beim Zeichenen
+    löschen können merken wir uns auserdem seine letzte Y-Position, diese wird auserdem später bei der Kollisonsabfrage
+    noch hilfreich.
+    Weitere Eigenschaften des Spielers sind seine Sprunghöhe und sein Dashweite. Zudem hat er einen eindimensonalen
+    Vektor für seine Bewegung in Y. Der Spieler hat auserdem noch eine Form die festlegt
+    festlegt was für ein Character er gerade ist.
+    Um festzustellen welche Physikalischen Eigenschaften auf ihn wirken gibt es einen Spielerzustand.
+</div>
+
+<!--Bild PlayerState TODO: Hintergund noch transparenter-->
+<img src="../Images/playerState.svg" class="formatImage">
+<div class="textContainer">
+    Die Spielerzustandsmachine besteht aus 4 zuständen.
+    <ul><li>falling: Befinden wir uns im Zustand falling so wirkt auf uns der BewegungsVector movY des Spielers auf uns. Auf diesen wird jedes Frame die schwerkraft dazuaddiert.
+    </li><li>standing: Im Zustand standing wirkt keine schwerkraft auf uns. Sobald wir aber den Kontakt zum Boden verlieren gehen wir wieder in den Zustand falling über</li></ul>
+
+</div>
+
+
+<div class="textContainer">
+    Um platz im Code zu sparen sind sowohl das Spiel als auch der Spieler keinen eigenen Klassen im Code sondern
+    ihre Attribute sind als globale Variablen deklariert.
+
+</div>
+<h2 class="formatHeader">Side-scroller</h2>
+<div class="textContainer">
+    Ein Sidescroller scroller ist ein Spiel in einer 2D ansicht bei dem man sich nur nach links und rechts bewegen kann.
+    DragonQuest ist ein besonderer Sidescroller da sich der Spieler kontinuierlich nach rechts bewegt.<br><br>
+</div>
+<div class="textContainer">
+    Bewwegung rect 1 oder rect 2 egal
+    konstelölation wiuchtig
+
+    es gibt eine logische und eine Visuelle ansicht
+    offset merken. oder klüger offset = (playerpos x + 5) *1-1
+
+   <br><br>
+</div>
+
+<div class="textContainer">
+    Problem: der Integer des spielers für die x positon läuft über
+    lösung wir fragen die x positon jedes mal ab nach dem erhöhen und wenn wir in die nähe des Max Value kommen setzten wir ihn auf null.
+
+    offset auch zurück
+
+    in unserer implementation benutzen wir die reset schleife um gleichzeit das speil schwieriger zu machen. heißt geschwindigkeit erhöhen und platformgröße reduzieren.
+
+
+
+    <br><br>
+</div>
+
+<div class="textContainer">
+Festlegen wie weit die neue platform von der letzten platform weg ist.
+
+    formel.
+
+    bestimmung der minimalen sprungweite:
+
+    (jumpheight * 2 +1) * gamespeed.
+
+    bestimmung der maximalen sprungweite:
+
+    minsprung * 2.
+
+    random zwischen diesen beiden werten.
+
+
+    neues Y zwischen 4  23
+
+    wegen der leben und score anzeigen un der spielhöhe des Spielers.
+
+
+    neue länge ist ein wert zwischen 2 und der maximalen platten größe * 15 da unser sprite für die platform 15 px lang ist.
+
+
+
+    <br><br>
+</div>
+<div class="textContainer">
+    Es gibt ein 15% chance das ein Powerup auf einer neuen platform entsteht.
+
+    die positon auf der platform ist ein wert zufällig zwischen ende und angfang der platform.
+
+
+    der y wert ist immer so das powerup auf der platform liegt.
+
+    <br><br>
+</div>
+
+<div class="textContainer">
+
+    switch acse für chancen auf powerups.
+
+    <br><br>
+</div>
+
+<h2 class="formatHeader">Kollision</h2>
+
+<div class="textContainer">
+
+    eine Grundlöegende Kollisionsabfrage zsicehen zwei rechtecken.
+
+
+    wir schauen ob die beiden äußerden kanten so ausernander ligen das es eine kollison geben könnte
+
+    dann betrachetn wir die innenen kannten ob sie inneinenader liegen.
+
+
+    das gleiche mit den y koordinaten
+
+
+
+    <br><br>
+</div>
+
+<div class="textContainer">
+    erweiterung der abfrage um die richtung festzustellen.
+
+    war die unterkante im frame davor über der platform so ist ees eine collision von oben.
+
+    war die oberkante des speilers im frame davor unter der platform so war es eine collsion von unten.
+
+    ist beides nicht der fall so war es eine kollison von der seite. die seite müssen wir nicht unterscheiden da wir aufgrund unserer scroll mechanik nur von links kollidirene können.
+
+
+
+    <br><br>
+</div>
+
+<div class="textContainer">
+    ertse collison.
+
+    die abfrage ob wir noch boden unten den Füßen haben.
+
+    relativ simple wir fragen ob der pixel unter dem spieler mit einer platform kollidiert ist dies nicht mehr der fall so gehen wir über in den Zustand fallen.
+
+    zweite Koliisonsabfrage wirkjsam in fallend springend
+
+    kollideren wir mit einer platform von oben so setllen wir den spieler auf die platform.
+
+    kollideren wir mir einer platform von unten so wird der bewegungsvektor des spielers auf 0 gesetz und wir beleiben im zustand fallend.
+
+    gibts es eine Kollsion von der seite so stribt der spieler und die death routine wird aufgerufen.
+
+
+
+
+    <br><br>
+</div>
+
+<div class="textContainer">
+
+    kollison mit powerups.
+
+    die kollison mit powerups ist eine einfache rechtecks kollison mit dem spieler. sobald das powerup kollidert wird der type auf none gestzt damit nicht mehremals der
+    selbe effekt auftritt.
+
+
+
+
+
+
+    <br><br>
+</div>
+
+<h2 class="formatHeader">Aktionen</h2>
+
+<div class="textContainer">
+
+    wir möchten doppelsprünge bzw dreifachsprunge
+
+    und dashes also schwerkraftlosichkeit des spielers und gleichzeitige verschellerung.
+
+
+
+
+    erste Aktion ist springen.
+
+    das fügen wir einen sprungzähler hinzu.
+
+    drücken wir den knopf für jump so wird der spieler in den zustand springend versetzt. und zum bewegungsvektor wird die sprunghöhe dazu addiert.
+
+    dananach wird der sprung counter reduziert.
+
+    der  jumpcounter wird jedes mal im zustand standing zurückgesetzt. auf den wert den die jeweilige form vorgibt.
+
+
+
+
+    <br><br>
+</div>
+
+<div class="textContainer">
+
+    fürs dachen benötigen wir ebensfalls einen Zähler. und auserdem einen zweiten zähler der mitzähl wie viele frames wir schon dashen.
+
+
+    wird der knopf dashen betätigt so wird wie beim springen der spieler in den zustand dashen versetzt
+    außderdem wird der zähler für die frames auf die von der form vorgegebene größe gesetzt.
+
+    außerdem wird der counter reduziert.
+
+
+    im zustand dasching wird die normale spielgeschwqindigkeit auf verdoppelt.
+
+    auserdem wird die süpielgeschwqindigkeit von der dashframecounter abgezogen.
+
+    somit haben wir gleich lange dashes egal wir schnell das speil gerade ist.
+
+    befinden wir uns im zustand dashing und die dashFramecounter ist kleiner oder gleich null so gehen wir in den zustand falling über.
+
+
+    testet man das ganze so gibt es nun folgendes problem.
+
+    springt man und dasht in der mitte des sprungs so bewegen wir uns torzdem noch nach oben. und dashen wir und springen in der mitte des dashes so sind wir danach wieder dashend.
+
+    um das zu verhindern muss man in der jump routine noch den dahsframcounter auf null setzten und in der dashroutine den bewgungsvektor des spielres auf null.
+
+    <br><br>
 </div>
 
 </body>
