@@ -34,6 +34,25 @@
 <h2 class="formatHeader">Zeichnen</h2>
 
 <h2 class="formatHeader">Sound</h2>
+<div class="textContainer">
+    <p>
+        Der Sound wurde mit Hilfe des PWM Moduls, des Microkontollers ATmega168, generiert. Im Grunde wird an den Lautsprecher ein Rechtecksignal angelegt. Die Tonhöhe wird mit der Frequenz gesteuert. Je schneller die Frequenz desto höher der Ton.
+    </p>
+    <p>
+        Um die Erzeugung von Tonabfolgen zu erleichtern wurde im Vorfeld zu einige Tönen ihre Frequenz speichen. In Folge dessen brauchen man nur den gewünschten Ton zu schreiben und bekam automatisch die dazugehörige Frequenz.
+    </p>
+    <p>
+        Bei der Recherche schtiesen wir auf eine sehr hilfreiche Webanwendung(www.beepbox.co), welches uns erlaubt Tonabfolgen zu testen und so möglicht schnell brauchbare Sounds zu generieren.
+    </p>
+    <h3>Wie werden Sounds gespeichert?</h3>
+    <p>
+        Um eine Tonabfoleg zu spielen wurde diese in einem Array gespeichert. Ein Tonwert bestand aus der Frequenz des Tones und der Dauer in Millisekunden.
+    </p>
+    <h3>Wie werden Sounds abgespielt?</h3>
+    <p>
+        Um Sounds abzuspielen wird das Soundarray durchlaufen und die jeweilige Frequenz an die PWM übergeben und für die gewünschte Dauer gewartet bis die nächste Frequenz übergeben wird.
+    </p>
+</div>
 
 <h2 class="formatHeader">Animation</h2>
 
