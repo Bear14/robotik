@@ -109,6 +109,16 @@
     Die Form des Spielers sorgt dafür das er für seinen derzeitigen Charakter die richtige Sprunganzahl und Dashweite
     bzw. Dashanzahl besitzt.
     Die Form sorgt auch dafür, dass der Spieler richtig gezeichnet wird.<br>
+    Es gibt folgende Formen:
+    <ul>
+        <li>Normal: Kann einen Doppelsprung und zwei mal dashen.</li>
+        <li>Ritter: Kann zusätzlich sehr lange dashen.</li>
+        <li>Zauberer: Kann drei mal dashen.</li>
+        <li>Waldläufer: Kann einen Dreifachsprung.</li>
+
+
+    </ul>
+    <br>
 
     Um festzustellen, welche physikalischen Kräfte derzeit auf den Spieler wirken gibt es den Spielerzustand, der als
     Zustandsautomat implementiert ist.
@@ -185,11 +195,42 @@
 
 <div class="textContainer">
     Die Powerups sind Quadrate mit einer festen Seitenlänge. Sie besitzen zusätzlich noch einen Typen der festlegt,
-    welchen Effekt sie haben.
+    welchen Effekt sie haben. Es gibt die Powerup-Typen:
+    <ul>
+        <li>
+            keiner: nichts passiert.
+        </li>
+        <li>
+            Tod: Der Spieler stirbt.
+        </li>
+        <li>
+            Ritter: Der Spieler wird zum Ritter
+        </li>
+        <li>Zauberer: Der Spieler wird zum Zauberer</li>
+        <li>
+            Waldläufer: Der Spieler wird zum Waldläufer
+        </li>
+        <li>
+            Leben: Ein Leben dazu.
+        </li>
+        <li>
+            langsamer: Das Spiel wird langsamer.
+        </li>
+        <li>
+            schneller: Das Spiel wird schneller.
+        </li>
+        <li>
+            Extrapunkte
+        </li>
+        <li>
+            Punktabzug
+        </li>
+
+    </ul>
 </div>
 
 
-<h3 class="formatHeader">PowerUps</h3>
+<h3 class="formatHeader">Powerups</h3>
 
 <div class="doubleImage">
     <img class="formatImage" src="../Images/objectsPowerUps.png">
