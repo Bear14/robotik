@@ -8,8 +8,13 @@
 <body class="Body">
 
 
-<div class="titleContainer"><img class="dragonIcon" src="../Images/dragon.png"><img class="titleImg"
-                                                                                    src="../Images/title1.png"></div>
+<div class="titleContainer"><img class="dragonIcon" src="../Images/dragon.png">
+    <div class="titleHead">
+        <div class="title">Konsole B:</div>
+        <img class="titleImg"
+             src="../Images/title1.png"></div>
+</div>
+
 
 <div class="ImgContainer"><img class="headImg" src="../Images/header.png"></div>
 
@@ -28,78 +33,182 @@
 <h1 class="formatHeader">Spiellogik</h1>
 
 <h2 class="formatHeader">Spiel-Objekte</h2>
-<img class="formatImage" src="../Images/spielObjekte.png">
 
-
-<div class="textContainer"> Unser Spielfeld ist ein karthesische koordinaten system mit 16 bit integern als x und y werte
-
-    es sind also alle positonen zwischen -min16bitInt und max16bit integer möglichen.
-
-    das koordinaten system besitzt außerdem eine gespiegelt y achse.
-
-    inerhalb diese systems gibt es dann noch den bildausschnitt der sich von 0 - 159 x und 0 - 104 y aufspannt.
-
-    warum das logische spielfeld soviel größer ist als benötigt erläutern wir später im punkt sitescroller.
-
-
-
-</div>
-
-<div class="formatImage">"game":{<br>
-    "gameSpeed": "int",<br>
-    "gravity": "int",<br>
-    "platWidth": "int",<br>
-    "score": "int",<br>
-    "lives": "int",<br>
-    "gameState": "enum",<br>
-    "player": "Player",<br>
-    "platforms[3]": "Platform[]",<br>
-    "powerUps[2]": "PowerUp[]"<br>
-    }<br></div>
-<div class="textContainer">Unser Spiel setzt sich aus mehreren Objekten zusammen.
-    Das erste Objekt ist das Spiel ansich. Es hat die Eigenschaften Spielgeschwindigkeit, Schwerkraft,
-    Spielzustand, maximale Plattengröße, Punktestand und leben.
-
-</div>
-
-<img class="formatImage" src="../Images/gameState.svg">
-
-<div class="textContainer">Die Spielzustandsmachine besteht aus 3 Zuständen.
-    Einem run-Zustand indem sich das Spielgeschehen abspielt, einem stop-Zustand indem das Spiel angehalten ist der
-    Ausgelöst wird sobald man die Pause taste drückt,
-    und einem set-Zustand der sobald man stirbt sich darum kümmert das das Spiel neu gestarted wird oder aber beendet
-    sollte man alle seine Leben verloren haben.<br><br></div>
+<h3 class="formatHeader">Spielfeld</h3>
 <div class="textContainer">
-    Das nächste Object das wir für unser Spiel benötigen ist der Spieler selbst. Er ist in Rechteck und hat damit
-    logischerweise die eigneschaften x,y,höhe und breite. Damit wir in beim Zeichenen
-    löschen können merken wir uns auserdem seine letzte Y-Position, diese wird auserdem später bei der Kollisonsabfrage
-    noch hilfreich.
-    Weitere Eigenschaften des Spielers sind seine Sprunghöhe und sein Dashweite. Zudem hat er einen eindimensonalen
-    Vektor für seine Bewegung in Y. Der Spieler hat auserdem noch eine Form die festlegt
-    festlegt was für ein Character er gerade ist.
-    Um festzustellen welche Physikalischen Eigenschaften auf ihn wirken gibt es einen Spielerzustand.
+
+    Das Spielfeld ist ein zwei dimensionales kartesisches Koordinatensystem mit 16 Bit Integern als X und Y Werten.
+    Die Y Achse des Spielfeldes ist gespiegelt.
+
+    Innerhalb dieses Spielfelds gibt es den gezeichneten Bildausschnitt. Der Bildausschnitt spannt sich auf in
+    X-Richtung von null bis 159 und in Y-Richtung von null bis 104.
+
+</div>
+<h3 class="formatHeader">Spiel</h3>
+<div class="textContainer">
+    Das Spiel selbst besitzt als Eigenschaften einen eindimensionalen Vektor für die Bewegung des Spielers in
+    X-Richtung, einer Schwerkraft und einen Spielzustand.
+    Außerdem besitzt das Spiel noch Ganzzahlwerte für die maximale Plattengröße, den Punktestand und die Anzahl der
+    Leben des
+    Spielers.
+
+
+</div>
+<div class="doubleImage">
+    <img class="formatImage" src="../Images/gameState.svg">
+    <div class="formatImage">"Spiel":{<br>
+        &emsp;"gameSpeed": "int",<br>
+        &emsp;"gravity": "int",<br>
+        &emsp; "platWidth": "int",<br>
+        &emsp;"score": "int",<br>
+        &emsp; "lives": "int",<br>
+        &emsp; "gameState": "enum",<br>
+        &emsp;"player": "Player",<br>
+        &emsp;"platforms[3]": "Platform[]",<br>
+        &emsp;"powerUps[2]": "PowerUp[]"<br>
+        }<br></div>
+</div>
+<div class="textContainer">
+
+    Der Zustandsautomat für den Spielzustand besteht aus vier Zuständen. Die Zustände bestimmen über die aktuelle
+    Tastenbelegung und die Reaktion der Spiellogik auf die Tasten.
+
+    <ul>
+        <li>
+            "menu": Der Startzustand, von hieraus ist es möglich Einstellungen zu verändern und ein neues Spiel zu
+            starten.<br><br>
+        </li>
+        <li>"run": Im "run"-Zustand läuft das Spielgeschehen ab.<br><br>
+        </li>
+        <li>
+            "stop": Hält das Spiel an und macht es dem Spieler möglich das Spiel zu beenden und ins Hauptmenü zu
+            wechseln.<br><br>
+        </li>
+        <li>
+            "set": Der "set"Zustand wird aktiv, sobald der Spieler stirbt. Ist dies der
+            Fall so wird entweder eine neue Runde gestartet oder
+            sollten alle Leben verloren sein kehrt man ins Hauptmenü zurück.<br><br>
+        </li>
+    </ul>
 </div>
 
-<!--Bild PlayerState TODO: Hintergund noch transparenter-->
+<h3 class="formatHeader">Spieler</h3>
+
+
+<div class="textContainer">
+    Alle interagierbaren Spielobjekte sind im Grunde Rechtecke mit besonderen Eigenschaften.
+    Somit sind die ersten vier Eigenschaften, x, y, Höhe und Breite des Spielers trivial.<br>
+    Zusätzlich merken wir uns um die Spielfigur beim Zeichnen löschen zu können seine vorherige Y-Position.
+    Diese wird später bei der Kollisionsabfrage zusätzlich hilfreich.<br>
+    Weitere Eigenschaften des Spielers sind seine Sprunghöhe und seine Dashweite.<br>
+    Um seine Bewegung in Y-Richtung zu berechnen besitzt er zudem noch einen eindimensionalen Vektor.<br>
+
+    Die Form des Spielers sorgt dafür das er für seinen derzeitigen Charakter die richtige Sprunganzahl und Dashweite
+    bzw. Dashanzahl besitzt.
+    Die Form sorgt auch dafür das der Spieler richtig gezeichnet wird.<br>
+
+    Um festzustellen, welche physikalischen Kräfte derzeit auf den Spieler wirken gibt es den Spielerzustand der als
+    Zustandsautomat implementiert ist.
+
+</div>
+
+<div class="doubleImage">
+    <img class="formatImage" src="../Images/objectsPlayer.png">
+    <div class="formatImage">"Spieler":{<br>
+        &emsp;"x": "int",<br>
+        &emsp;"y": "int",<br>
+        &emsp; "height": "int",<br>
+        &emsp;"width": "int",<br>
+        &emsp; "lastY": "int",<br>
+        &emsp; "jumpHeight": "int",<br>
+        &emsp;"dashDist": "int",<br>
+        &emsp;"playerMovY": "int",<br>
+        &emsp;"playerForm": "enum"<br>
+        &emsp;"playerState": "enum"<br>
+        }<br></div>
+</div>
+
 <img src="../Images/playerState.svg" class="formatImage">
 <div class="textContainer">
-    Die Spielerzustandsmachine besteht aus 4 zuständen.
-    <ul><li>falling: Befinden wir uns im Zustand falling so wirkt auf uns der BewegungsVector movY des Spielers auf uns. Auf diesen wird jedes Frame die schwerkraft dazuaddiert.
-    </li><li>standing: Im Zustand standing wirkt keine schwerkraft auf uns. Sobald wir aber den Kontakt zum Boden verlieren gehen wir wieder in den Zustand falling über</li></ul>
 
+    Der Spielerzustandsautomat besteht aus vier Zuständen:
+    <ul>
+        <li>"falling": Der Startzustand, hier wird die Kollision mit allen anderen Spielobjekten abgefragt (collision_P_*). Zudem wirkt hier der Y-Bewegungsvektor auf den Spieler.
+
+            <br><br></li>
+        <li>"standing": Es wird die Kollision mit der Plattform unter dem Spieler abgefragt (collision_G).
+
+            <br><br></li>
+        <li>"dashing": Der Spieler ist schwerelos, es wirkt also keine Schwerkraft auf ihn, und die Bewegung in X-Richtung wird erhöht.
+
+            <br><br></li>
+        <li>"jumping": Äquivalent zum "falling"-Zustand.
+
+            <br><br></li>
+
+    </ul>
 </div>
 
 
 <div class="textContainer">
-    Um platz im Code zu sparen sind sowohl das Spiel als auch der Spieler keinen eigenen Klassen im Code sondern
+    Um Platz im Programmspeicher des Mikrocontrollers zu sparen sind sowohl das Spiel als auch der Spieler keine eigenen Klassen im Code, sondern
     ihre Attribute sind als globale Variablen deklariert.
 
 </div>
-<h2 class="formatHeader">Side-scroller</h2>
+
+<h3 class="formatHeader">Plattformen</h3>
+
 <div class="textContainer">
-    Ein Sidescroller scroller ist ein Spiel in einer 2D ansicht bei dem man sich nur nach links und rechts bewegen kann.
-    DragonQuest ist ein besonderer Sidescroller da sich der Spieler kontinuierlich nach rechts bewegt.<br><br>
+    Die Plattformen sind einfache Rechtecke die eine feste Höhe besitzen. Das einzig besondere ist das die Länge der Plattformen immer durch 15 teilbar sein muss. Das liegt an der Größe des Sprites, für die Plattformen, der genau 15 Pixel lang ist.
+
 </div>
+
+<div class="doubleImage">
+    <img class="formatImage" src="../Images/objectsPlatform.png">
+    <div class="formatImage">"Plaform":{<br>
+        &emsp;"x": "int",<br>
+        &emsp;"y": "int",<br>
+        &emsp; "height": "int",<br>
+        &emsp;"width": "int",<br>
+        }<br></div>
+</div>
+
+
+<div class="textContainer">
+    Die Powerups sind Quadrate mit einer festen Seitenlänge. Sie besitzen zusätzlich noch einen Typen der festlegt, welchen Effekt sie haben.
+</div>
+
+
+<h3 class="formatHeader">PowerUps</h3>
+
+<div class="doubleImage">
+    <img class="formatImage" src="../Images/objectsPowerUps.png">
+    <div class="formatImage">"PowerUp":{<br>
+        &emsp;"x": "int",<br>
+        &emsp;"y": "int",<br>
+        &emsp; "height": "int",<br>
+        &emsp;"type": "enum",<br>
+        }<br></div>
+</div>
+
+
+<h2 class="formatHeader">Sidescroller</h2>
+<h3 class="formatHeader">Definition</h3>
+<div class="textContainer">
+    Ein Sidescroller ist ein Spiel in einer 2D Ansicht bei der man sich nur nach rechts oder nach links bewegen kann.
+
+    "Dragonquest" gehört zur Unterart der Endloslauf-Spiele. Das heißt der Spieler bewegt sich kontinuierlich in eine Richtung, in diesem Fall nach rechts.
+
+</div>
+
+<h3 class="formatHeader">Ansicht</h3>
+
+<div class="doubleImage">
+    <img class="formatImage" src="../Images/sidescroller1.png">
+    <img class="formatImage" src="../Images/sidescroller2.png">
+</div>
+
+
 <div class="textContainer">
     Bewwegung rect 1 oder rect 2 egal
     konstelölation wiuchtig
@@ -107,24 +216,25 @@
     es gibt eine logische und eine Visuelle ansicht
     offset merken. oder klüger offset = (playerpos x + 5) *1-1
 
-   <br><br>
+    <br><br>
 </div>
 
 <div class="textContainer">
     Problem: der Integer des spielers für die x positon läuft über
-    lösung wir fragen die x positon jedes mal ab nach dem erhöhen und wenn wir in die nähe des Max Value kommen setzten wir ihn auf null.
+    lösung wir fragen die x positon jedes mal ab nach dem erhöhen und wenn wir in die nähe des Max Value kommen setzten
+    wir ihn auf null.
 
     offset auch zurück
 
-    in unserer implementation benutzen wir die reset schleife um gleichzeit das speil schwieriger zu machen. heißt geschwindigkeit erhöhen und platformgröße reduzieren.
-
+    in unserer implementation benutzen wir die reset schleife um gleichzeit das speil schwieriger zu machen. heißt
+    geschwindigkeit erhöhen und platformgröße reduzieren.
 
 
     <br><br>
 </div>
 
 <div class="textContainer">
-Festlegen wie weit die neue platform von der letzten platform weg ist.
+    Festlegen wie weit die neue platform von der letzten platform weg ist.
 
     formel.
 
@@ -139,13 +249,13 @@ Festlegen wie weit die neue platform von der letzten platform weg ist.
     random zwischen diesen beiden werten.
 
 
-    neues Y zwischen 4  23
+    neues Y zwischen 4 23
 
     wegen der leben und score anzeigen un der spielhöhe des Spielers.
 
 
-    neue länge ist ein wert zwischen 2 und der maximalen platten größe * 15 da unser sprite für die platform 15 px lang ist.
-
+    neue länge ist ein wert zwischen 2 und der maximalen platten größe * 15 da unser sprite für die platform 15 px lang
+    ist.
 
 
     <br><br>
@@ -183,7 +293,6 @@ Festlegen wie weit die neue platform von der letzten platform weg ist.
     das gleiche mit den y koordinaten
 
 
-
     <br><br>
 </div>
 
@@ -194,8 +303,8 @@ Festlegen wie weit die neue platform von der letzten platform weg ist.
 
     war die oberkante des speilers im frame davor unter der platform so war es eine collsion von unten.
 
-    ist beides nicht der fall so war es eine kollison von der seite. die seite müssen wir nicht unterscheiden da wir aufgrund unserer scroll mechanik nur von links kollidirene können.
-
+    ist beides nicht der fall so war es eine kollison von der seite. die seite müssen wir nicht unterscheiden da wir
+    aufgrund unserer scroll mechanik nur von links kollidirene können.
 
 
     <br><br>
@@ -206,17 +315,17 @@ Festlegen wie weit die neue platform von der letzten platform weg ist.
 
     die abfrage ob wir noch boden unten den Füßen haben.
 
-    relativ simple wir fragen ob der pixel unter dem spieler mit einer platform kollidiert ist dies nicht mehr der fall so gehen wir über in den Zustand fallen.
+    relativ simple wir fragen ob der pixel unter dem spieler mit einer platform kollidiert ist dies nicht mehr der fall
+    so gehen wir über in den Zustand fallen.
 
     zweite Koliisonsabfrage wirkjsam in fallend springend
 
     kollideren wir mit einer platform von oben so setllen wir den spieler auf die platform.
 
-    kollideren wir mir einer platform von unten so wird der bewegungsvektor des spielers auf 0 gesetz und wir beleiben im zustand fallend.
+    kollideren wir mir einer platform von unten so wird der bewegungsvektor des spielers auf 0 gesetz und wir beleiben
+    im zustand fallend.
 
     gibts es eine Kollsion von der seite so stribt der spieler und die death routine wird aufgerufen.
-
-
 
 
     <br><br>
@@ -226,12 +335,9 @@ Festlegen wie weit die neue platform von der letzten platform weg ist.
 
     kollison mit powerups.
 
-    die kollison mit powerups ist eine einfache rechtecks kollison mit dem spieler. sobald das powerup kollidert wird der type auf none gestzt damit nicht mehremals der
+    die kollison mit powerups ist eine einfache rechtecks kollison mit dem spieler. sobald das powerup kollidert wird
+    der type auf none gestzt damit nicht mehremals der
     selbe effekt auftritt.
-
-
-
-
 
 
     <br><br>
@@ -246,19 +352,16 @@ Festlegen wie weit die neue platform von der letzten platform weg ist.
     und Dashes also Schwerelosigkeit des Spielers und gleichzeitige Beschleunigung.
 
 
-
-
     erste Aktion ist springen.
 
     Dazu fügen wir einen Jumocounter hinzu.
 
-    drücken wir den Knopf für jump so wird der Spieler in den Zustand "springend" versetzt. und zum Bewegungsvektor wird die Sprunghöhe dazu addiert.
+    drücken wir den Knopf für jump so wird der Spieler in den Zustand "springend" versetzt. und zum Bewegungsvektor wird
+    die Sprunghöhe dazu addiert.
 
     dananach wird der Jumocounter reduziert.
 
-    der  Jumocounter wird jedes mal im Zustand "standing" zurückgesetzt. Auf den Wert den die jeweilige Form vorgibt.
-
-
+    der Jumocounter wird jedes mal im Zustand "standing" zurückgesetzt. Auf den Wert den die jeweilige Form vorgibt.
 
 
     <br><br>
@@ -266,7 +369,8 @@ Festlegen wie weit die neue platform von der letzten platform weg ist.
 
 <div class="textContainer">
 
-    fürs dachen benötigen wir ebensfalls einen Zähler. und auserdem einen zweiten zähler der mitzähl wie viele frames wir schon dashen.
+    fürs dachen benötigen wir ebensfalls einen Zähler. und auserdem einen zweiten zähler der mitzähl wie viele frames
+    wir schon dashen.
 
 
     wird der knopf dashen betätigt so wird wie beim springen der spieler in den zustand dashen versetzt
@@ -281,14 +385,17 @@ Festlegen wie weit die neue platform von der letzten platform weg ist.
 
     somit haben wir gleich lange dashes egal wir schnell das speil gerade ist.
 
-    befinden wir uns im zustand dashing und die dashFramecounter ist kleiner oder gleich null so gehen wir in den zustand falling über.
+    befinden wir uns im zustand dashing und die dashFramecounter ist kleiner oder gleich null so gehen wir in den
+    zustand falling über.
 
 
     testet man das ganze so gibt es nun folgendes problem.
 
-    springt man und dasht in der mitte des sprungs so bewegen wir uns torzdem noch nach oben. und dashen wir und springen in der mitte des dashes so sind wir danach wieder dashend.
+    springt man und dasht in der mitte des sprungs so bewegen wir uns torzdem noch nach oben. und dashen wir und
+    springen in der mitte des dashes so sind wir danach wieder dashend.
 
-    um das zu verhindern muss man in der jump routine noch den dahsframcounter auf null setzten und in der dashroutine den bewgungsvektor des spielres auf null.
+    um das zu verhindern muss man in der jump routine noch den dahsframcounter auf null setzten und in der dashroutine
+    den bewgungsvektor des spielres auf null.
 
     <br><br>
 </div>

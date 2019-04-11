@@ -8,7 +8,12 @@
 <body class="Body">
 
 
-<div class="titleContainer"><img class="dragonIcon" src="../Images/dragon.png"><img class="titleImg" src="../Images/title1.png"></div>
+<div class="titleContainer"><img class="dragonIcon" src="../Images/dragon.png">
+    <div class="titleHead">
+        <div class="title">Konsole B:</div>
+        <img class="titleImg"
+             src="../Images/title1.png"></div>
+</div>
 
 <div class="ImgContainer"><img class="headImg" src="../Images/header.png"></div>
 
@@ -19,58 +24,45 @@
         <li><a class="NavigationPanel" href="../Team/index.html">Team</a></li>
         <li><a class="NavigationPanel" href="../Grundfunktionen/index.html">Grundfunktionen</a></li>
         <li><a class="NavigationPanel" href="../Spiellogik/index.html">Spiellogik</a>
-        </li><li><a class="NavigationPanel" href="../Code/index.html">Code</a></li>
+        </li>
+        <li><a class="NavigationPanel" href="../Code/index.html">Code</a></li>
     </ul>
 </div>
 
+<h1 class="formatHeader">Grundfunktionen</h1>
+
+<h2 class="formatHeader">Zeichnen</h2>
+
+<h2 class="formatHeader">Sound</h2>
 
 <h2 class="formatHeader">Animation</h2>
 
 <div class="textContainer">
-
- wir animieren mit der abwechselung von jeweils zwei bildern für jeden character die Bilder wechseln alle 6 frames. diesen wert haben wir durch aussproieren gefunden und war für unser gefühl
-    flüssigste.
-
-
-
-
-    <br><br>
+<p>
+    Die Animation der Figuren ist sehr grundlegend. Es werden lediglich zwei Bilder alle sechs Frames abgewechselt.
+    Die sechs Frames sind ein Erfahrungswert, bei dem die Animation am flüssigsten aussieht.
+</p>
 </div>
 
 <h2 class="formatHeader">Entprellen</h2>
+<img alt="Ups!" src="../Images/button.png" class="formatImage">
 
 <div class="textContainer">
-
-    das entprellen der tasten haben wir mit zwei variablen gelöst.
-
-    einem bool und der gespeichteren zeit des drückens.
-
-    sobald man eine taste drückt so wird der bool auf true gesetzt und man keine andere taste mehr drücken.
-
-    nach 150 ms werden alle tasten wieder freigeschaltet.
-
-    150 ms ist ebenfalls durch asuprobieren entstanden.
-
-
-
-
-
-
-    <br><br>
+<p>
+    Das Entprellen der Tasten wird mit einem Zustandsautomaten gelöst. Der Automat startet im "open"-Zustand. Sobald eine Taste betätigt wird, geht der Automat über in den "locked"-Zustand, wartet 150 ms und kehrt zurück in den "open"-Zustand.
+    Beim Warten im "locked"-Zustand handelt es sich um aktives Warten. Mit 150 ms als Wartequantum werden ungewollte doppelte Tastendrücke verhindert aber trotzdem ein responsives Verhalten der
+    Tasten ermöglicht.
+</p>
 </div>
 
 <h2 class="formatHeader">Zufallswerte</h2>
 
 <div class="textContainer">
+<p>
+    Um Zufallswerte zu erzeugen wird die rand()-Funktion der Standardbibliothek "stdlib.h" von C verwendet.
+    Als Startwert für den Pseudozufallszahlengenerator wird das Rauschen eines nicht angeschlossenen Kanals des Analog-Digital-Wandlers des Mikrocontrollers verwendet.
 
-wir benutzen für zufallswerte die standart bibliothek von c und seeden den zufallswert mit dem rauschen eines adc kanals.
-
-
-
-
-
-
-    <br><br>
+</p>
 </div>
 
 </body>
