@@ -32,11 +32,6 @@
 
 <h1 class="formatHeader">Projekt "DragonQuest" Konsole B.</h1>
 
-<video width="640" height="480" controls>
-    <source src="./Videos/VID_20190329_153253.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
-
 <h2 class="formatHeader">Aufgabenstellung</h2>
 
 <div class="textContainer">
@@ -49,9 +44,10 @@
 
 <div class="textContainer">
 
-    Unsere Spielidee ist ein Jump & Run im Stile von Robot-Unicorn-Attack.
+    Unsere Spielidee ist ein Jump & Run Spiel im Stile von Robot-Unicorn-Attack.
 
-    Die besonderheit bei diesem Spiel ist das sich die Spielfigur nicht bewegt sondern das Spielfeld um die Figur was
+    Die Besonderheit bei diesem Spiel ist, dass sich die Spielfigur nicht bewegt, sondern das Spielfeld um die Figur,
+    was
     den Eindruck erweckt sich in einem riesgen Spielfeld zu befinden.
 
     Als zusätzliche Features sollten noch Powerups und verschiedene Charaktere dazukommen.
@@ -72,52 +68,66 @@
 </div>
 
 <div class="textContainer">
-    Im laufe des Projekts wurde klar das der vorgesehene Zeitplan nicht einzuhalten ist. Generell wurde zu spät
-    begonnen. Außerdem
-    erwies sich der Mini-Emulator als eine Sackgasse. Zudem hatte die Konsole einen Defekt der erst zwei Tage vor der
-    Präsentation
-    Vom Betreuer Simon Kohlhepp behoben werden konnte.
 
-    Das komponieren der "Catchy" Tunes erwies sich weiterhin als sehr schwierig da beide Teammitglieder grundlegend
-    unmusikalisch sind.
-    Fazit:
+    Im Laufe des Projekts wurde klar, dass der vorgesehene Zeitplan nich einzuhalten war und es wurde zu wenig Zeit
+    eingeplant.<br>
 
-    Zwitmanagment vcerbessern.
-    Dokumentaion genauer lesen. 512 kbyte statt 512 byte.
+    Weiterhin erwies sich der Mini-Emulator (siehe unten) als zu aufwändig und unpraktikabel.<br>
 
-    für schnelle bilder ist das display einfach nicht gemacht.
+    Der Zeitplan wurde weiter durch einen Defekt im Soundsystem der Konsole verzögert. Dieser Defekt konnte erst zwei
+    Tage vor der Präsentation vom
+    Betreuer Simon Kohlhepp behoben werden.<br>
 
-    überlgtes programmieren spart ne menge zeit.
+    Außerdem wurde die Komplexität des Komponierens passender Sounds unterschätzt. <br> Erst am Tag der Präsentation
+    wurde uns bewusst, dass der EEprom-Speicher eine Kapazität von 512 kByte
+    und nicht von 512 Byte besitzt.
 
-    viel spaß und sehr viel gelernt.
+    Ein weiterer Zeitfaktor war, dass die Funktionsweise von einigen Abschnitten im Code nicht zu Ende gedacht war und
+    dementsprechend mehrfach überarbeitet werden mussten.
+
+
+    <br><br>
+
+    Als zusammenfassendes Fazit lässt sich festhalten, dass ein realisterisches Zeitmanagment vorteilhaft gewesen wäre.
+    Abschließend lässt sich sagen, dass wir trotzdem viel Spaß
+    hatten und viel dazugelernt haben.
 </div>
 
 
-<h3 class="formatHeader">uncontiuned Feature: Emulator:</h3>
+<h3 class="formatHeader">discontiuned Feature: Emulator</h3>
 
 <div class="textContainer">
 
     Funktionsweise:
-    Der Emulator Compiliert den Code mittels gcc und ersetzt dabei die API-Methoden für die IO-Schnittstellen des Mikrocontrollers
+    Der Emulator compiliert den Code mittels gcc und ersetzt dabei die API-Methoden für die IO-Schnittstellen des
+    Mikrocontrollers
     mit Linux API-Methoden.
 
-    Die "page"-Funktion wird durch einen Udp-Port ersetzt der, die werte der Pages an ein Python script sendet das diese dann Anzeigt.
+    Zum Beispiel: Die "page"-Funktion wird durch einen Udp-Port ersetzt, der die Werte der Pages an ein Python script
+    sendet, das diese dann anzeigt. <br><br>
 
-    Schwächen:
-        <ul>
-            <li>Sobald eigene Header verwendet werden funktioniert der Emulator nicht mehr</li>
-            <li>Derzeit ist nur das Display implementiert. Somit ist es nicht möglich tastendrücke auszulösen.</li>
-            <li>Interrupt funktioneren nicht</li>
-            <li>Die technischen Eigenschaften eines gänigen Pc sind dem Microcontorller haushoch überlegen </li>
+    Der Emulator hat derzeit noch folgende Schwächen:
+    <ul>
+        <li>Sobald eigene Header verwendet werden, funktioniert der Emulator nicht mehr.</li>
+        <li>Derzeit ist nur das Display implementiert. Somit ist es nicht möglich Tastendrücke auszulösen.</li>
+        <li>Interrupt-Routinen funktioneren nicht.</li>
+        <li>Die technischen Eigenschaften eines gängigen Computers sind dem Mikrocontrollers haushoch überlegen, was
+            eine Aussage über die Flüssigkeit auf der Konsole unmöglich macht.
+        </li>
 
-        </ul>
-
-
+    </ul>
+<br><br>
+    Diese Probleme sind alle nicht prinzipell unlösbar, waren aber im vorgegeben Zeitraum nicht realisierbar.
 
 
 
 </div>
 
+
+<video width="640" height="480" controls>
+    <source src="./Videos/VID_20190329_153253.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
 
 </body>
 </html>
