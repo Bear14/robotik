@@ -8,8 +8,12 @@
 <body class="Body">
 
 
-<div class="titleContainer"><img class="dragonIcon" src="Images/dragon.png"><img class="titleImg"
-                                                                                 src="./Images/title1.png"></div>
+<div class="titleContainer"><img class="dragonIcon" src="./Images/dragon.png">
+    <div class="titleHead">
+        <div class="title">Konsole B:</div>
+        <img class="titleImg"
+             src="./Images/title1.png"></div>
+</div>
 
 <div class="ImgContainer"><img class="headImg" src="./Images/header.png"></div>
 
@@ -47,59 +51,93 @@
     officia deserunt mollit
     anim id est laborum."
 </div>
+<h1 class="formatHeader">Start</h1>
 
+<h2 class="formatHeader">Project "DragonQuest" Konsole B.</h2>
 
+<h3 class="formatHeader">Aufgabenstellung</h3>
 
 <div class="textContainer">
+    <p>
+        Die Aufgabenstellung beim Projekt Konsole war ein Spiel auf der bestehenden Hardware zu implementieren.
+        Aufgrund des beschränkten Speicherplatzes sollte sowas wie level berchenen.
 
-    <h2>Project Console B.</h2>
-
-
-   <p>
-       Unser Project war es auf einer bestehenden Console ein neues Spiel zu implemetirene.
-    Besondere Schwierigkeiten sind hierbei der beschränkte Speicherplatz und die Refreshrate des Displays.
-   </p>
+        Zudem galt es die zusätzlich mit der langsamen Refreshrate des Displays so arbeiten.
 
 
-    Unsere Milestones:
+
+    </p>
+</div>
+
+
+<h3 class="formatHeader">Milestones</h3>
+<div class="textContainer">
     <ul>
-        <li>Emulator schreiben</li>
-        <li>catchy tunes komponieren</li>
-        <li>Spiellogik implmentieren.</li>
+        <li>1. Mini-Emulator schreiben bis Weihnachten</li>
+        <li> 2. Catchy Tunes bis Ende Januar</li>
+        <li> 3. Spielemechanik bis Ende Februar</li>
+        <li> 4. Theme Festlegen und Implementieren bis Mitte März</li>
+        <li> 5. Optional: Upgrade/Charakter Shop</li>
     </ul>
+</div>
+<h3 class="formatHeader">Projektverlauf</h3>
+<div class="textContainer">
 
+    <p>
+        Im laufe des Projekts wurde klar das wir uns im Zeitplan massiv verschätzt hatten. Da wir von Beginn an zu Spät angefangen haben.
+        Zudem wies sich der Emulator als Sackgasse was uns im Endeffekt auch wieder zeit kostetd
 
-    <p>Unser Zeitplan hat sich in der Praxis nicht als realistisch erwiesen, da wir erst nach der Klausurphase angefangen haben außerdem hat uns der Sound, aufgrund eines technisch Defekts der Konsole, sehr zurück geworfen.
-
-
-    der defekt wurde erst zwei Tage vor der Präsentation des Projekts mit hilfe von unserm Betreuer Simon Kohlhepp behoben.
     </p>
 
 
+    <p>Unser Zeitplan hat sich in der Praxis nicht als realistisch erwiesen, da wir erst nach der Klausurphase
+        angefangen haben außerdem hat uns der Sound, aufgrund eines technisch Defekts der Konsole, sehr zurück geworfen.
 
-   <h3>Emulator:</h3>
+
+        der defekt wurde erst zwei Tage vor der Präsentation des Projekts mit hilfe von unserm Betreuer Simon Kohlhepp
+        behoben.
+    </p>
+</div>
+
+<h3 class="formatHeader">Emulator:</h3>
+
+<div class="textContainer">
+<p>
+    Idee: Den Code mittels gcc compilieren und die API-Methoden für die IO-Schnittstellen des Mikrokontrollers umschreiben so das sie auf
+
+
+
+</p>
+    Idee:
+
+
+
 
     Der Emulator ist eine simple komination des gcc-Compilers und eines Python Scripts.
 
-    Die Idee ist den Code einfach mit gcc zu kompileren und die Methoden die auf den Microcontroller zugreifen umzuschreibben.
+    Die Idee ist den Code einfach mit gcc zu kompileren und die Methoden die auf den Microcontroller zugreifen
+    umzuschreibben.
 
-    Zum einen wurden die Page-Methode ersetzt mit einem udp-Port der die Pages an ein Pythonprogramm schickt, welches diese dann zeichnet.
+    Zum einen wurden die Page-Methode ersetzt mit einem udp-Port der die Pages an ein Pythonprogramm schickt, welches
+    diese dann zeichnet.
 
 
     Schwächen des Emulators sind:
     <ul>
-        <li>sobald man einen Header besitz funktioniert er nicht mehr. das gcc compilerte Programm ist deutlich schneller.</li>
+        <li>sobald man einen Header besitz funktioniert er nicht mehr. das gcc compilerte Programm ist deutlich
+            schneller.
+        </li>
 
-        <li>alles was mit interrupt routinen gelöst ist funktioniert  nicht.</li>
+        <li>alles was mit interrupt routinen gelöst ist funktioniert nicht.</li>
 
         <li>jedes mal boost zu compileren brauch zeit.</li>
     </ul>
-        diese probleme sind ansich nicht unmöglich zu lösen waren aber in unserem zeiteen rahmen nicht möglich.
+    diese probleme sind ansich nicht unmöglich zu lösen waren aber in unserem zeiteen rahmen nicht möglich.
 
 
-    <p> der emulator hat anfangs gut funktioniert wies aber dann leider im laufe auf grund seiner einfachheit so starke schwächen auf das wir in verworfen haben und uns auf in house
-    programierung beschränkt haben. </p>
-
+    <p> der emulator hat anfangs gut funktioniert wies aber dann leider im laufe auf grund seiner einfachheit so starke
+        schwächen auf das wir in verworfen haben und uns auf in house
+        programierung beschränkt haben. </p>
 
 
     Fazit:
@@ -118,16 +156,19 @@
 
 <div class="textContainer"> unser spielidee war ein ein jump im run im style von robot unicorn attack.
 
-    das spiel hat zur besonderheit das sich nicht der auf dem bildschirm der spieler bewegt sondern das ganze spielfeld um den spiler herum.
+    das spiel hat zur besonderheit das sich nicht der auf dem bildschirm der spieler bewegt sondern das ganze spielfeld
+    um den spiler herum.
 
     was den eindruck eines undenlichen spielfelds zaubert. zudem kann man daschen und springen
 
-    Das war auch der plan für unseer spiel allerdings mussten wir das bewegen in y richtung leider verwerfen da das Display zu langsam ist um die platformen komplett neu zu zeichnen.
+    Das war auch der plan für unseer spiel allerdings mussten wir das bewegen in y richtung leider verwerfen da das
+    Display zu langsam ist um die platformen komplett neu zu zeichnen.
 
     wir haben zudem noch power ups und wechselndde charactäre hinzugefügt.
 
 
-    ursprünglich sollte unsere musik sehr catchy werden da wir aber beide kein geschick fürs komponieren bewiessen haben spielt unsere musik nur im hauptmenu.
+    ursprünglich sollte unsere musik sehr catchy werden da wir aber beide kein geschick fürs komponieren bewiessen haben
+    spielt unsere musik nur im hauptmenu.
     um ohren zu schonen.
 
     es gibt folgende powerups.
@@ -143,10 +184,7 @@
     um so weiter man nach rechts läuft umsomehr punkte gibt es.
 
 
-
-
 </div>
-
 
 
 </body>

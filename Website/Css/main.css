@@ -29,21 +29,30 @@
     width: auto;
     background-color: white;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 
 }
+.titleHead{
+    display:flex;
+    padding-right: 20%;
+    padding-left: 15%;
+    width: 60%;
+    align-items: center;
+}
 .titleImg{
-    width: auto;
-    max-width: 80%;
+    width: 70%;
     height: auto;
-    max-height: 80%;
+}
+.title{
+    font-size: 3vw;
+
 }
 .dragonIcon{
-    width: auto;
-    max-width: 80%;
+    width: 5%;
+    max-width: 100%;
     height: auto;
-    max-height: 80%;
+    max-height: 100%;
 
 }
 .headImg {
@@ -83,11 +92,14 @@
     padding-left: 10%;
 }
 .formatImage{
-    width: 80%;
+    width: 25vw;
     height:auto;
     max-width: 50%;
     margin: 1% 10% 1% 10%;
     padding: 1%;
     border: black solid 1px;
     background-color: rgba(255, 255, 255, 0.51);
+}
+.doubleImage{
+    display: flex;
 }
