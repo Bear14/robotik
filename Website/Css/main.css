@@ -103,3 +103,12 @@
 .doubleImage{
     display: flex;
 }
+
+video{
+    padding-left: 10%;
+    -moz-transform:rotate(270deg);
+    -webkit-transform:rotate(270deg);
+    -o-transform:rotate(270deg);
+    -ms-transform:rotate(270deg);
+    transform:rotate(270deg);
+}

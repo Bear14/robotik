@@ -35,19 +35,22 @@
 <h2 class="formatHeader">Spiel-Objekte</h2>
 
 <h3 class="formatHeader">Spielfeld</h3>
+
+
 <div class="textContainer">
 
-    Das Spielfeld ist ein zwei dimensionales kartesisches Koordinatensystem mit 16 Bit Integern als X und Y Werten.
-    Die Y Achse des Spielfeldes ist gespiegelt.
+    Das Spielfeld ist ein zweidimensionales kartesisches Koordinatensystem mit 16 Bit Integern als x- und y-Werten.
+    Die y-Achse des Spielfelds ist am Ursprung gespiegelt, womit die positive Richtung nach unten zeigt.
 
     Innerhalb dieses Spielfelds gibt es den gezeichneten Bildausschnitt. Der Bildausschnitt spannt sich auf in
-    X-Richtung von null bis 159 und in Y-Richtung von null bis 104.
+    x-Richtung von null bis 159 und in y-Richtung von null bis 103.
 
 </div>
+<img class="formatImage" src="../Images/Spielfeld.png">
 <h3 class="formatHeader">Spiel</h3>
 <div class="textContainer">
-    Das Spiel selbst besitzt als Eigenschaften einen eindimensionalen Vektor für die Bewegung des Spielers in
-    X-Richtung, einer Schwerkraft und einen Spielzustand.
+    Das Spiel selbst besitzt als Attribute einen eindimensionalen Vektor für die Bewegung des Spielers in
+    x-Richtung, eine Schwerkraft und einen Spielzustand.
     Außerdem besitzt das Spiel noch Ganzzahlwerte für die maximale Plattengröße, den Punktestand und die Anzahl der
     Leben des
     Spielers.
@@ -85,9 +88,9 @@
             wechseln.<br><br>
         </li>
         <li>
-            "set": Der "set"Zustand wird aktiv, sobald der Spieler stirbt. Ist dies der
-            Fall so wird entweder eine neue Runde gestartet oder
-            sollten alle Leben verloren sein kehrt man ins Hauptmenü zurück.<br><br>
+            "set": Der "set"-Zustand wird aktiv, sobald der Spieler stirbt. Ist dies der
+            Fall, so wird entweder eine neue Runde gestartet oder man kehrt ins Hauptmenü zurück,
+            sollten alle Leben verloren sein.<br><br>
         </li>
     </ul>
 </div>
@@ -96,18 +99,18 @@
 
 
 <div class="textContainer">
-    Alle interagierbaren Spielobjekte sind im Grunde Rechtecke mit besonderen Eigenschaften.
-    Somit sind die ersten vier Eigenschaften, x, y, Höhe und Breite des Spielers trivial.<br>
-    Zusätzlich merken wir uns um die Spielfigur beim Zeichnen löschen zu können seine vorherige Y-Position.
+    Alle interagierbaren Spielobjekte sind Rechtecke mit besonderen Eigenschaften.
+    Somit sind die ersten vier Eigenschaften, x, y, Höhe und Breite des Spielers, trivial.<br>
+    Zusätzlich merken wir uns, um die Spielfigur beim Zeichnen löschen zu können, seine vorherige y-Position.
     Diese wird später bei der Kollisionsabfrage zusätzlich hilfreich.<br>
     Weitere Eigenschaften des Spielers sind seine Sprunghöhe und seine Dashweite.<br>
-    Um seine Bewegung in Y-Richtung zu berechnen besitzt er zudem noch einen eindimensionalen Vektor.<br>
+    Um seine Bewegung in y-Richtung zu berechnen besitzt er zudem noch einen eindimensionalen Vektor.<br>
 
     Die Form des Spielers sorgt dafür das er für seinen derzeitigen Charakter die richtige Sprunganzahl und Dashweite
     bzw. Dashanzahl besitzt.
-    Die Form sorgt auch dafür das der Spieler richtig gezeichnet wird.<br>
+    Die Form sorgt auch dafür, dass der Spieler richtig gezeichnet wird.<br>
 
-    Um festzustellen, welche physikalischen Kräfte derzeit auf den Spieler wirken gibt es den Spielerzustand der als
+    Um festzustellen, welche physikalischen Kräfte derzeit auf den Spieler wirken gibt es den Spielerzustand, der als
     Zustandsautomat implementiert ist.
 
 </div>
@@ -133,16 +136,19 @@
 
     Der Spielerzustandsautomat besteht aus vier Zuständen:
     <ul>
-        <li>"falling": Der Startzustand, hier wird die Kollision mit allen anderen Spielobjekten abgefragt (collision_P_*). Zudem wirkt hier der Y-Bewegungsvektor auf den Spieler.
+        <li>"falling": Der Startzustand, hier wird die Kollision mit allen anderen Spielobjekten abgefragt
+            (collision_P_*). Zudem wirkt hier der y-Bewegungsvektor auf den Spieler.
 
             <br><br></li>
         <li>"standing": Es wird die Kollision mit der Plattform unter dem Spieler abgefragt (collision_G).
 
             <br><br></li>
-        <li>"dashing": Der Spieler ist schwerelos, es wirkt also keine Schwerkraft auf ihn, und die Bewegung in X-Richtung wird erhöht.
+        <li>"dashing": Der Spieler ist schwerelos, die y-Position wird folglich beibehalten, und die Geschwindigkeit der
+            Bewegung in
+            x-Richtung wird erhöht.
 
             <br><br></li>
-        <li>"jumping": Äquivalent zum "falling"-Zustand.
+        <li>"jumping": Äquivalent zum "falling"-Zustand mit negativer y-Geschwindigkeit.
 
             <br><br></li>
 
@@ -151,7 +157,8 @@
 
 
 <div class="textContainer">
-    Um Platz im Programmspeicher des Mikrocontrollers zu sparen sind sowohl das Spiel als auch der Spieler keine eigenen Klassen im Code, sondern
+    Um Platz im Programmspeicher des Mikrocontrollers zu sparen sind sowohl das Spiel als auch der Spieler keine eigenen
+    Klassen im Code, sondern
     ihre Attribute sind als globale Variablen deklariert.
 
 </div>
@@ -159,7 +166,9 @@
 <h3 class="formatHeader">Plattformen</h3>
 
 <div class="textContainer">
-    Die Plattformen sind einfache Rechtecke die eine feste Höhe besitzen. Das einzig besondere ist das die Länge der Plattformen immer durch 15 teilbar sein muss. Das liegt an der Größe des Sprites, für die Plattformen, der genau 15 Pixel lang ist.
+    Die Plattformen sind einfache Rechtecke die eine feste Höhe besitzen. Das einzig besondere ist, dass die Länge der
+    Plattformen immer durch 15 teilbar sein muss. Das liegt an der Größe des Sprites, für die Plattformen, der genau 15
+    Pixel lang ist.
 
 </div>
 
@@ -175,7 +184,8 @@
 
 
 <div class="textContainer">
-    Die Powerups sind Quadrate mit einer festen Seitenlänge. Sie besitzen zusätzlich noch einen Typen der festlegt, welchen Effekt sie haben.
+    Die Powerups sind Quadrate mit einer festen Seitenlänge. Sie besitzen zusätzlich noch einen Typen der festlegt,
+    welchen Effekt sie haben.
 </div>
 
 
@@ -195,14 +205,27 @@
 <h2 class="formatHeader">Sidescroller</h2>
 <h3 class="formatHeader">Definition</h3>
 <div class="textContainer">
-    Ein Sidescroller ist ein Spiel in einer 2D Ansicht bei der man sich nur nach rechts oder nach links bewegen kann.
+    Ein Sidescroller ist ein Spiel in einer 2D-Ansicht, bei der man sich nur nach rechts oder nach links bewegen kann.
 
-    "Dragonquest" gehört zur Unterart der Endloslauf-Spiele. Das heißt der Spieler bewegt sich kontinuierlich in eine Richtung, in diesem Fall nach rechts.
+    "Dragonquest" gehört zur Unterart der Endloslauf-Spiele. Das heißt, der Spieler bewegt sich kontinuierlich in eine
+    Richtung, in diesem Fall nach rechts.
 
 </div>
 
 <h3 class="formatHeader">Ansicht</h3>
+<div class="textContainer">
+    Zur Implementation eines Sidescrollers ist es wichtig sich darüber klar zu sein, wie Bewegungen dargestellt werden.
 
+    Betrachtet man nur die Konstellation der beiden Rechtecke so ist es, <br> für die Darstellung einer Bewegung in
+    x-Richtung, egal ob die x-Koordinate des blauen Quadrats erhöht oder die des grünen verringert wird.
+
+    In der Spiellogik wird die Position des Spielers erhöht. Beim Zeichnen der Objekte wird der Spieler an einer festen
+    Position des LCD Displays gezeichnet.
+    Die anderen Spielobjekte werden hingegen so verschoben, dass die Konstellation der Spielobjekte wieder stimmt.
+
+    Dies wird mittels einer Offset-Variable implementiert. Diese Variable wird beim Zeichen von der x-Position der
+    Spielobjekte abgezogen.
+</div>
 <div class="doubleImage">
     <img class="formatImage" src="../Images/sidescroller1.png">
     <img class="formatImage" src="../Images/sidescroller2.png">
@@ -210,194 +233,226 @@
 
 
 <div class="textContainer">
-    Bewwegung rect 1 oder rect 2 egal
-    konstelölation wiuchtig
 
-    es gibt eine logische und eine Visuelle ansicht
-    offset merken. oder klüger offset = (playerpos x + 5) *1-1
+    Bei der derzeitigen Implementierung ergibt sich das Problem, dass die x-Position, ein 16 Bit Integer, des
+    Spielers überläuft.
 
+    Um den Überlauf zu verhindern, wird mittels einer Funktion nach jedem Frame überprüft, ob ein gewisser Threshold
+    erreicht ist. Dieser Threshold muss logischerweise kleiner als das Maximum eines
+    16 Bit Integers sein. Ist der Threshold erreicht, so wird die Position des Spielers auf null zurückgesetzt. Um die
+    Konstellation der Spielobjekte zu erhalten, wird
+    der Wert der x-Position des Spielers von den x-Werten der anderen Spielobjekte abgezogen. Zudem wird der x-Offset
+    zurückgesetzt.
     <br><br>
-</div>
+    In "DragonQuest" wird diese Funktion zusätzlich dazu genutzt, um die Schwierigkeit des Spiels zu erhöhen. Die
+    Spielgeschwindigkeit wird erhöht und die Plattengröße verringert.
 
+
+</div>
+<h3 class="formatHeader">Plattformerzeugung</h3>
 <div class="textContainer">
-    Problem: der Integer des spielers für die x positon läuft über
-    lösung wir fragen die x positon jedes mal ab nach dem erhöhen und wenn wir in die nähe des Max Value kommen setzten
-    wir ihn auf null.
+    Die drei Anfangsplattformen sind "hardcoded".
 
-    offset auch zurück
+    Sobald eine Plattform aus dem Bild läuft, wird sie mit einer Neuen ersetzt.<br>
 
-    in unserer implementation benutzen wir die reset schleife um gleichzeit das speil schwieriger zu machen. heißt
-    geschwindigkeit erhöhen und platformgröße reduzieren.
+    Um die x-Position der neuen Plattform festzulegen, wird ein Zufallswert zwischen der minimalen und maximalen
+    Sprungweite generiert.
 
+    Die minimale Sprungweite ergibt sich aus der Sprunghöhe und der Spielgeschwindigkeit: <br><br>&emsp; minimale
+    Sprungweite = (Sprunghöhe * 2
+    + 1) * Spielgeschwindigkeit. <br><br>
 
+    Die maximale Sprungweite ergibt sich aus der minimalen Sprungweite: <br><br>&emsp; maximale Sprungweite = minimale
+    Sprungweite * 2.
     <br><br>
+
+    Die neue y-Position der Plattform wird zufällig festgelegt.
+
+    Dabei wird ein Zufallswert zwischen 16 und 96 gewählt,
+
+    16 damit auf der höchsten Plattform noch genug Platz für den Spieler ist und 96 damit genug Platz unterhalb der
+    untersten Plattform ist ohne die Punkteanzeige zu schneiden.<br><br>
+
+    Für die Länge der neuen Plattform wird ein Zufallswert zwischen 30 und der maximalen Plattengröße gewählt.
+
 </div>
 
-<div class="textContainer">
-    Festlegen wie weit die neue platform von der letzten platform weg ist.
+<img class="formatImage" src="../Images/sidescroller3.png">
 
-    formel.
-
-    bestimmung der minimalen sprungweite:
-
-    (jumpheight * 2 +1) * gamespeed.
-
-    bestimmung der maximalen sprungweite:
-
-    minsprung * 2.
-
-    random zwischen diesen beiden werten.
-
-
-    neues Y zwischen 4 23
-
-    wegen der leben und score anzeigen un der spielhöhe des Spielers.
-
-
-    neue länge ist ein wert zwischen 2 und der maximalen platten größe * 15 da unser sprite für die platform 15 px lang
-    ist.
-
-
-    <br><br>
-</div>
-<div class="textContainer">
-    Es gibt ein 15% chance das ein Powerup auf einer neuen platform entsteht.
-
-    die positon auf der platform ist ein wert zufällig zwischen ende und angfang der platform.
-
-
-    der y wert ist immer so das powerup auf der platform liegt.
-
-    <br><br>
-</div>
-
+<h3 class="formatHeader">Poweruperzeugung</h3>
 <div class="textContainer">
 
-    switch acse für chancen auf powerups.
+    Auf jeder neuen Plattform entsteht ein Powerup mit der Wahrscheinlichkeit 15%.
+
+    Die Position auf der Plattform wird zufällig gewählt.
+
+    Der Typ des Powerups wird mittels gewichtetem Zufall festgelegt.
+
 
     <br><br>
 </div>
+<img class="formatImage" src="../Images/powerup.png">
 
 <h2 class="formatHeader">Kollision</h2>
 
+
+<h3 class="formatHeader">Einfache Kollision</h3>
 <div class="textContainer">
 
-    eine Grundlöegende Kollisionsabfrage zsicehen zwei rechtecken.
-
-
-    wir schauen ob die beiden äußerden kanten so ausernander ligen das es eine kollison geben könnte
-
-    dann betrachetn wir die innenen kannten ob sie inneinenader liegen.
-
-
-    das gleiche mit den y koordinaten
-
+    Die einfachste Kollisionsabfrage ist die zweier Rechtecke.
+    Hierbei wird überprüft, ob die Summe der x-Position einer Plattform mit der zugehörigen Breite ober- oder unterhalb
+    der x-Position der zweiten Plattform liegt.
+    Im Falle einer Überschreitung kollidieren die Rechtecke. Die gleiche Technik wird auch in y-Richtung verwendet.
 
     <br><br>
 </div>
 
-<div class="textContainer">
-    erweiterung der abfrage um die richtung festzustellen.
-
-    war die unterkante im frame davor über der platform so ist ees eine collision von oben.
-
-    war die oberkante des speilers im frame davor unter der platform so war es eine collsion von unten.
-
-    ist beides nicht der fall so war es eine kollison von der seite. die seite müssen wir nicht unterscheiden da wir
-    aufgrund unserer scroll mechanik nur von links kollidirene können.
-
-
-    <br><br>
+<div class="doubleImage"><img class="formatImage" src="../Images/kollision.png">
+    <div class="formatImage">
+        if (rect1.x < rect2.x + rect2.width && <br>&emsp;
+        rect1.x + rect1.width > rect2.x && <br>&emsp;
+        rect1.y < rect2.y + rect2.height && <br>&emsp;
+        rect1.y + rect1.height > rect2.y) { <br>&emsp;
+        &emsp; // collision detected!<br>&emsp;
+        }
+    </div>
 </div>
 
+
+<h3 class="formatHeader">Richtung der Kollision</h3>
+
 <div class="textContainer">
-    ertse collison.
 
-    die abfrage ob wir noch boden unten den Füßen haben.
+    In "DragonQuest" benötigen wir zusätzlich die Richtung der Kollision.
 
-    relativ simple wir fragen ob der pixel unter dem spieler mit einer platform kollidiert ist dies nicht mehr der fall
-    so gehen wir über in den Zustand fallen.
+    Ist die Unterkante des Spielers im vorherigen Frame über der Plattform, so ist es eine Kollision von oben.
 
-    zweite Koliisonsabfrage wirkjsam in fallend springend
+    Ist die Oberkante des Spielers im vorherigen Frame unter der Plattform, so ist es eine Kollision von unten.
 
-    kollideren wir mit einer platform von oben so setllen wir den spieler auf die platform.
-
-    kollideren wir mir einer platform von unten so wird der bewegungsvektor des spielers auf 0 gesetz und wir beleiben
-    im zustand fallend.
-
-    gibts es eine Kollsion von der seite so stribt der spieler und die death routine wird aufgerufen.
+    Ist beides nicht der Fall so ist es eine Kollision von der Seite.
 
 
-    <br><br>
+    Da sich der Spieler nur nach rechts bewegt, ist es nicht nötig zu testen, ob die Kollision von links oder rechts
+    erfolgt ist.
+
 </div>
 
+<img class="formatImage" src="../Images/kollisionRichtung.png">
+
+
+<h3 class="formatHeader">Implementierung in DragonQuest</h3>
+
+
 <div class="textContainer">
 
-    kollison mit powerups.
+    Die Spiellogik von "DragonQuest" verfügt über dreierlei Kollisionsabfragen: Zwei des Spielers mit den Platformen und
+    eine des Spielers mit den Powerups.
 
-    die kollison mit powerups ist eine einfache rechtecks kollison mit dem spieler. sobald das powerup kollidert wird
-    der type auf none gestzt damit nicht mehremals der
-    selbe effekt auftritt.
+</div>
+<br>
+<h3 class="formatHeader">Kollision mit dem Boden</h3>
 
 
-    <br><br>
+<div class="textContainer">
+
+    Die erste Kollsionsabfrage überprüft die Kollison mit der Plattform unter dem Spieler mit dem Spieler.
+
+    Hierbei wird abgefragt, ob die Reihe Pixel unter dem Spieler mit einer Plattform kollidiert, wie in der folgenden
+    Abbildung in grün dargestellt.
+    Ist dies nicht der Fall, so geht der Spieler in den "falling"-Zustand über.
+
+</div>
+
+<img class="formatImage" src="../Images/Kollison_G.png">
+
+<h3 class="formatHeader">Kollision mit Plattformen</h3>
+
+<div class="textContainer">
+
+    Die zweite Kollisionsabfrage ist die Kollision mit den Plattformen, wobei die Richtung der Kollision verwendet wird.
+
+    Erfolgt die Kollision von oben, so wird der Spieler auf die Plattform positioniert und in den "standing"-Zustand
+    versetzt.
+
+    Erfolgt die Kollision von unten, so stößt der Spieler an. Sein y-Bewegungsvektor wird auf null gesetzt.
+
+    Ist die Kollision von der Seite, so stirbt der Spieler und der "set"-Zustand des Spiels wird aufgerufen.
+
+</div>
+
+
+<div class="doubleImage"><img class="formatImage" src="../Images/KollisionvonOben.png"><img class="formatImage"
+                                                                                            src="../Images/KollisionVonUnten.png">
+</div>
+
+<img class="formatImage" src="../Images/KollisionVonDerSeite.png">
+
+<h3 class="formatHeader">Kollision mit Powerups</h3>
+
+<div class="textContainer">
+    Bei der Kollision mit Powerups wird abgefragt, ob der Spieler mit einem Powerup kollidiert. Sobald eine Kollision
+    auftritt, wird der Typ des Powerups auf "none" gesetzt. Um das mehrfache Auftreten des
+    Powerup-Effektes zu verhindern.
 </div>
 
 <h2 class="formatHeader">Aktionen</h2>
 
+<h3 class="formatHeader">Springen</h3>
+
+
 <div class="textContainer">
 
-    Wir möchten Doppelsprünge bzw Dreifachsprunge
+    Die Spezifikation unseres Spiels sieht vor, dass der Spieler Doppelsprünge oder sogar Dreifachsprünge ausführen
+    kann.
 
-    und Dashes also Schwerelosigkeit des Spielers und gleichzeitige Beschleunigung.
-
-
-    erste Aktion ist springen.
-
-    Dazu fügen wir einen Jumocounter hinzu.
-
-    drücken wir den Knopf für jump so wird der Spieler in den Zustand "springend" versetzt. und zum Bewegungsvektor wird
-    die Sprunghöhe dazu addiert.
-
-    dananach wird der Jumocounter reduziert.
-
-    der Jumocounter wird jedes mal im Zustand "standing" zurückgesetzt. Auf den Wert den die jeweilige Form vorgibt.
+    Die maximale Anzahl der Sprünge wird mittels eines Sprungzählers implementiert.
 
 
-    <br><br>
+    Ist der Sprungzähler größer null und wird der Taster für das Springen betätigt, so wird zum y-Bewegungsvektor des
+    Spielers die Sprunggeschwindigkeit addiert. Gleichzeitig wird der Sprungzähler um eins reduziert.
+
+    Befindet sich der Spieler im "standing"-Zustand so wird der Sprungzähler wieder auf seinen Anfangswert
+    zurückgesetzt.
+
+
 </div>
 
+<h3 class="formatHeader">Dashen</h3>
+
+
 <div class="textContainer">
 
-    fürs dachen benötigen wir ebensfalls einen Zähler. und auserdem einen zweiten zähler der mitzähl wie viele frames
-    wir schon dashen.
+    Für die Implementation des "Dashes" werden zwei Zähler benötigt. Einer der wie der Sprungzähler agiert und ein
+    Zähler der zählt, wie viele Frames der Spieler bereits "gedashed" ist.
+
+    Die "dash"-Funktion ist weitestgehend äquivalent zur "jump"-Funktion.
+
+    Der Unterschied liegt im Spielerzustand.
+
+    Im "dashing"-Zustand wird abgefragt ob der Zähler für die "gedashten" Frames bereits null ist, wenn ja so geht der
+    Spieler über in den "falling"-Zustand.
+
+    Wenn nein, so wird der Zähler für die Frames um eins reduziert.
+    Zusätzlich wird die Spielgeschwindigkeit verdoppelt.
+
+</div>
+
+<div class="doubleImage"><img class="formatImage" src="../Images/jump.png"><img class="formatImage"
+                                                                                src="../Images/dash.png"></div>
 
 
-    wird der knopf dashen betätigt so wird wie beim springen der spieler in den zustand dashen versetzt
-    außderdem wird der zähler für die frames auf die von der form vorgegebene größe gesetzt.
+<div class="textContainer">
 
-    außerdem wird der counter reduziert.
+    Beim Testen fällt auf, dass die Aktionen "Sprung"->"Dash" zur Folge hat, dass sich der Spieler nach dem "Dash"
+    weiterhin
+    nach oben bewegt.
+    Bei der Aktion "Dash"->"Sprung" setzt der Spieler seinen "Dash" nach dem Sprung fort.
 
-
-    im zustand dasching wird die normale spielgeschwqindigkeit auf verdoppelt.
-
-    auserdem wird die süpielgeschwqindigkeit von der dashframecounter abgezogen.
-
-    somit haben wir gleich lange dashes egal wir schnell das speil gerade ist.
-
-    befinden wir uns im zustand dashing und die dashFramecounter ist kleiner oder gleich null so gehen wir in den
-    zustand falling über.
+    Dieses Verhalten ist nicht gewünscht, ist aber leicht zu beheben indem der Zähler in der "sprung"-Funktion für die
+    "gedashten" Frames auf null gesetzt und in der "dash"-Funktion der y-Bewegungsvektor des Spielers ebenfalls auf
+    null gesetzt wird.
 
 
-    testet man das ganze so gibt es nun folgendes problem.
-
-    springt man und dasht in der mitte des sprungs so bewegen wir uns torzdem noch nach oben. und dashen wir und
-    springen in der mitte des dashes so sind wir danach wieder dashend.
-
-    um das zu verhindern muss man in der jump routine noch den dahsframcounter auf null setzten und in der dashroutine
-    den bewgungsvektor des spielres auf null.
-
-    <br><br>
 </div>
 
 </body>
