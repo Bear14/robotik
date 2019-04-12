@@ -32,7 +32,23 @@
 <h1 class="formatHeader">Grundfunktionen</h1>
 
 <h2 class="formatHeader">Zeichnen</h2>
+<div class="textContainer">
+    Grundlage um auf dem Display zu zeichnen ist die Funktion page( x, y, hex). Bei dieser Funktion werden immer vier vertikale Pixel zu einer Page zusammengefasst. Die Farbe eines Pixels wird mit 2 Bit definiert.  Da eine Page 4 Pixel beschreibt und ein Pixel durch 2 Bits definiertv ist ist der Wert einer Page 8 Bit lang. Das unterste Pixel einer Page wird durch die zwei höchstwertigen Bits repräsentiert.
 
+    Da wir unsere Sprits nicht nur pageweise verschieben wollen sonder pixelweise mussten wir uns hierzu eine neue Funktion schreiben die automatisch das Bitshifften übernimmt. Desweiteren sollte in y-Richtung nicht die Page(0-25) angesteuert werden, sondern der jeweilige Pixel(0-104).
+    <h3>drawCorrect(x,y, hex)</h3>
+    Aus unser überlegung entstand die Funktion drawCorrect() welche die gewünschte Page an jede beliebige Stelle auf dem Display zeichnet.
+    In der Funktion wird über die y-Koordinate und der Modulofunktion geschaut welche Pages angesprochen werden, so werden 4 Fälle unterschieden.
+    Durch das Bitshiften werden die Bits auf die jeweilige Page geschoben.
+    Um zu verhindern, dass die nächste page, die gezeichnet wird eine vorhere überschreibt wird immer die letzte gezeichnete Page gespeichert. Falls auf diese geschrieben werden soll wird die neue Page und die alte Page verordert.
+
+<img class="formatImage" src="../Images/DrawCorrect1.png">
+    <h3>Sprits Zeichene</h3>
+    Um unser Helden, Powerups und was sonst noch zu zeichnen nutzen wir Gimp. Nachdem das gewünschte Sprit fertig ist exportiern wir dieses als pgm Datei(Portable Greaymap).
+    Um die Sprits im Code nutzen zu können wird ein Pythonscript genutzt welche die Farbwerte in
+
+
+</div>
 <h2 class="formatHeader">Sound</h2>
 <div class="textContainer">
     <p>
