@@ -41,8 +41,10 @@
     In der Funktion wird über die y-Koordinate und der Modulofunktion geschaut welche Pages angesprochen werden, so werden 4 Fälle unterschieden.
     Durch das Bitshiften werden die Bits auf die jeweilige Page geschoben.
     Um zu verhindern, dass die nächste page, die gezeichnet wird eine vorhere überschreibt wird immer die letzte gezeichnete Page gespeichert. Falls auf diese geschrieben werden soll wird die neue Page und die alte Page verordert.
-
+<div class="doubleImage">
 <img class="formatImage" src="../Images/DrawCorrect1.png">
+    <img class="formatImage" src="../Images/DrawCorrect2.png">
+</div>
     <h3>Sprits Zeichene</h3>
     Um unser Helden, Powerups und was sonst noch zu zeichnen nutzen wir Gimp. Nachdem das gewünschte Sprit fertig ist exportiern wir dieses als pgm Datei(Portable Greaymap).
     Um die Sprits im Code nutzen zu können wird ein Pythonscript genutzt welche die Farbwerte in
